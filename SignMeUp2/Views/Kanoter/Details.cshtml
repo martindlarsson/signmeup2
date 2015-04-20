@@ -1,0 +1,43 @@
+﻿@model SignMeUp2.DataModel.Kanoter
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kanot</h2>
+
+<div>
+    <h4>Kanoter</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Evenemang.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Evenemang.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Avgift)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Avgift)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

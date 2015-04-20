@@ -1,0 +1,81 @@
+﻿@model SignMeUp2.DataModel.Invoice
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Ta bort fakturaadress</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Invoice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Box)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Box)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Postnummer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Postnummer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Organisationsnummer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Organisationsnummer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Postort)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Postort)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Postadress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Postadress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Att)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Att)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,172 @@
+﻿using System;
+using System.Data.Entity.Validation;
+using System.IO;
+using System.Linq;
+using System.Web.Mvc;
+using log4net;
+using SignMeUp2.Helpers;
+using SignMeUp2.DataModel;
+
+namespace SignMeUp2.Controllers
+{
+    public class RegBaseController : Controller
+    {
+        protected static readonly SignMeUpDataModel db = new SignMeUpDataModel();
+        private readonly ILog log;
+
+        public RegBaseController()
+        {   
+            log = LogManager.GetLogger(GetType());
+        }
+
+        protected string RenderRazorViewToString(string viewName, object model)
+        {
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
+        }
+
+        protected void SetAsPaid(Registreringar registration)
+        {
+            registration.HarBetalt = true;
+            SaveChanges(registration);
+
+            try
+            {
+                FillViewData();
+                var appUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
+                var link = appUrl + "home/mail/" + registration.ID;
+                SendMail.SendRegistration(RenderRazorViewToString("_MailView", registration), appUrl, link, registration.Epost);
+                log.Debug("Sent confirmation mail. Lagnamn: " + registration.Lagnamn);
+            }
+            catch (Exception exc)
+            {
+                log.Error("Unable to send confirmation mail.", exc);
+            }
+        }
+
+        protected void SaveNewRegistration(Registreringar reg = null)
+        {
+            if (reg == null)
+            {
+                reg = (Registreringar)Session["reg"];
+            }
+
+            reg.Banor = null;
+            reg.Kanoter = null;
+            reg.Klasser = null;
+            
+            try
+            {
+                db.Registreringar.Add(reg);
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    log.Error(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        log.Error(string.Format("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage));
+                    }
+                }
+                throw;
+            }
+            Session["reg"] = null;
+            Session["checkout"] = null;
+        }
+
+        protected void SaveChanges(Registreringar reg)
+        {
+            var origReg = db.Registreringar.FirstOrDefault<Registreringar>(oReg => oReg.ID == reg.ID);
+            db.Entry(reg).CurrentValues.SetValues(origReg);
+            //db.Registreringar.ApplyCurrentValues(reg);
+            db.SaveChanges();
+        }
+
+        protected void FillRegistrering(Registreringar registrering)
+        {
+            registrering.Kanoter = db.Kanoter.First(kanot => kanot.ID == registrering.Kanot);
+            registrering.Banor = db.Banor.First(bana => bana.ID == registrering.Bana);
+            registrering.Klasser = db.Klasser.First(klass => klass.ID == registrering.Klass);
+        }
+
+        protected void FillViewData()
+        {
+            ViewData["Kanoter"] =
+                from kanot in db.Kanoter.ToList()
+                select new SelectListItem
+                {
+                    Text = kanot.Namn + " (" + kanot.Avgift + " kr)",
+                    Value = kanot.ID.ToString()
+                };
+
+            ViewData["Banor"] =
+                from bana in db.Banor.ToList()
+                select new SelectListItem
+                {
+                    Text = bana.Namn + " (" + bana.Avgift + " kr)",
+                    Value = bana.ID.ToString()
+                };
+
+            ViewData["Klasser"] = new SelectList(db.Klasser.ToList(), "ID", "Namn");
+            ViewData["Forseningsavgift"] = Avgift.Forseningsavgift(db);
+        }
+
+        protected void DeleteRegistrering(int id)
+        {
+            Registreringar registreringar = db.Registreringar.Include("Invoice").Include("Deltagare").Single(r => r.ID == id);
+            if (registreringar.Invoice != null)
+            {
+                // Cascade delete...
+                //db.Invoice.Remove(registreringar.Invoice);
+                db.Invoice.Remove(registreringar.Invoices);
+            }
+            DeleteDeltagare(registreringar);
+            db.Registreringar.Remove(registreringar);
+            db.SaveChanges();
+        }
+
+        protected static void DeleteDeltagare(Registreringar registrering)
+        {
+            var deltagareToDelete = db.Deltagare.Where(delt => delt.RegistreringarID == registrering.ID);
+            foreach (var deltagare in deltagareToDelete)
+            {
+                db.Deltagare.Remove(deltagare); 
+            }
+        }
+
+        protected ActionResult ShowError(string logMessage, Exception exception = null)
+        {
+            log.Error(logMessage, exception);
+            try
+            {
+                if (exception != null)
+                {
+                    SendMail.SendErrorMessage(logMessage + "\n\n" + exception.Message + "\n\n" + exception.StackTrace);
+                }
+                else
+                {
+                    SendMail.SendErrorMessage(logMessage);
+                }
+            }
+            catch (Exception exc)
+            {
+                log.Error("Error sending error mail.", exc);
+            }
+
+            //TempData["Error"] = "Fel vid anmälna. Administratör är kontaktad. Vill du veta när felet blivit åtgärdat skicka gärna ett meddelande till utmaningen@karlstadmultisport.se";
+
+            return View("Error");
+        }
+    }
+}

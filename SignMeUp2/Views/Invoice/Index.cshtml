@@ -1,0 +1,70 @@
+﻿@model IEnumerable<SignMeUp2.DataModel.Invoice>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Fakturaadresser</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Box)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Postnummer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Organisationsnummer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Postort)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Postadress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Namn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Att)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Box)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Postnummer)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Organisationsnummer)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Postort)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Postadress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Namn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Att)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

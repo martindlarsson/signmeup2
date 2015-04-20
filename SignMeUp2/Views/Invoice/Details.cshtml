@@ -1,0 +1,75 @@
+﻿@model SignMeUp2.DataModel.Invoice
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Fakturaadress</h2>
+
+<div>
+    <h4>Invoice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Box)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Box)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Postnummer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Postnummer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Organisationsnummer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Organisationsnummer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Postort)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Postort)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Postadress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Postadress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Att)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Att)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

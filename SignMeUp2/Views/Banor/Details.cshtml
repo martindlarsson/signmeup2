@@ -1,0 +1,51 @@
+﻿@model SignMeUp2.DataModel.Banor
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Banor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Evenemang.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Evenemang.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Avgift)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Avgift)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AntalDeltagare)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AntalDeltagare)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
