@@ -43,6 +43,12 @@
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Mvc">
+      <HintPath>..\packages\Mvc2Futures.2.0.50217.0\lib\Microsoft.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcContrib">
+      <HintPath>..\packages\MvcContrib.2.0.95.0\lib\MvcContrib.dll</HintPath>
+    </Reference>
     <Reference Include="PaysonIntegration">
       <HintPath>..\packages\PaysonApiIntegrationDotNet.1.21\lib\PaysonIntegration.dll</HintPath>
     </Reference>
@@ -237,7 +243,11 @@
     <Compile Include="Models\CheckoutModel.cs" />
     <Compile Include="Models\DataAnnotations.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IWizardStep.cs" />
     <Compile Include="Models\RegIndexContainer.cs" />
+    <Compile Include="Models\WizardModelBinder.cs" />
+    <Compile Include="Models\WizardSteps.cs" />
+    <Compile Include="Models\WizardViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -358,11 +368,11 @@
     <Content Include="Views\Deltagare\Edit.cshtml" />
     <Content Include="Views\Deltagare\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutSimple.cshtml" />
-    <Content Include="Views\SignMeUp\Create.cshtml" />
-    <Content Include="Views\SignMeUp\Delete.cshtml" />
     <Content Include="Views\SignMeUp\Details.cshtml" />
-    <Content Include="Views\SignMeUp\Edit.cshtml" />
     <Content Include="Views\SignMeUp\Index.cshtml" />
+    <Content Include="Views\SignMeUp\EditorTemplates\ContactStep.cshtml" />
+    <Content Include="Views\Shared\_LayoutWizzard.cshtml" />
+    <Content Include="Views\SignMeUp\EditorTemplates\RegistrationStep.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

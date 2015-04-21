@@ -1,136 +1,50 @@
-﻿@model IEnumerable<SignMeUp2.DataModel.Registreringar>
+﻿@using Microsoft.Web.Mvc
+@using SignMeUp2.Models;
+
+@model SignMeUp2.Models.WizardViewModel
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+    Layout = "~/Views/Shared/_SimpleLayout.cshtml";
+    var currentStep = Model.Steps[Model.CurrentStepIndex];
 }
 
-<h2>Index</h2>
+<h3>Steg @(Model.CurrentStepIndex + 1) av @Model.Steps.Count</h3>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Banor.Namn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Evenemang.Namn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Kanoter.Namn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Klasser.Namn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Adress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Telefon)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Epost)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Ranking)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Startnummer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Lagnamn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Klubb)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HarBetalt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Forseningsavgift)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Registreringstid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Kommentar)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Rabatter)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaysonToken)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Invoice)
-        </th>
-        <th></th>
-    </tr>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("StepType", Model.Steps[Model.CurrentStepIndex].GetType())
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Banor.Namn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Evenemang.Namn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Kanoter.Namn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Klasser.Namn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Adress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Telefon)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Epost)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ranking)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Startnummer)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Lagnamn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Klubb)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HarBetalt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Forseningsavgift)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Registreringstid)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Kommentar)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Rabatter)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaysonToken)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Invoice)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.EditorFor(x => currentStep, null, "")
+
+        @if (Model.CurrentStepIndex > 0) {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Föregående" name="prev" class="btn btn-default" />
+                </div>
+            </div>
+        }
+
+        @if (Model.CurrentStepIndex < Model.Steps.Count - 1) {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Nästa" name="next" class="btn btn-default" />
+                </div>
+            </div>
+        }
+        else {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Skicka" name="finish" class="btn btn-default" />
+                </div>
+            </div>
+        }
+    </div>
 }
 
-</table>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
