@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SignMeUp2.DataModel;
 
 namespace SignMeUp2.Models
 {
@@ -47,6 +48,30 @@ namespace SignMeUp2.Models
 
     [Serializable]
     public class DeltagareStep : IWizardStep
+    {
+        public IList<DeltagareViewModel> DeltagareLista { get; set; }
+        public bool KravPersonnummer { get; set; }
+        private int _AntalDeltagareBana;
+        public int AntalDeltagareBana
+        {
+            get { return _AntalDeltagareBana; }
+            set
+            {
+                _AntalDeltagareBana = value;
+                if (DeltagareLista == null || DeltagareLista.Count() != _AntalDeltagareBana)
+                {
+                    DeltagareLista = new List<DeltagareViewModel>();
+                    for (int i = 0; i < _AntalDeltagareBana; i++)
+                    {
+                        DeltagareLista.Add(new DeltagareViewModel());
+                    }
+                }
+            }
+        }
+    }
+
+    [Serializable]
+    public class DeltagareViewModel
     {
         [Required(ErrorMessage = "Förnamn måste anges")]
         public string Förnamn { get; set; }

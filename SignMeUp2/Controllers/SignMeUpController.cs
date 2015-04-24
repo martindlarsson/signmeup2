@@ -11,7 +11,6 @@ using SignMeUp2.Models;
 using SignMeUp2.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-//using MvcContrib.Attributes;
 
 namespace SignMeUp2.Controllers
 {
@@ -22,8 +21,7 @@ namespace SignMeUp2.Controllers
         public ActionResult Index(int? e)
         {
             if (e == null)
-                throw new Exception("Inget evenemang har angivits.");
-                //return ShowError("Inget evenemang har angivits.");
+                return ShowError("Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.");
 
             var evenemang = db.Evenemang.Where(ev => ev.Id == e).FirstOrDefault();
 
@@ -37,28 +35,31 @@ namespace SignMeUp2.Controllers
             {
                 return View("RegClosed");
             }
+            else if (evenemangResult == EvenemangHelper.EvenemangValidationResult.DoesNotExist)
+            {
+                return ShowError("Evenemang med id " + e.Value + " är antingen borttaget ur databasen eller felaktigt angivet.");
+            }
 
             ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn");
-            //ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn");
             ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn");
             ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn");
 
             var wizard = new WizardViewModel();
             wizard.Initialize();
-            //wizard.Registrering = new Registreringar { Evenemang_Id = e.Value };
             wizard.Evenemang_Id = e.Value;
             TempData["wizard"] = wizard;
-            //return View(wizard.Steps[0]);
+
             return View(wizard);
         }
 
         [HttpPost]
-        public ActionResult Index(/*WizardViewModel wizard,*/ IWizardStep step)
+        public ActionResult Index(IWizardStep step)
         {
-            // TODO, om bana valt, sätt antal deltagare
-            //wizard.Steps[wizard.CurrentStepIndex] = step;
-
             WizardViewModel wizard = (WizardViewModel)TempData["wizard"];
+
+            if (wizard == null)
+                return ShowError("Ett oväntat fel inträffade, var god försök igen.");
+
             wizard.UpdateSetp(step);
 
             if (ModelState.IsValid)
@@ -88,8 +89,67 @@ namespace SignMeUp2.Controllers
                 wizard.CurrentStepIndex--;
             }
 
+            // Om registreringssteget, populera drop down listor
+            if (wizard.Steps[wizard.CurrentStepIndex] is RegistrationStep)
+            {
+                ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn");
+                ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn");
+                ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn");
+            }
+
+            // Om deltagarsteget, hämta antal deltagare och
+            // krav på personnummer från steget innan
+            if (wizard.Steps[wizard.CurrentStepIndex] is DeltagareStep)
+            {
+                var registrationStep = (RegistrationStep)wizard.Steps.FirstOrDefault<IWizardStep>(stepps => stepps is RegistrationStep);
+                if (registrationStep != null)
+                {
+                    var deltagarStep = (DeltagareStep)wizard.Steps[wizard.CurrentStepIndex];
+                    deltagarStep.KravPersonnummer = registrationStep.Ranking;
+                    var bana = db.Banor.FirstOrDefault(b => b.ID == registrationStep.Bana);
+                    deltagarStep.AntalDeltagareBana = bana.AntalDeltagare;
+                }
+            }
+
             TempData["wizard"] = wizard;
             return View(wizard);
+        }
+
+        public ActionResult ListaEvenemang()
+        {   
+            var evenemangsLista = from eve in db.Evenemang
+                                    where eve.RegStop >= DateTime.Now
+                                    orderby eve.RegStart descending
+                                        select eve;
+
+            var listan = evenemangsLista.ToList();
+            return View("ListaEvenemang", listan);
+        }
+
+        protected ActionResult ShowError(string logMessage, Exception exception = null)
+        {
+            //log.Error(logMessage, exception);
+            //try
+            //{
+            //    if (exception != null)
+            //    {
+            //        SendMail.SendErrorMessage(logMessage + "\n\n" + exception.Message + "\n\n" + exception.StackTrace);
+            //    }
+            //    else
+            //    {
+            //        SendMail.SendErrorMessage(logMessage);
+            //    }
+            //}
+            //catch (Exception exc)
+            //{
+            //    log.Error("Error sending error mail.", exc);
+            //}
+
+            //TempData["Error"] = "Fel vid anmälna. Administratör är kontaktad. Vill du veta när felet blivit åtgärdat skicka gärna ett meddelande till utmaningen@karlstadmultisport.se";
+
+            TempData["error"] = logMessage;
+
+            return View("Error");
         }
 
         //// GET: SignMeUp

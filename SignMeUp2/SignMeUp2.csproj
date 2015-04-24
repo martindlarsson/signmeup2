@@ -373,6 +373,8 @@
     <Content Include="Views\SignMeUp\EditorTemplates\ContactStep.cshtml" />
     <Content Include="Views\Shared\_LayoutWizzard.cshtml" />
     <Content Include="Views\SignMeUp\EditorTemplates\RegistrationStep.cshtml" />
+    <Content Include="Views\SignMeUp\ListaEvenemang.cshtml" />
+    <Content Include="Views\SignMeUp\EditorTemplates\DeltagareStep.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

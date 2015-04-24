@@ -1,0 +1,46 @@
+﻿@using SignMeUp2.Models;
+
+@model SignMeUp2.Models.DeltagareStep
+
+<h2>Deltagare</h2>
+
+@Html.HiddenFor(model => model.AntalDeltagareBana)
+@Html.HiddenFor(model => model.KravPersonnummer)
+
+@{ int deltagarIndex = 0; }
+
+@foreach (DeltagareViewModel deltagare in Model.DeltagareLista)
+{
+<h3>Deltagare @(deltagarIndex + 1)</h3>
+<div class="form-group">
+        @Html.LabelFor(model => deltagare.Förnamn, htmlAttributes: new { @class = "control-label col-md-1" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DeltagareLista[deltagarIndex].Förnamn, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => deltagare.Förnamn, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => deltagare.Efternamn, htmlAttributes: new { @class = "control-label col-md-1" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DeltagareLista[deltagarIndex].Efternamn, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => deltagare.Efternamn, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    if (Model.KravPersonnummer)
+    {
+
+    <div class="form-group">
+        @Html.LabelFor(model => deltagare.Personnummer, htmlAttributes: new { @class = "control-label col-md-1" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DeltagareLista[deltagarIndex].Personnummer, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => deltagare.Personnummer, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    }
+
+    deltagarIndex++;
+}
+
+

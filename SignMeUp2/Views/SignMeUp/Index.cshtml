@@ -4,7 +4,7 @@
 @model SignMeUp2.Models.WizardViewModel
 
 @{
-    Layout = "~/Views/Shared/_SimpleLayout.cshtml";
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
     var currentStep = Model.Steps[Model.CurrentStepIndex];
 }
 
@@ -16,32 +16,27 @@
     @Html.Hidden("StepType", Model.Steps[Model.CurrentStepIndex].GetType())
 
     <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         @Html.EditorFor(x => currentStep, null, "")
 
-        @if (Model.CurrentStepIndex > 0) {
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Föregående" name="prev" class="btn btn-default" />
-                </div>
+    <div class="form-group">
+    @if (Model.CurrentStepIndex > 0) {
+            <div class="col-md-1">
+                <input type="submit" value="Föregående" name="prev" class="btn btn-default cancel" />
             </div>
         }
 
-        @if (Model.CurrentStepIndex < Model.Steps.Count - 1) {
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Nästa" name="next" class="btn btn-default" />
-                </div>
+    @if (Model.CurrentStepIndex < Model.Steps.Count - 1) {
+            <div class="col-md-offset-2 col-md-6">
+                <input type="submit" value="Nästa" name="next" class="btn btn-default" />
             </div>
         }
         else {
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Skicka" name="finish" class="btn btn-default" />
-                </div>
+            <div class="col-md-offset-2 col-md-6">
+                <input type="submit" value="Skicka" name="finish" class="btn btn-default" />
             </div>
         }
+        </div>
     </div>
 }
 
