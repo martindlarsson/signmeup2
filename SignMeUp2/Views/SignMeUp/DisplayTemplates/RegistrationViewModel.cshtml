@@ -1,0 +1,48 @@
+﻿@model SignMeUp2.Models.RegistrationViewModel
+
+<div>
+    <h4>Registreringar</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Lagnamn
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Lagnamn)
+        </dd>
+
+        <dt>
+            Bana
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Banor.Namn)
+        </dd>
+
+        <dt>
+            Klass
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Klasser.Namn)
+        </dd>
+
+        <dt>
+            Kanot
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Kanoter.Namn)
+        </dd>
+
+        <dt>
+            Ranking
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ranking)
+        </dd>
+
+    </dl>
+</div>

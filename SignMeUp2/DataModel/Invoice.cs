@@ -13,19 +13,20 @@ namespace SignMeUp2.DataModel
 
         public string Box { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Postnummer måste anges")]
         public string Postnummer { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Organisationsnummer måste anges")]
         public string Organisationsnummer { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Postort måste anges")]
         public string Postort { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Postadress måste anges")]
         public string Postadress { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Företagsnamn måste anges")]
+        [Display(Name = "Företagsnamn")]
         public string Namn { get; set; }
 
         public string Att { get; set; }

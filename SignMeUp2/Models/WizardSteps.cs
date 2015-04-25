@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using SignMeUp2.DataModel;
 
 namespace SignMeUp2.Models
 {
     [Serializable]
-    public class ContactStep : IWizardStep
+    public class ContactViewModel : IWizardStep
     {
         // TODO namn på kontaktperson?
 
@@ -29,25 +28,28 @@ namespace SignMeUp2.Models
     }
 
     [Serializable]
-    public class RegistrationStep : IWizardStep
+    public class RegistrationViewModel : IWizardStep
     {
         [Required(ErrorMessage = "Lagnamn måste anges")]
         public string Lagnamn { get; set; }
 
         [Required(ErrorMessage = "Kanot måste väljas")]
         public int Kanot { get; set; }
+        public virtual Kanoter Kanoter { get; set; }
 
         [Required(ErrorMessage = "Klass måste väljas")]
         public int Klass { get; set; }
+        public virtual Klasser Klasser { get; set; }
 
         [Required(ErrorMessage = "Bana måste väljas")]
         public int Bana { get; set; }
+        public virtual Banor Banor { get; set; }
 
         public bool Ranking { get; set; }
     }
 
     [Serializable]
-    public class DeltagareStep : IWizardStep
+    public class DeltagareListViewModel : IWizardStep
     {
         public IList<DeltagareViewModel> DeltagareLista { get; set; }
         public bool KravPersonnummer { get; set; }
@@ -79,7 +81,44 @@ namespace SignMeUp2.Models
         [Required(ErrorMessage = "Förnamn måste anges")]
         public string Efternamn { get; set; }
 
+        [Display(Name = "Personnr.")]
         public string Personnummer { get; set; }
+    }
+
+    //[Serializable]
+    //public class BetalningssattViewModel
+    //{
+    //    public enum Betalningssätt {Faktura = 1, Payson = 2 }
+    //    public Betalningssätt Betalningsmetod { get; set; }
+    //}
+
+    [Serializable]
+    public class InvoiceViewModel
+    {
+        public string Box { get; set; }
+
+        [Required(ErrorMessage = "Postnummer måste anges")]
+        public string Postnummer { get; set; }
+
+        [Required(ErrorMessage = "Organisationsnummer måste anges")]
+        public string Organisationsnummer { get; set; }
+
+        [Required(ErrorMessage = "Postort måste anges")]
+        public string Postort { get; set; }
+
+        [Required(ErrorMessage = "Postadress måste anges")]
+        public string Postadress { get; set; }
+
+        [Required(ErrorMessage = "Namn måste anges")]
+        public string Namn { get; set; }
+
+        public string Att { get; set; }
+    }
+
+    [Serializable]
+    public class PaysonViewModel
+    {
+        public string PaysonToken { get; set; }
     }
 
 }

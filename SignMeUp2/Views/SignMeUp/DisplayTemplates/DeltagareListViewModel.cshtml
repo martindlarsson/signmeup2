@@ -1,0 +1,42 @@
+﻿@using SignMeUp2.Models;
+@model SignMeUp2.Models.DeltagareListViewModel
+
+@{ int deltagarIndex = 0; }
+
+@foreach (DeltagareViewModel deltagare in Model.DeltagareLista)
+{
+    <div>
+        <h4>Deltagare @(deltagarIndex + 1)</h4>
+        <hr />
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DeltagareLista[deltagarIndex].Förnamn)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DeltagareLista[deltagarIndex].Förnamn)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DeltagareLista[deltagarIndex].Efternamn)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DeltagareLista[deltagarIndex].Efternamn)
+            </dd>
+
+            @if (Model.DeltagareLista[deltagarIndex].Personnummer != null)
+            {
+            <dt>
+                @Html.DisplayNameFor(model => model.DeltagareLista[deltagarIndex].Personnummer)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DeltagareLista[deltagarIndex].Personnummer)
+            </dd>
+            }
+
+        </dl>
+    </div>
+}

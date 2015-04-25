@@ -1,0 +1,38 @@
+﻿@using SignMeUp2.Models
+@using SignMeUp2.Helpers;
+@{
+    ViewBag.Title = "Bekräfta registrering";
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+
+@model SignMeUp2.Models.WizardViewModel
+
+<h2>Bekräfta registrering</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("StepType", Model.GetType())
+    <div class="form-horizontal">
+
+        @for (int stepIndex = 0; stepIndex < Model.CountSteps; stepIndex++)
+        {
+            @Html.DisplayFor(model => model.Steps[stepIndex], "", null)
+        }
+
+        <div class="alert alert-warning col-md-5" role="alert">Vi tillåter enbart företag att betala mot faktura.</div>
+
+        <div class="col-md-1">
+            <input type="submit" value="Korrigera" name="korrigera" class="btn btn-default cancel" />
+        </div>
+
+        <div class="col-md-offset-3 col-md-1">
+            <input type="submit" value="Faktura" name="faktura" class="btn btn-default" />
+        </div>
+
+        <div class="col-md-offset-3 col-md-1">
+            <input type="submit" value="Betala" name="betala" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+

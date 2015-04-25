@@ -6,8 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using SignMeUp2.DataModel;
 
-namespace SignMeUp2.DataModel
+namespace SignMeUp2.Controllers
 {
     public class InvoiceController : Controller
     {

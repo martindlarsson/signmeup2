@@ -199,7 +199,7 @@
     <Compile Include="DataModel\Evenemang.cs" />
     <Compile Include="DataModel\Forseningsavgift.cs" />
     <Compile Include="DataModel\Invoice.cs" />
-    <Compile Include="DataModel\InvoiceController.cs" />
+    <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="DataModel\Kanoter.cs" />
     <Compile Include="DataModel\Klasser.cs" />
     <Compile Include="DataModel\Rabatter.cs" />
@@ -368,13 +368,17 @@
     <Content Include="Views\Deltagare\Edit.cshtml" />
     <Content Include="Views\Deltagare\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutSimple.cshtml" />
-    <Content Include="Views\SignMeUp\Details.cshtml" />
     <Content Include="Views\SignMeUp\Index.cshtml" />
-    <Content Include="Views\SignMeUp\EditorTemplates\ContactStep.cshtml" />
+    <Content Include="Views\SignMeUp\EditorTemplates\ContactViewModel.cshtml" />
     <Content Include="Views\Shared\_LayoutWizzard.cshtml" />
-    <Content Include="Views\SignMeUp\EditorTemplates\RegistrationStep.cshtml" />
+    <Content Include="Views\SignMeUp\EditorTemplates\RegistrationViewModel.cshtml" />
     <Content Include="Views\SignMeUp\ListaEvenemang.cshtml" />
-    <Content Include="Views\SignMeUp\EditorTemplates\DeltagareStep.cshtml" />
+    <Content Include="Views\SignMeUp\EditorTemplates\DeltagareListViewModel.cshtml" />
+    <Content Include="Views\SignMeUp\DisplayTemplates\RegistrationViewModel.cshtml" />
+    <Content Include="Views\SignMeUp\BekraftaRegistrering.cshtml" />
+    <Content Include="Views\SignMeUp\DisplayTemplates\ContactViewModel.cshtml" />
+    <Content Include="Views\SignMeUp\DisplayTemplates\DeltagareListViewModel.cshtml" />
+    <Content Include="Views\SignMeUp\Faktura.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
