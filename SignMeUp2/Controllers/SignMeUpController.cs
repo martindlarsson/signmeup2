@@ -174,26 +174,32 @@ namespace SignMeUp2.Controllers
 
             if (!string.IsNullOrEmpty(Request["cancel"]))
             {
+                // Användaren tryckte på korrigera
                 TempData["wizard"] = tempWizard;
                 return RedirectToAction("BekraftaRegistrering", tempWizard);
             }
 
             if (ModelState.IsValid)
             {
-                // TODO nu är vi klara!! Spara skiten och visa något fnt på skärmen
                 tempWizard.Fakturaadress = fakturaadress;
+                // Spara i databasen
+                var reg = SparaNyRegistrering(tempWizard, false);
+                TempData["wizard"] = null;
+                TempData["reg"] = reg;
+                return RedirectToAction("BekraftaBetalning");
             }
             else
             {
+                // Något är fel, vi visar formuläret igen
                 TempData["wizard"] = tempWizard;
                 return View(fakturaadress);
             }
-
-            TempData["wizard"] = tempWizard;
-
-            return View(tempWizard.Fakturaadress);
         }
 
+        /// <summary>
+        /// Lista alla evenemang
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ListaEvenemang()
         {   
             var evenemangsLista = from eve in db.Evenemang
@@ -203,6 +209,39 @@ namespace SignMeUp2.Controllers
 
             var listan = evenemangsLista.ToList();
             return View("ListaEvenemang", listan);
+        }
+
+        /// <summary>
+        /// Visa en registrering efter genomförd betalning
+        /// </summary>
+        /// <param name="reg"></param>
+        /// <returns></returns>
+        public ActionResult BekraftaBetalning()
+        {
+            var reg = (Registreringar)TempData["reg"];
+            if (reg == null)
+                return ShowError("Fel vid hämtning av registreringsinformation. Kontrollera i startlistan om er registrering genomförts.");
+            
+            return View(PopuleraRegistrering(reg));
+        }
+
+        public ActionResult Startlista(int? e)
+        {
+            if (e == null)
+                return ShowError("Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.");
+
+            var evenemang = db.Evenemang.Where(ev => ev.Id == e).FirstOrDefault();
+
+            var evenemangResult = EvenemangHelper.EvaluateEvenemang(evenemang);
+
+            if (evenemangResult == EvenemangHelper.EvenemangValidationResult.DoesNotExist)
+            {
+                return ShowError("Evenemang med id " + e.Value + " är antingen borttaget ur databasen eller felaktigt angivet.");
+            }
+
+            var regLista = db.Registreringar.Where(reg => reg.Evenemang_Id == e.Value).Include(r => r.Banor).Include(r => r.Evenemang).Include(r => r.Kanoter).Include(r => r.Klasser);
+
+            return View("Startlista", regLista.ToList());
         }
 
         protected ActionResult ShowError(string logMessage, Exception exception = null)
@@ -229,6 +268,44 @@ namespace SignMeUp2.Controllers
             TempData["error"] = logMessage;
 
             return View("Error");
+        }
+
+        /// <summary>
+        /// Spara en ny registrering i databasen
+        /// </summary>
+        /// <param name="wizard"></param>
+        private Registreringar SparaNyRegistrering(WizardViewModel wizard, bool harBetalt)
+        {
+            var reg = Helpers.ClassMapper.MapToRegistreringar(wizard);
+            reg.Registreringstid = DateTime.Now;
+            reg.HarBetalt = harBetalt;
+            db.Registreringar.Add(reg);
+            foreach (var deltagare in reg.Deltagare)
+            {
+                db.Deltagare.Add(deltagare);
+            }
+
+            if (reg.Invoices != null)
+                db.Invoice.Add(reg.Invoices);
+
+            db.SaveChanges();
+
+            db.Entry(reg).GetDatabaseValues();
+            return reg;
+        }
+
+        private Registreringar PopuleraRegistrering(Registreringar reg)
+        {
+            reg.Evenemang = db.Evenemang.Find(reg.Evenemang_Id);
+            reg.Banor = db.Banor.Find(reg.Bana);
+            reg.Klasser = db.Klasser.Find(reg.Klass);
+            reg.Kanoter = db.Kanoter.Find(reg.Kanot);
+
+            // Deltagare ??
+
+            // Invoice ??
+
+            return reg;
         }
 
         protected override void Dispose(bool disposing)

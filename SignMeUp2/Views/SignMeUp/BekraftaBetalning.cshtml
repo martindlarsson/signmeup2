@@ -1,0 +1,211 @@
+﻿@using SignMeUp2.Models;
+@using SignMeUp2.DataModel;
+@using SignMeUp2.Helpers;
+@{
+    ViewBag.Title = "Bekräfta registrering";
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+
+@model SignMeUp2.DataModel.Registreringar
+
+<h2>Bekräftelse på betalning</h2>
+
+<p>Tack för er anmälan.</p>
+   
+<h3>Registrering gäller för @Model.Evenemang.Namn</h3>
+
+<div>
+    <h4>Registrering</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Lagnamn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Lagnamn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Banor.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Banor.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Klasser.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Klasser.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Kanoter.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Kanoter.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ranking)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ranking)
+        </dd>
+
+    </dl>
+</div>
+
+
+<div>
+    <h4>Deltagare</h4>
+    <hr />
+        @for (int i = 0; i < Model.Deltagare.Count(); i++)
+        {
+            Deltagare deltagare = Model.Deltagare.ToList()[i];
+            
+            <h5>Deltagare @(i +1)</h5>
+            
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => deltagare.Förnamn)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => deltagare.Förnamn)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => deltagare.Efternamn)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => deltagare.Efternamn)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => deltagare.Personnummer)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => deltagare.Personnummer)
+                </dd>
+            </dl>
+        }
+</div>
+
+<div>
+    <h4>Kontaktinformation</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Adress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Adress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefon)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefon)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Epost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Epost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Klubb)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Klubb)
+        </dd>
+
+    </dl>
+</div>
+
+@if (Model.Invoices != null)
+{   
+<div>
+    <h4>Invoice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoices.Box)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Invoices.Box)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoices.Postnummer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Invoices.Postnummer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoices.Organisationsnummer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Invoices.Organisationsnummer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoices.Postort)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Invoices.Postort)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoices.Postadress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Invoices.Postadress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoices.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Invoices.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoices.Att)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Invoices.Att)
+        </dd>
+
+    </dl>
+</div>
+}
+
+<p>
+    @Html.ActionLink("Visa startlista", "Startlista", new { e = Model.Evenemang_Id }) |
+    @Html.ActionLink("Anmäl ett lag till", "Index", new { e = Model.Evenemang_Id })
+</p>

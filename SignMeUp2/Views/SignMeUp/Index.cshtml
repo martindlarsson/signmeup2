@@ -8,7 +8,11 @@
     var currentStep = Model.Steps[Model.CurrentStepIndex];
 }
 
-<h3>Steg @(Model.CurrentStepIndex + 1) av @Model.Steps.Count</h3>
+<div class="row">
+</div>
+<div class="row">
+    <div class="alert alert-info col-md-3" role="alert"><h3>Steg @(Model.CurrentStepIndex + 1) av @Model.Steps.Count</h3></div>
+</div>
 
 @using (Html.BeginForm())
 {

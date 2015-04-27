@@ -209,6 +209,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Avgift.cs" />
+    <Compile Include="Helpers\ClassMapper.cs" />
     <Compile Include="Helpers\EvenemangHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\SendMail.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IWizardStep.cs" />
     <Compile Include="Models\RegIndexContainer.cs" />
+    <Compile Include="Models\StartlistaViewModel.cs" />
     <Compile Include="Models\WizardModelBinder.cs" />
     <Compile Include="Models\WizardSteps.cs" />
     <Compile Include="Models\WizardViewModel.cs" />
@@ -369,16 +371,18 @@
     <Content Include="Views\Deltagare\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutSimple.cshtml" />
     <Content Include="Views\SignMeUp\Index.cshtml" />
-    <Content Include="Views\SignMeUp\EditorTemplates\ContactViewModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ContactViewModel.cshtml" />
     <Content Include="Views\Shared\_LayoutWizzard.cshtml" />
-    <Content Include="Views\SignMeUp\EditorTemplates\RegistrationViewModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\RegistrationViewModel.cshtml" />
     <Content Include="Views\SignMeUp\ListaEvenemang.cshtml" />
-    <Content Include="Views\SignMeUp\EditorTemplates\DeltagareListViewModel.cshtml" />
-    <Content Include="Views\SignMeUp\DisplayTemplates\RegistrationViewModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DeltagareListViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\RegistrationViewModel.cshtml" />
     <Content Include="Views\SignMeUp\BekraftaRegistrering.cshtml" />
-    <Content Include="Views\SignMeUp\DisplayTemplates\ContactViewModel.cshtml" />
-    <Content Include="Views\SignMeUp\DisplayTemplates\DeltagareListViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ContactViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DeltagareListViewModel.cshtml" />
     <Content Include="Views\SignMeUp\Faktura.cshtml" />
+    <Content Include="Views\SignMeUp\BekraftaBetalning.cshtml" />
+    <Content Include="Views\SignMeUp\Startlista.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
