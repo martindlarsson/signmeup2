@@ -8,83 +8,34 @@ namespace SignMeUp2.Models
 {
     public class StartlistaViewModel
     {
+        public StartlistaViewModel() { BanLista = new List<RegBanorViewModel>(); }
+
+        public string Evenemang { get; set; }
         public int AntalAnmälda
         {
             get
             {
                 int sum = 0;
-                foreach (var banReg in BanorRegistreringar)
+                foreach (var banReg in BanLista)
                 {
                     sum += banReg.AntalAnmälda;
                 }
                 return sum;
             }
         }
-        public IList<RegBanorViewModel> BanorRegistreringar { get; set; }
-
-        /// <summary>
-        /// Skapa en startlista utifrån en lista på registreringar
-        /// </summary>
-        /// <param name="registreringar"></param>
-        /// <returns></returns>
-        public static StartlistaViewModel GetStartlist(IList<Registreringar> registreringar, IList<Banor> banor, IList<Klasser> klasser) {
-            var regList = new StartlistaViewModel();
-
-            // Skapa lista på banor
-            regList.BanorRegistreringar = new List<RegBanorViewModel>();
-            foreach (var bana in banor)
-            {
-                var banReg = new RegBanorViewModel { Namn = bana.Namn };
-                regList.BanorRegistreringar.Add(banReg);
-
-                banReg.regKlassList = new List<RegKlassViewModel>();
-                foreach (var klass in klasser)
-                {
-                    banReg.regKlassList.Add(new RegKlassViewModel { Namn = klass.Namn });
-                }
-            }
-
-            // Iterera över alla registreringar och mappa objekten samt stoppa in dem i rätt lista
-            foreach (var reg in registreringar)
-            {
-                // Mappa registreringen
-                var registrering = new RegistreringViewModel
-                {
-                    Lagnamn = reg.Lagnamn,
-                    DeltagarLista = new List<DeltagareViewModel>()
-                };
-
-                // Mappa deltagarna
-                foreach (var deltagare in reg.Deltagare)
-                {
-                    var deltagareViewModel = new DeltagareViewModel
-                    {
-                        Förnamn = deltagare.Förnamn,
-                        Efternamn = deltagare.Efternamn
-                    };
-                    registrering.DeltagarLista.Add(deltagareViewModel);
-                }
-
-                // Hitta rätt lista att stoppa in registreringen i
-                var banList = regList.BanorRegistreringar.FirstOrDefault(banReg => banReg.Namn == reg.Banor.Namn);
-                var klassList = banList.regKlassList.FirstOrDefault(klassL => klassL.Namn == reg.Klasser.Namn);
-                klassList.regList.Add(registrering);
-            }
-
-            return regList;
-        }
-    }
+        public IList<RegBanorViewModel> BanLista { get; set; }
 
     public class RegBanorViewModel
     {
+        public RegBanorViewModel() { KlassLista = new List<RegKlassViewModel>(); }
         public string Namn { get; set; }
-        public IList<RegKlassViewModel> regKlassList { get; set; }
+        public IList<RegKlassViewModel> KlassLista { get; set; }
         public int AntalAnmälda
         {
             get
             {
                 int sum = 0;
-                foreach (var regList in regKlassList)
+                foreach (var regList in KlassLista)
                 {
                     sum += regList.AntalAnmälda;
                 }
@@ -95,14 +46,73 @@ namespace SignMeUp2.Models
 
     public class RegKlassViewModel
     {
+        public RegKlassViewModel() { RegistreringarList = new List<RegistreringViewModel>(); }
         public string Namn { get; set; }
-        public int AntalAnmälda { get { return regList.Count(); } }
-        public IList<RegistreringViewModel> regList { get; set; }
+        public int AntalAnmälda { get { return RegistreringarList.Count(); } }
+        public IList<RegistreringViewModel> RegistreringarList { get; set; }
     }
 
     public class RegistreringViewModel
     {
+        public RegistreringViewModel() { DeltagarLista = new List<DeltagareSimple>(); }
         public string Lagnamn { get; set; }
-        public IList<DeltagareViewModel> DeltagarLista { get; set; }
+        public IList<DeltagareSimple> DeltagarLista { get; set; }
+    }
+
+    public class DeltagareSimple
+    {
+        public string Namn { get; set; }
+    }
+
+    /// <summary>
+    /// Skapa en startlista utifrån en lista på registreringar
+    /// </summary>
+    /// <param name="registreringar"></param>
+    /// <returns></returns>
+    public static StartlistaViewModel GetStartlist(IList<Registreringar> registreringar, string Evenemang, IList<Banor> banor, IList<Klasser> klasser)
+    {
+        var regList = new StartlistaViewModel();
+        regList.Evenemang = Evenemang;
+
+        // Skapa lista på banor
+        foreach (var bana in banor)
+        {
+            var banReg = new RegBanorViewModel { Namn = bana.Namn };
+            regList.BanLista.Add(banReg);
+
+            foreach (var klass in klasser)
+            {
+                banReg.KlassLista.Add(new RegKlassViewModel { Namn = klass.Namn });
+            }
+        }
+
+        // Iterera över alla registreringar och mappa objekten samt stoppa in dem i rätt lista
+        foreach (var reg in registreringar)
+        {
+            // Mappa registreringen
+            var registrering = new RegistreringViewModel
+            {
+                Lagnamn = reg.Lagnamn,
+                DeltagarLista = new List<DeltagareSimple>()
+            };
+
+            // Mappa deltagarna
+            foreach (var deltagare in reg.Deltagare)
+            {
+                var deltagareViewModel = new DeltagareSimple
+                {
+                    Namn = string.Format("{0} {1}", deltagare.Förnamn, deltagare.Efternamn)
+                };
+                registrering.DeltagarLista.Add(deltagareViewModel);
+            }
+
+            // Hitta rätt lista att stoppa in registreringen i
+            var banList = regList.BanLista.FirstOrDefault(banReg => banReg.Namn == reg.Banor.Namn);
+            var klassList = banList.KlassLista.FirstOrDefault(klassL => klassL.Namn == reg.Klasser.Namn);
+            klassList.RegistreringarList.Add(registrering);
+        }
+
+        return regList;
+    }
     }
 }

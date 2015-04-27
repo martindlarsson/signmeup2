@@ -58,6 +58,11 @@ namespace SignMeUp2.Controllers
             return View(wizard);
         }
 
+        /// <summary>
+        /// Index
+        /// </summary>
+        /// <param name="step"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Index(IWizardStep step)
         {
@@ -118,6 +123,10 @@ namespace SignMeUp2.Controllers
             return View(wizard);
         }
 
+        /// <summary>
+        /// Berkäfta registrering Get
+        /// </summary>
+        /// <returns></returns>
         public ActionResult BekraftaRegistrering()
         {
             WizardViewModel wizard = (WizardViewModel)TempData["wizard"];
@@ -132,6 +141,11 @@ namespace SignMeUp2.Controllers
             return View(wizard);
         }
 
+        /// <summary>
+        /// Bekräfta registrering
+        /// </summary>
+        /// <param name="wizard"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult BekraftaRegistrering(WizardViewModel wizard)
         {
@@ -157,6 +171,10 @@ namespace SignMeUp2.Controllers
             return View(tempWizard);
         }
 
+        /// <summary>
+        /// Faktura Get
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Faktura()
         {
             var tempWizard = (WizardViewModel)TempData["wizard"];
@@ -167,6 +185,11 @@ namespace SignMeUp2.Controllers
             return View(tempWizard.Fakturaadress);
         }
 
+        /// <summary>
+        /// Faktura
+        /// </summary>
+        /// <param name="fakturaadress"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Faktura(Invoice fakturaadress)
         {
@@ -225,6 +248,11 @@ namespace SignMeUp2.Controllers
             return View(PopuleraRegistrering(reg));
         }
 
+        /// <summary>
+        /// Visa startlista
+        /// </summary>
+        /// <param name="e">Evenemangs ID</param>
+        /// <returns></returns>
         public ActionResult Startlista(int? e)
         {
             if (e == null)
@@ -239,11 +267,21 @@ namespace SignMeUp2.Controllers
                 return ShowError("Evenemang med id " + e.Value + " är antingen borttaget ur databasen eller felaktigt angivet.");
             }
 
-            var regLista = db.Registreringar.Where(reg => reg.Evenemang_Id == e.Value).Include(r => r.Banor).Include(r => r.Evenemang).Include(r => r.Kanoter).Include(r => r.Klasser);
+            var regs = db.Registreringar.Where(reg => reg.Evenemang_Id == e.Value).ToList();
+            var banor = db.Banor.ToList();
+            var klasser = db.Klasser.ToList();
 
-            return View("Startlista", regLista.ToList());
+            var startlista = StartlistaViewModel.GetStartlist(regs, evenemang.Namn, banor, klasser);
+
+            return View("Startlista", startlista);
         }
 
+        /// <summary>
+        /// ShowError
+        /// </summary>
+        /// <param name="logMessage"></param>
+        /// <param name="exception"></param>
+        /// <returns></returns>
         protected ActionResult ShowError(string logMessage, Exception exception = null)
         {
             //log.Error(logMessage, exception);
@@ -294,6 +332,11 @@ namespace SignMeUp2.Controllers
             return reg;
         }
 
+        /// <summary>
+        /// Populera registreringen med Bana, Klass mm
+        /// </summary>
+        /// <param name="reg"></param>
+        /// <returns></returns>
         private Registreringar PopuleraRegistrering(Registreringar reg)
         {
             reg.Evenemang = db.Evenemang.Find(reg.Evenemang_Id);
