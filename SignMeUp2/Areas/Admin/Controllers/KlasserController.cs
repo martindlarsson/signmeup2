@@ -8,110 +8,115 @@ using System.Web;
 using System.Web.Mvc;
 using SignMeUp2.DataModel;
 
-namespace SignMeUp2.Controllers
+namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class EvenemangController : Controller
+    public class KlasserController : Controller
     {
         private SignMeUpDataModel db = new SignMeUpDataModel();
 
-        // GET: Evenemang
+        // GET: Klasser
         public ActionResult Index()
         {
-            return View(db.Evenemang.ToList());
+            var klasser = db.Klasser.Include(k => k.Evenemang);
+            return View(klasser.ToList());
         }
 
-        // GET: Evenemang/Details/5
+        // GET: Klasser/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Evenemang evenemang = db.Evenemang.Find(id);
-            if (evenemang == null)
+            Klasser klasser = db.Klasser.Find(id);
+            if (klasser == null)
             {
                 return HttpNotFound();
             }
-            return View(evenemang);
+            return View(klasser);
         }
 
-        // GET: Evenemang/Create
+        // GET: Klasser/Create
         public ActionResult Create()
         {
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn");
             return View();
         }
 
-        // POST: Evenemang/Create
+        // POST: Klasser/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Namn,RegStart,RegStop,AntalDeltagare")] Evenemang evenemang)
+        public ActionResult Create([Bind(Include = "ID,Namn,Evenemang_ID")] Klasser klasser)
         {
             if (ModelState.IsValid)
             {
-                db.Evenemang.Add(evenemang);
+                db.Klasser.Add(klasser);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(evenemang);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.Evenemang_ID);
+            return View(klasser);
         }
 
-        // GET: Evenemang/Edit/5
+        // GET: Klasser/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Evenemang evenemang = db.Evenemang.Find(id);
-            if (evenemang == null)
+            Klasser klasser = db.Klasser.Find(id);
+            if (klasser == null)
             {
                 return HttpNotFound();
             }
-            return View(evenemang);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.Evenemang_ID);
+            return View(klasser);
         }
 
-        // POST: Evenemang/Edit/5
+        // POST: Klasser/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Namn,RegStart,RegStop,AntalDeltagare")] Evenemang evenemang)
+        public ActionResult Edit([Bind(Include = "ID,Namn,Evenemang_ID")] Klasser klasser)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(evenemang).State = EntityState.Modified;
+                db.Entry(klasser).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(evenemang);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.Evenemang_ID);
+            return View(klasser);
         }
 
-        // GET: Evenemang/Delete/5
+        // GET: Klasser/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Evenemang evenemang = db.Evenemang.Find(id);
-            if (evenemang == null)
+            Klasser klasser = db.Klasser.Find(id);
+            if (klasser == null)
             {
                 return HttpNotFound();
             }
-            return View(evenemang);
+            return View(klasser);
         }
 
-        // POST: Evenemang/Delete/5
+        // POST: Klasser/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Evenemang evenemang = db.Evenemang.Find(id);
-            db.Evenemang.Remove(evenemang);
+            Klasser klasser = db.Klasser.Find(id);
+            db.Klasser.Remove(klasser);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

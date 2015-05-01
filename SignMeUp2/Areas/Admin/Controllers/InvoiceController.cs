@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using SignMeUp2.DataModel;
 
-namespace SignMeUp2.Controllers
+namespace SignMeUp2.Areas.Admin.Controllers
 {
     public class InvoiceController : Controller
     {

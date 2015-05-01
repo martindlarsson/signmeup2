@@ -8,11 +8,7 @@
     var currentStep = Model.Steps[Model.CurrentStepIndex];
 }
 
-<div class="row">
-</div>
-<div class="row">
-    <div class="alert alert-info col-md-3" role="alert"><h3>Steg @(Model.CurrentStepIndex + 1) av @Model.Steps.Count</h3></div>
-</div>
+<span class="badge alert-info">Steg @(Model.CurrentStepIndex + 1) av @Model.Steps.Count</span>
 
 @using (Html.BeginForm())
 {
@@ -23,23 +19,35 @@
 
         @Html.EditorFor(x => currentStep, null, "")
 
-    <div class="form-group">
-    @if (Model.CurrentStepIndex > 0) {
-            <div class="col-md-1">
-                <input type="submit" value="Föregående" name="prev" class="btn btn-default cancel" />
-            </div>
-        }
+        <div class="row">
+            <div class="form-group">
+                @if (Model.CurrentStepIndex == 0)
+                {
+                    <div class="col-md-offset-3 col-md-2">
+                        <input type="submit" value="Nästa" name="next" class="btn btn-default" />
+                    </div>
+                }
+                else if (Model.CurrentStepIndex == (Model.CountSteps -1))
+                {
+                    <div class="col-md-1">
+                        <input type="submit" value="Föregående" name="prev" class="btn btn-default cancel" />
+                    </div>
 
-    @if (Model.CurrentStepIndex < Model.Steps.Count - 1) {
-            <div class="col-md-offset-3 col-md-6">
-                <input type="submit" value="Nästa" name="next" class="btn btn-default" />
+                    <div class="col-md-offset-2 col-md-2">
+                        <input type="submit" value="Slutför" name="finish" class="btn btn-default" />
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-1">
+                        <input type="submit" value="Föregående" name="prev" class="btn btn-default cancel" />
+                    </div>
+
+                    <div class="col-md-offset-2 col-md-2">
+                        <input type="submit" value="Nästa" name="next" class="btn btn-default" />
+                    </div>
+                }
             </div>
-        }
-        else {
-            <div class="col-md-offset-3 col-md-6">
-                <input type="submit" value="Slutför" name="finish" class="btn btn-default" />
-            </div>
-        }
         </div>
     </div>
 }

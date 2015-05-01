@@ -8,115 +8,115 @@ using System.Web;
 using System.Web.Mvc;
 using SignMeUp2.DataModel;
 
-namespace SignMeUp2.Controllers
+namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class KanoterController : Controller
+    public class BanorController : Controller
     {
         private SignMeUpDataModel db = new SignMeUpDataModel();
 
-        // GET: Kanoter
+        // GET: Banor
         public ActionResult Index()
         {
-            var kanoter = db.Kanoter.Include(k => k.Evenemang);
-            return View(kanoter.ToList());
+            var banor = db.Banor.Include(b => b.Evenemang);
+            return View(banor.ToList());
         }
 
-        // GET: Kanoter/Details/5
+        // GET: Banor/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Kanoter kanoter = db.Kanoter.Find(id);
-            if (kanoter == null)
+            Banor banor = db.Banor.Find(id);
+            if (banor == null)
             {
                 return HttpNotFound();
             }
-            return View(kanoter);
+            return View(banor);
         }
 
-        // GET: Kanoter/Create
+        // GET: Banor/Create
         public ActionResult Create()
         {
             ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn");
             return View();
         }
 
-        // POST: Kanoter/Create
+        // POST: Banor/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Namn,Avgift,Evenemang_ID")] Kanoter kanoter)
+        public ActionResult Create([Bind(Include = "ID,Namn,Avgift,AntalDeltagare,Evenemang_ID")] Banor banor)
         {
             if (ModelState.IsValid)
             {
-                db.Kanoter.Add(kanoter);
+                db.Banor.Add(banor);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", kanoter.Evenemang_ID);
-            return View(kanoter);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.Evenemang_ID);
+            return View(banor);
         }
 
-        // GET: Kanoter/Edit/5
+        // GET: Banor/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Kanoter kanoter = db.Kanoter.Find(id);
-            if (kanoter == null)
+            Banor banor = db.Banor.Find(id);
+            if (banor == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", kanoter.Evenemang_ID);
-            return View(kanoter);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.Evenemang_ID);
+            return View(banor);
         }
 
-        // POST: Kanoter/Edit/5
+        // POST: Banor/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,Evenemang_ID")] Kanoter kanoter)
+        public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,AntalDeltagare,Evenemang_ID")] Banor banor)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(kanoter).State = EntityState.Modified;
+                db.Entry(banor).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", kanoter.Evenemang_ID);
-            return View(kanoter);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.Evenemang_ID);
+            return View(banor);
         }
 
-        // GET: Kanoter/Delete/5
+        // GET: Banor/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Kanoter kanoter = db.Kanoter.Find(id);
-            if (kanoter == null)
+            Banor banor = db.Banor.Find(id);
+            if (banor == null)
             {
                 return HttpNotFound();
             }
-            return View(kanoter);
+            return View(banor);
         }
 
-        // POST: Kanoter/Delete/5
+        // POST: Banor/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Kanoter kanoter = db.Kanoter.Find(id);
-            db.Kanoter.Remove(kanoter);
+            Banor banor = db.Banor.Find(id);
+            db.Banor.Remove(banor);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

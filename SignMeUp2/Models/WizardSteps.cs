@@ -115,10 +115,4 @@ namespace SignMeUp2.Models
         public string Att { get; set; }
     }
 
-    [Serializable]
-    public class PaysonViewModel
-    {
-        public string PaysonToken { get; set; }
-    }
-
 }

@@ -43,7 +43,7 @@ namespace SignMeUp2.DataModel
 
         public int Forseningsavgift { get; set; }
 
-        public DateTime Registreringstid { get; set; }
+        public Nullable<DateTime> Registreringstid { get; set; }
 
         public string Kommentar { get; set; }
 

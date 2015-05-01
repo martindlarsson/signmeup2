@@ -4,29 +4,19 @@ using SignMeUp2.DataModel;
 
 namespace SignMeUp2.Models
 {
-    public class CheckoutModel
+    public class PaysonViewModel
     {
+        public static string PAYSON_VM = "paysonVM";
+
         public Registreringar Registrering { get; set; }
+
+        public PaysonKontaktViewModel Kontaktinformation { get; set; }
 
         public string ForwardUrl { get; set; }
 
         public string Token { get; set; }
 
         public int RegId { get; set; }
-
-        [Display(Name = "Förnamn")]
-        [Required(ErrorMessage = "Måste anges")]
-        public string SenderFirstName { get; set; }
-
-        [Display(Name = "Efternamn")]
-        [Required(ErrorMessage = "Måste anges")]
-        public string SenderLastName { get; set; }
-
-        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessage = "Detta är inte en välformad epostadress")]
-        [Required(ErrorMessage = "Måste anges")]
-        [Display(Name = "Epost")]
-        [DataType(DataType.EmailAddress)]
-        public string SenderEmail { get; set; }
 
         public static string PaysonUserId
         {
@@ -44,7 +34,7 @@ namespace SignMeUp2.Models
 
         public static string PaysonRecieverEmail
         {
-            get { return ConfigurationManager.AppSettings["Receiver.Email"] ?? "testagent-1@payson.se"; }
+            get { return ConfigurationManager.AppSettings["Receiver.Email"] ?? "utmaningen@karlstadmultisport.se"; }
         }
 
         public static string PaysonRecieverFirstName
@@ -56,5 +46,22 @@ namespace SignMeUp2.Models
         {
             get { return "Multisport"; }
         }
+    }
+
+    public class PaysonKontaktViewModel
+    {
+        [Display(Name = "Förnamn")]
+        [Required(ErrorMessage = "Måste anges")]
+        public string SenderFirstName { get; set; }
+
+        [Display(Name = "Efternamn")]
+        [Required(ErrorMessage = "Måste anges")]
+        public string SenderLastName { get; set; }
+
+        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessage = "Detta är inte en välformad epostadress")]
+        [Required(ErrorMessage = "Måste anges")]
+        [Display(Name = "Epost")]
+        [DataType(DataType.EmailAddress)]
+        public string SenderEmail { get; set; }
     }
 }

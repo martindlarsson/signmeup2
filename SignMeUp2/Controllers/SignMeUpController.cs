@@ -14,12 +14,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SignMeUp2.Controllers
 {
-    public class SignMeUpController : Controller
+    public class SignMeUpController : RegBaseController
     {
         private SignMeUpDataModel db = new SignMeUpDataModel();
 
         public ActionResult Index(int? e)
-        {
+        {   
             WizardViewModel wizard = (WizardViewModel)TempData["wizard"];
 
             if (wizard == null)
@@ -44,14 +44,14 @@ namespace SignMeUp2.Controllers
                     return ShowError("Evenemang med id " + e.Value + " är antingen borttaget ur databasen eller felaktigt angivet.");
                 }
 
-                ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn");
-                ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn");
-                ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn");
-
                 wizard = new WizardViewModel();
                 wizard.Initialize();
                 wizard.Evenemang_Id = e.Value;
             }
+
+            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn");
+            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn");
+            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn");
 
             TempData["wizard"] = wizard;
 
@@ -138,6 +138,10 @@ namespace SignMeUp2.Controllers
             regStep.Klasser = db.Klasser.Find(regStep.Klass);
 
             TempData["wizard"] = wizard;
+
+            ViewBag.RegStep = regStep;
+            ViewBag.Summa = regStep.Banor.Avgift + regStep.Kanoter.Avgift;
+
             return View(wizard);
         }
 
@@ -160,7 +164,9 @@ namespace SignMeUp2.Controllers
             {
                 // Payson
                 TempData["wizard"] = tempWizard;
-                return View(tempWizard);
+                var reg = ClassMapper.MapToRegistreringar(tempWizard);
+                TempData["reg"] = reg;
+                return RedirectToAction("Index", "Payson");
             }
             else if (!string.IsNullOrEmpty(Request["faktura"]))
             {
@@ -255,6 +261,8 @@ namespace SignMeUp2.Controllers
         /// <returns></returns>
         public ActionResult Startlista(int? e)
         {
+            // TODO flytta till HomeController?
+
             if (e == null)
                 return ShowError("Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.");
 
@@ -274,38 +282,6 @@ namespace SignMeUp2.Controllers
             var startlista = StartlistaViewModel.GetStartlist(regs, evenemang.Namn, banor, klasser);
 
             return View("Startlista", startlista);
-        }
-
-        /// <summary>
-        /// ShowError
-        /// </summary>
-        /// <param name="logMessage"></param>
-        /// <param name="exception"></param>
-        /// <returns></returns>
-        protected ActionResult ShowError(string logMessage, Exception exception = null)
-        {
-            //log.Error(logMessage, exception);
-            //try
-            //{
-            //    if (exception != null)
-            //    {
-            //        SendMail.SendErrorMessage(logMessage + "\n\n" + exception.Message + "\n\n" + exception.StackTrace);
-            //    }
-            //    else
-            //    {
-            //        SendMail.SendErrorMessage(logMessage);
-            //    }
-            //}
-            //catch (Exception exc)
-            //{
-            //    log.Error("Error sending error mail.", exc);
-            //}
-
-            //TempData["Error"] = "Fel vid anmälna. Administratör är kontaktad. Vill du veta när felet blivit åtgärdat skicka gärna ett meddelande till utmaningen@karlstadmultisport.se";
-
-            TempData["error"] = logMessage;
-
-            return View("Error");
         }
 
         /// <summary>

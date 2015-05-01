@@ -182,24 +182,25 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\BanorController.cs" />
-    <Compile Include="Controllers\CheckoutController.cs" />
-    <Compile Include="Controllers\DeltagareController.cs" />
-    <Compile Include="Controllers\EvenemangController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BanorController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DeltagareController.cs" />
+    <Compile Include="Areas\Admin\Controllers\EvenemangController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\KanoterController.cs" />
-    <Compile Include="Controllers\KlasserController.cs" />
-    <Compile Include="Controllers\RabatterController.cs" />
+    <Compile Include="Areas\Admin\Controllers\KanoterController.cs" />
+    <Compile Include="Areas\Admin\Controllers\KlasserController.cs" />
+    <Compile Include="Controllers\PaysonController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RabatterController.cs" />
     <Compile Include="Controllers\RegBaseController.cs" />
-    <Compile Include="Controllers\RegistreringarController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RegistreringarController.cs" />
     <Compile Include="Controllers\SignMeUpController.cs" />
     <Compile Include="DataModel\Banor.cs" />
     <Compile Include="DataModel\Deltagare.cs" />
     <Compile Include="DataModel\Evenemang.cs" />
     <Compile Include="DataModel\Forseningsavgift.cs" />
     <Compile Include="DataModel\Invoice.cs" />
-    <Compile Include="Controllers\InvoiceController.cs" />
+    <Compile Include="Areas\Admin\Controllers\InvoiceController.cs" />
     <Compile Include="DataModel\Kanoter.cs" />
     <Compile Include="DataModel\Klasser.cs" />
     <Compile Include="DataModel\Rabatter.cs" />
@@ -239,9 +240,13 @@
     <Compile Include="Migrations\201504201925528_removeAntalDeltagareEvenemang.Designer.cs">
       <DependentUpon>201504201925528_removeAntalDeltagareEvenemang.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504282144425_SwitchDateTime.cs" />
+    <Compile Include="Migrations\201504282144425_SwitchDateTime.Designer.cs">
+      <DependentUpon>201504282144425_SwitchDateTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\CheckoutModel.cs" />
+    <Compile Include="Models\PaysonViewModel.cs" />
     <Compile Include="Models\DataAnnotations.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IWizardStep.cs" />
@@ -262,6 +267,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -284,8 +291,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_OldLayout.cshtml" />
-    <Content Include="Views\Home\Index_old.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
@@ -302,73 +307,52 @@
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\AcceptReg.cshtml" />
-    <Content Include="Views\Home\Create.cshtml" />
-    <Content Include="Views\Home\Delete.cshtml" />
-    <Content Include="Views\Home\Details.cshtml" />
-    <Content Include="Views\Home\EditInvoice.cshtml" />
-    <Content Include="Views\Home\Invoice.cshtml" />
-    <Content Include="Views\Home\Redirect.cshtml" />
-    <Content Include="Views\Home\RegClosed.cshtml" />
-    <Content Include="Views\Home\RegNotOpen.cshtml" />
-    <Content Include="Views\Home\Startlista.cshtml" />
-    <Content Include="Views\Home\EditorTemplates\Deltagare.cshtml" />
-    <Content Include="Views\Checkout\Checkout.cshtml" />
-    <Content Include="Views\Checkout\Invoice.cshtml" />
-    <Content Include="Views\Shared\_DetailsView.cshtml" />
     <Content Include="Views\Shared\_FakturaLayout.cshtml" />
-    <Content Include="Views\Shared\_InvoiceEditView.cshtml" />
-    <Content Include="Views\Shared\_InvoiceView.cshtml" />
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
     <Content Include="Views\Shared\_MailView.cshtml" />
-    <Content Include="Views\Shared\_RegAdmList.cshtml" />
-    <Content Include="Views\Shared\_RegList.cshtml" />
-    <Content Include="Views\Shared\_RegStartList.cshtml" />
-    <Content Include="Views\Shared\_SimpleLayout.cshtml" />
     <Content Include="Views\Shared\_SimpleLayoutRedirect.cshtml" />
-    <Content Include="Views\Shared\_SimpleLayoutWoLogin.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Evenemang\Create.cshtml" />
-    <Content Include="Views\Evenemang\Delete.cshtml" />
-    <Content Include="Views\Evenemang\Details.cshtml" />
-    <Content Include="Views\Evenemang\Edit.cshtml" />
-    <Content Include="Views\Evenemang\Index.cshtml" />
-    <Content Include="Views\Kanoter\Create.cshtml" />
-    <Content Include="Views\Kanoter\Delete.cshtml" />
-    <Content Include="Views\Kanoter\Details.cshtml" />
-    <Content Include="Views\Kanoter\Edit.cshtml" />
-    <Content Include="Views\Kanoter\Index.cshtml" />
-    <Content Include="Views\Rabatter\Create.cshtml" />
-    <Content Include="Views\Rabatter\Delete.cshtml" />
-    <Content Include="Views\Rabatter\Details.cshtml" />
-    <Content Include="Views\Rabatter\Edit.cshtml" />
-    <Content Include="Views\Rabatter\Index.cshtml" />
-    <Content Include="Views\Klasser\Create.cshtml" />
-    <Content Include="Views\Klasser\Delete.cshtml" />
-    <Content Include="Views\Klasser\Details.cshtml" />
-    <Content Include="Views\Klasser\Edit.cshtml" />
-    <Content Include="Views\Klasser\Index.cshtml" />
-    <Content Include="Views\Banor\Create.cshtml" />
-    <Content Include="Views\Banor\Delete.cshtml" />
-    <Content Include="Views\Banor\Details.cshtml" />
-    <Content Include="Views\Banor\Edit.cshtml" />
-    <Content Include="Views\Banor\Index.cshtml" />
-    <Content Include="Views\Registreringar\Create.cshtml" />
-    <Content Include="Views\Registreringar\Delete.cshtml" />
-    <Content Include="Views\Registreringar\Details.cshtml" />
-    <Content Include="Views\Registreringar\Edit.cshtml" />
-    <Content Include="Views\Registreringar\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Evenemang\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Evenemang\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Evenemang\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Evenemang\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Evenemang\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Kanoter\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Kanoter\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Kanoter\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Kanoter\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Kanoter\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Rabatter\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Rabatter\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Rabatter\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Rabatter\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Rabatter\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Klasser\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Klasser\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Klasser\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Klasser\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Klasser\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Banor\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Banor\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Banor\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Banor\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Banor\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Registreringar\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Registreringar\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Registreringar\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Registreringar\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Registreringar\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Invoice\Create.cshtml" />
-    <Content Include="Views\Invoice\Delete.cshtml" />
-    <Content Include="Views\Invoice\Details.cshtml" />
-    <Content Include="Views\Invoice\Edit.cshtml" />
-    <Content Include="Views\Invoice\Index.cshtml" />
-    <Content Include="Views\Deltagare\Create.cshtml" />
-    <Content Include="Views\Deltagare\Delete.cshtml" />
-    <Content Include="Views\Deltagare\Details.cshtml" />
-    <Content Include="Views\Deltagare\Edit.cshtml" />
-    <Content Include="Views\Deltagare\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Invoice\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Invoice\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Invoice\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Invoice\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Invoice\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Deltagare\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Deltagare\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Deltagare\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Deltagare\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Deltagare\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutSimple.cshtml" />
     <Content Include="Views\SignMeUp\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ContactViewModel.cshtml" />
@@ -383,9 +367,11 @@
     <Content Include="Views\SignMeUp\Faktura.cshtml" />
     <Content Include="Views\SignMeUp\BekraftaBetalning.cshtml" />
     <Content Include="Views\SignMeUp\Startlista.cshtml" />
+    <Content Include="Views\Payson\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -412,6 +398,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504201925528_removeAntalDeltagareEvenemang.resx">
       <DependentUpon>201504201925528_removeAntalDeltagareEvenemang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504282144425_SwitchDateTime.resx">
+      <DependentUpon>201504282144425_SwitchDateTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

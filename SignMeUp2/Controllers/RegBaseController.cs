@@ -12,7 +12,7 @@ namespace SignMeUp2.Controllers
     public class RegBaseController : Controller
     {
         protected static readonly SignMeUpDataModel db = new SignMeUpDataModel();
-        private readonly ILog log;
+        protected readonly ILog log;
 
         public RegBaseController()
         {   
@@ -125,7 +125,7 @@ namespace SignMeUp2.Controllers
         protected void DeleteRegistrering(int id)
         {
             Registreringar registreringar = db.Registreringar.Include("Invoice").Include("Deltagare").Single(r => r.ID == id);
-            if (registreringar.Invoice != null)
+            if (registreringar.Invoices != null)
             {
                 // Cascade delete...
                 //db.Invoice.Remove(registreringar.Invoice);
@@ -164,7 +164,7 @@ namespace SignMeUp2.Controllers
                 log.Error("Error sending error mail.", exc);
             }
 
-            //TempData["Error"] = "Fel vid anmälna. Administratör är kontaktad. Vill du veta när felet blivit åtgärdat skicka gärna ett meddelande till utmaningen@karlstadmultisport.se";
+            TempData["error"] = logMessage;
 
             return View("Error");
         }
