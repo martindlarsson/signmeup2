@@ -34,7 +34,8 @@
                 @Html.DisplayFor(modelItem => item.RegStop)
             </td>
             <td>
-                @Html.ActionLink("Anmälan", "Index", "SignMeUp", new {  e = item.Id}, null)
+                @Html.ActionLink("Jag vill anmäla mig!", "Index", "SignMeUp", new {  id = item.Id}, null) |
+                @Html.ActionLink("Lista på anmända", "Startlista", "Home", new { id = item.Id }, null)
             </td>
         </tr>
     }

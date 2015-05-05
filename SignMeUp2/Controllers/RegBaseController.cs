@@ -32,18 +32,22 @@ namespace SignMeUp2.Controllers
             }
         }
 
-        protected void SetAsPaid(Registreringar registration)
+        protected void SetAsPaid(Registreringar reg)
         {
-            registration.HarBetalt = true;
-            SaveChanges(registration);
+            reg.HarBetalt = true;
+            SaveChanges(reg);
+            SkickaRegMail(reg);
+        }
 
+        protected void SkickaRegMail(Registreringar reg)
+        {
             try
             {
-                FillViewData();
+                FillRegistrering(reg);
                 var appUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
-                var link = appUrl + "home/mail/" + registration.ID;
-                SendMail.SendRegistration(RenderRazorViewToString("_MailView", registration), appUrl, link, registration.Epost);
-                log.Debug("Sent confirmation mail. Lagnamn: " + registration.Lagnamn);
+                var link = appUrl + "signmeup/bekraftelsebetalning/" + reg.ID;
+                SendMail.SendRegistration(RenderRazorViewToString("BekraftelseMail", reg), appUrl, link, reg);
+                log.Debug("Sent confirmation mail. Lagnamn: " + reg.Lagnamn);
             }
             catch (Exception exc)
             {
@@ -51,13 +55,8 @@ namespace SignMeUp2.Controllers
             }
         }
 
-        protected void SaveNewRegistration(Registreringar reg = null)
+        protected void SaveNewRegistration(Registreringar reg)
         {
-            if (reg == null)
-            {
-                reg = (Registreringar)Session["reg"];
-            }
-
             reg.Banor = null;
             reg.Kanoter = null;
             reg.Klasser = null;
@@ -81,7 +80,6 @@ namespace SignMeUp2.Controllers
                 }
                 throw;
             }
-            Session["reg"] = null;
         }
 
         protected void SaveChanges(Registreringar updatedReg)
@@ -91,59 +89,61 @@ namespace SignMeUp2.Controllers
             db.SaveChanges();
         }
 
-        protected void FillRegistrering(Registreringar registrering)
+        protected void FillRegistrering(Registreringar reg)
         {
-            registrering.Kanoter = db.Kanoter.First(kanot => kanot.ID == registrering.Kanot);
-            registrering.Banor = db.Banor.First(bana => bana.ID == registrering.Bana);
-            registrering.Klasser = db.Klasser.First(klass => klass.ID == registrering.Klass);
+            reg.Kanoter = db.Kanoter.Find(reg.Kanot);
+            reg.Banor = db.Banor.Find(reg.Bana);
+            reg.Klasser = db.Klasser.Find(reg.Klass);
+            reg.Evenemang = db.Evenemang.Find(reg.Evenemang_Id);
+            reg.Evenemang.Organisation = db.Organisationer.Find(reg.Evenemang.OrganisationsId);
         }
 
-        protected void FillViewData()
-        {
-            ViewData["Kanoter"] =
-                from kanot in db.Kanoter.ToList()
-                select new SelectListItem
-                {
-                    Text = kanot.Namn + " (" + kanot.Avgift + " kr)",
-                    Value = kanot.ID.ToString()
-                };
+        //protected void FillViewData()
+        //{
+        //    ViewData["Kanoter"] =
+        //        from kanot in db.Kanoter.ToList()
+        //        select new SelectListItem
+        //        {
+        //            Text = kanot.Namn + " (" + kanot.Avgift + " kr)",
+        //            Value = kanot.ID.ToString()
+        //        };
 
-            ViewData["Banor"] =
-                from bana in db.Banor.ToList()
-                select new SelectListItem
-                {
-                    Text = bana.Namn + " (" + bana.Avgift + " kr)",
-                    Value = bana.ID.ToString()
-                };
+        //    ViewData["Banor"] =
+        //        from bana in db.Banor.ToList()
+        //        select new SelectListItem
+        //        {
+        //            Text = bana.Namn + " (" + bana.Avgift + " kr)",
+        //            Value = bana.ID.ToString()
+        //        };
 
-            ViewData["Klasser"] = new SelectList(db.Klasser.ToList(), "ID", "Namn");
-            ViewData["Forseningsavgift"] = Avgift.Forseningsavgift(db);
-        }
+        //    ViewData["Klasser"] = new SelectList(db.Klasser.ToList(), "ID", "Namn");
+        //    ViewData["Forseningsavgift"] = Avgift.Forseningsavgift(db);
+        //}
 
-        protected void DeleteRegistrering(int id)
-        {
-            Registreringar registreringar = db.Registreringar.Include("Invoice").Include("Deltagare").Single(r => r.ID == id);
-            if (registreringar.Invoices != null)
-            {
-                // Cascade delete...
-                //db.Invoice.Remove(registreringar.Invoice);
-                db.Invoice.Remove(registreringar.Invoices);
-            }
-            DeleteDeltagare(registreringar);
-            db.Registreringar.Remove(registreringar);
-            db.SaveChanges();
-        }
+        //protected void DeleteRegistrering(int id)
+        //{
+        //    Registreringar registreringar = db.Registreringar.Include("Invoice").Include("Deltagare").Single(r => r.ID == id);
+        //    if (registreringar.Invoices != null)
+        //    {
+        //        // Cascade delete...
+        //        //db.Invoice.Remove(registreringar.Invoice);
+        //        db.Invoice.Remove(registreringar.Invoices);
+        //    }
+        //    DeleteDeltagare(registreringar);
+        //    db.Registreringar.Remove(registreringar);
+        //    db.SaveChanges();
+        //}
 
-        protected static void DeleteDeltagare(Registreringar registrering)
-        {
-            var deltagareToDelete = db.Deltagare.Where(delt => delt.RegistreringarID == registrering.ID);
-            foreach (var deltagare in deltagareToDelete)
-            {
-                db.Deltagare.Remove(deltagare); 
-            }
-        }
+        //protected static void DeleteDeltagare(Registreringar registrering)
+        //{
+        //    var deltagareToDelete = db.Deltagare.Where(delt => delt.RegistreringarID == registrering.ID);
+        //    foreach (var deltagare in deltagareToDelete)
+        //    {
+        //        db.Deltagare.Remove(deltagare); 
+        //    }
+        //}
 
-        protected ActionResult ShowError(string logMessage, Exception exception = null)
+        protected ActionResult ShowError(string logMessage, bool sendMial, Exception exception = null)
         {
             log.Error(logMessage, exception);
             try

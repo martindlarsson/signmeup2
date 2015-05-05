@@ -37,6 +37,9 @@
                     <th>
                         Medlemmar
                     </th>
+                    <th>
+                        Klubb
+                    </th>
                 </tr>
 
                 @foreach (var registrering in klass.RegistreringarList)
@@ -49,6 +52,7 @@
                                 @deltagare.Namn <br />
                             }
                         </td>
+                        <td>@registrering.Klubb</td>
                     </tr>
                 }
             </table>

@@ -34,6 +34,8 @@ namespace SignMeUp2.DataModel
         {
             // TODO orgBetalningar
 
+            // TODO invoce cascade delete
+
             modelBuilder.Entity<Organisation>()
                 .HasMany(e => e.Evenemang)
                 .WithRequired(e => e.Organisation)
@@ -90,7 +92,9 @@ namespace SignMeUp2.DataModel
             modelBuilder.Entity<Registreringar>()
                 .HasMany(e => e.Deltagare)
                 .WithRequired(e => e.Registreringar)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
         }
+
+        public System.Data.Entity.DbSet<SignMeUp2.DataModel.Betalningsmetoder> Betalningsmetoders { get; set; }
     }
 }

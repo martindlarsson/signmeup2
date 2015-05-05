@@ -13,7 +13,7 @@ using Owin;
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class AdminController : BaseController
+    public class AdminController : AdminBaseController
     {
         // GET: Admin/Admin
         public ActionResult Index()

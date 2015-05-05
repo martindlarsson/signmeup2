@@ -31,21 +31,6 @@ namespace SignMeUp2.Models
                        "2acab30d-fe50-426f-90d7-8c60a7eb31d4";
             }
         }
-
-        public static string PaysonRecieverEmail
-        {
-            get { return ConfigurationManager.AppSettings["Receiver.Email"] ?? "utmaningen@karlstadmultisport.se"; }
-        }
-
-        public static string PaysonRecieverFirstName
-        {
-            get { return "Karlstad"; }
-        }
-
-        public static string PaysonRecieverLastName
-        {
-            get { return "Multisport"; }
-        }
     }
 
     public class PaysonKontaktViewModel

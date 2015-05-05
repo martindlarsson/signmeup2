@@ -57,6 +57,7 @@ namespace SignMeUp2.Models
         public RegistreringViewModel() { DeltagarLista = new List<DeltagareSimple>(); }
         public string Lagnamn { get; set; }
         public IList<DeltagareSimple> DeltagarLista { get; set; }
+        public string Klubb { get; set; }
     }
 
     public class DeltagareSimple
@@ -93,7 +94,8 @@ namespace SignMeUp2.Models
             var registrering = new RegistreringViewModel
             {
                 Lagnamn = reg.Lagnamn,
-                DeltagarLista = new List<DeltagareSimple>()
+                DeltagarLista = new List<DeltagareSimple>(),
+                Klubb = reg.Klubb
             };
 
             // Mappa deltagarna

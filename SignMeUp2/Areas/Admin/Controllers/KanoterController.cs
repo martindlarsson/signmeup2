@@ -11,7 +11,7 @@ using SignMeUp2.DataModel;
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class KanoterController : BaseController
+    public class KanoterController : AdminBaseController
     {
         // GET: Kanoter
         public ActionResult Index()

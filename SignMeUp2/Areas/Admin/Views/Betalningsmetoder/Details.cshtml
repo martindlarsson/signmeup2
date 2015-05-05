@@ -1,0 +1,51 @@
+﻿@model SignMeUp2.DataModel.Betalningsmetoder
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Betalningsmetoder</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.GiroTyp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GiroTyp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Gironummer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Gironummer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaysonUserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaysonUserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaysonUserKey)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaysonUserKey)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

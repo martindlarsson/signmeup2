@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignMeUp2</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -21,8 +21,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Hem", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Hem", "Index", "Admin")</li>
                     <li>@Html.ActionLink("Organisation", "Index", "Organisation")</li>
+                    <li>@Html.ActionLink("Betalningsmetoder", "CreateOrUpdate", "Betalningsmetoder")</li>
                     <li>@Html.ActionLink("Evenemang", "Index", "Evenemang")</li>
                     <li>@Html.ActionLink("Banor", "Index", "Banor")</li>
                     <li>@Html.ActionLink("Klasser", "Index", "Klasser")</li>

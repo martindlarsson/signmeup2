@@ -1,0 +1,168 @@
+﻿@model SignMeUp2.DataModel.Registreringar
+
+@{
+    ViewBag.Title = "RegistrationDone";
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+
+<h2>Tack för din anmälan till @Model.Evenemang.Namn</h2>
+
+<p>Arrangör är @Model.Evenemang.Organisation.Namn</p>
+
+<div>
+    <h4>Bekräftelse på din anmälan</h4>
+    <hr />
+
+    @Html.Partial("_RegDetailsView", Model)
+
+    @*<dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Banor.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Banor.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Evenemang.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Evenemang.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Kanoter.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Kanoter.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Klasser.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Klasser.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Adress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Adress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefon)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefon)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Epost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Epost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ranking)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ranking)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Startnummer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Startnummer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Lagnamn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Lagnamn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Klubb)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Klubb)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HarBetalt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HarBetalt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Forseningsavgift)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Forseningsavgift)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Registreringstid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Registreringstid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Kommentar)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Kommentar)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Rabatter)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rabatter)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaysonToken)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaysonToken)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Invoice)
+        </dd>
+
+    </dl>*@
+</div>
+<p>
+    @Html.ActionLink("Lista på anmälda", "Startlista", new { id = Model.Evenemang_Id }) |
+    @Html.ActionLink("Gör ytterligare en anmälan", "Index", "SignMeUp", new { id = Model.Evenemang_Id }, null)
+</p>

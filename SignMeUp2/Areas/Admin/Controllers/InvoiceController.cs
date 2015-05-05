@@ -10,7 +10,7 @@ using SignMeUp2.DataModel;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
-    public class InvoiceController : BaseController
+    public class InvoiceController : AdminBaseController
     {
         // GET: Invoice
         public ActionResult Index()

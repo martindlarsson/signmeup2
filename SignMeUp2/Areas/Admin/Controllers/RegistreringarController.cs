@@ -11,7 +11,7 @@ using SignMeUp2.DataModel;
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class RegistreringarController : BaseController
+    public class RegistreringarController : AdminBaseController
     {
         // GET: Registreringar
         public ActionResult Index()

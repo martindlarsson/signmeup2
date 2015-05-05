@@ -6,7 +6,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public enum GiroTyp { Postgiro = 1, Bankgiro = 2 }
+    public enum GiroTyp { Inget = 0, Postgiro = 1, Bankgiro = 2 }
 
     [Table("Betalningsmetoder")]
     public class Betalningsmetoder

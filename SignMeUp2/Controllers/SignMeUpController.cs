@@ -18,16 +18,16 @@ namespace SignMeUp2.Controllers
     {
         private SignMeUpDataModel db = new SignMeUpDataModel();
 
-        public ActionResult Index(int? e)
+        public ActionResult Index(int? id)
         {   
             WizardViewModel wizard = (WizardViewModel)TempData["wizard"];
 
             if (wizard == null)
             {
-                if (e == null)
-                    return ShowError("Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.");
+                if (id == null)
+                    return ShowError("Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.", false);
 
-                var evenemang = db.Evenemang.Where(ev => ev.Id == e).FirstOrDefault();
+                var evenemang = db.Evenemang.Where(ev => ev.Id == id).FirstOrDefault();
 
                 var evenemangResult = EvenemangHelper.EvaluateEvenemang(evenemang);
 
@@ -41,12 +41,12 @@ namespace SignMeUp2.Controllers
                 }
                 else if (evenemangResult == EvenemangHelper.EvenemangValidationResult.DoesNotExist)
                 {
-                    return ShowError("Evenemang med id " + e.Value + " är antingen borttaget ur databasen eller felaktigt angivet.");
+                    return ShowError("Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
                 }
 
                 wizard = new WizardViewModel();
                 wizard.Initialize();
-                wizard.Evenemang_Id = e.Value;
+                wizard.Evenemang_Id = id.Value;
             }
 
             ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn");
@@ -69,7 +69,7 @@ namespace SignMeUp2.Controllers
             WizardViewModel wizard = (WizardViewModel)TempData["wizard"];
 
             if (wizard == null)
-                return ShowError("Ett oväntat fel inträffade, var god försök igen.");
+                return ShowError("Ett oväntat fel inträffade, var god försök igen.", true, new Exception("Ingen wizard i TempData"));
 
             wizard.UpdateSetp(step);
 
@@ -214,8 +214,8 @@ namespace SignMeUp2.Controllers
                 // Spara i databasen
                 var reg = SparaNyRegistrering(tempWizard, false);
                 TempData["wizard"] = null;
-                TempData["reg"] = reg;
-                return RedirectToAction("BekraftaBetalning");
+                TempData["reg"] = null;
+                return RedirectToAction("BekraftelseBetalning", new { id = reg.ID });
             }
             else
             {
@@ -225,63 +225,52 @@ namespace SignMeUp2.Controllers
             }
         }
 
-        /// <summary>
-        /// Lista alla evenemang
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult ListaEvenemang()
-        {   
-            var evenemangsLista = from eve in db.Evenemang
-                                    where eve.RegStop >= DateTime.Now
-                                    orderby eve.RegStart descending
-                                        select eve;
+        ///// <summary>
+        ///// Lista alla evenemang
+        ///// </summary>
+        ///// <returns></returns>
+        //public ActionResult ListaEvenemang()
+        //{   
+        //    var evenemangsLista = from eve in db.Evenemang
+        //                            where eve.RegStop >= DateTime.Now
+        //                            orderby eve.RegStart descending
+        //                                select eve;
 
-            var listan = evenemangsLista.ToList();
-            return View("ListaEvenemang", listan);
-        }
+        //    var listan = evenemangsLista.ToList();
+        //    return View("ListaEvenemang", listan);
+        //}
 
         /// <summary>
         /// Visa en registrering efter genomförd betalning
         /// </summary>
         /// <param name="reg"></param>
         /// <returns></returns>
-        public ActionResult BekraftaBetalning()
+        public ActionResult BekraftelseBetalning(int? id)
         {
-            var reg = (Registreringar)TempData["reg"];
-            if (reg == null)
-                return ShowError("Fel vid hämtning av registreringsinformation. Kontrollera i startlistan om er registrering genomförts.");
+            if (id == null)
+                return ShowError("Fel vid hämtning av registreringsinformation. Kontrollera i startlistan om er registrering genomförts.", false);
+
+            var reg = db.Registreringar.Include("Evenemang.Organisation").SingleOrDefault(r => r.ID == id);
             
             return View(PopuleraRegistrering(reg));
         }
 
         /// <summary>
-        /// Visa startlista
+        /// Skicka mail till den som registrerat sig igen
         /// </summary>
-        /// <param name="e">Evenemangs ID</param>
+        /// <param name="id">Id på registrering</param>
         /// <returns></returns>
-        public ActionResult Startlista(int? e)
+        public ActionResult SkickaMailIgen(int? id)
         {
-            // TODO flytta till HomeController?
-
-            if (e == null)
-                return ShowError("Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.");
-
-            var evenemang = db.Evenemang.Where(ev => ev.Id == e).FirstOrDefault();
-
-            var evenemangResult = EvenemangHelper.EvaluateEvenemang(evenemang);
-
-            if (evenemangResult == EvenemangHelper.EvenemangValidationResult.DoesNotExist)
+            if (id == null)
             {
-                return ShowError("Evenemang med id " + e.Value + " är antingen borttaget ur databasen eller felaktigt angivet.");
+                ShowError("Ingen anmälan med id " + id.Value + " hittades.", false);
             }
 
-            var regs = db.Registreringar.Where(reg => reg.Evenemang_Id == e.Value).ToList();
-            var banor = db.Banor.ToList();
-            var klasser = db.Klasser.ToList();
+            var reg = db.Registreringar.Include("Evenemang.Organisation").SingleOrDefault(r => r.ID == id);
+            SkickaRegMail(reg);
 
-            var startlista = StartlistaViewModel.GetStartlist(regs, evenemang.Namn, banor, klasser);
-
-            return View("Startlista", startlista);
+            return View();
         }
 
         /// <summary>

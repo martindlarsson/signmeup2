@@ -13,7 +13,7 @@ using Owin;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
-    public class BaseController : Controller
+    public class AdminBaseController : Controller
     {
         protected SignMeUpDataModel db = new SignMeUpDataModel();
 

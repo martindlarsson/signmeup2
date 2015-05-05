@@ -10,17 +10,18 @@ using SignMeUp2.DataModel;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
-    [Authorize]
-    public class BanorController : BaseController
+    public class BanorController : Controller
     {
-        // GET: Banor
+        private SignMeUpDataModel db = new SignMeUpDataModel();
+
+        // GET: Admin/Banor
         public ActionResult Index()
         {
             var banor = db.Banor.Include(b => b.Evenemang);
             return View(banor.ToList());
         }
 
-        // GET: Banor/Details/5
+        // GET: Admin/Banor/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -35,19 +36,19 @@ namespace SignMeUp2.Areas.Admin.Controllers
             return View(banor);
         }
 
-        // GET: Banor/Create
+        // GET: Admin/Banor/Create
         public ActionResult Create()
         {
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn");
+            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn");
             return View();
         }
 
-        // POST: Banor/Create
+        // POST: Admin/Banor/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Namn,Avgift,AntalDeltagare,Evenemang_ID")] Banor banor)
+        public ActionResult Create([Bind(Include = "ID,Namn,Avgift,AntalDeltagare,EvenemangsId")] Banor banor)
         {
             if (ModelState.IsValid)
             {
@@ -56,11 +57,11 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
+            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
             return View(banor);
         }
 
-        // GET: Banor/Edit/5
+        // GET: Admin/Banor/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -72,16 +73,16 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
+            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
             return View(banor);
         }
 
-        // POST: Banor/Edit/5
+        // POST: Admin/Banor/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,AntalDeltagare,Evenemang_ID")] Banor banor)
+        public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,AntalDeltagare,EvenemangsId")] Banor banor)
         {
             if (ModelState.IsValid)
             {
@@ -89,11 +90,11 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
+            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
             return View(banor);
         }
 
-        // GET: Banor/Delete/5
+        // GET: Admin/Banor/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -108,7 +109,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             return View(banor);
         }
 
-        // POST: Banor/Delete/5
+        // POST: Admin/Banor/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

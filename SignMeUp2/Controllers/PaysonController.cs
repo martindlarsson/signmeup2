@@ -54,24 +54,18 @@ namespace SignMeUp2.Controllers
             {
                 var paysonViewModel = (PaysonViewModel)TempData[PaysonViewModel.PAYSON_VM];
 
-                if (paysonViewModel == null)
-                {
-                    return RedirectToAction("Index", "SignMeUp");
-                }
-
-                paysonViewModel.Kontaktinformation = kontaktInfo;
-
                 try
                 {
                     if (paysonViewModel == null || paysonViewModel.Registrering == null)
                     {
-                        return ShowError("Missing data, checkout or checkout.Registrering is null at Pay()");
+                        return ShowError("Oväntat fel. Var god försök senare", true, new Exception("Ingen paysonViewModel i TempData."));
                     }
+
+                    paysonViewModel.Kontaktinformation = kontaktInfo;
 
                     log.Debug("Payment: Lagnamn: " + paysonViewModel.Registrering.Lagnamn);
 
                     SaveNewRegistration(paysonViewModel.Registrering);
-                    FillRegistrering(paysonViewModel.Registrering);
 
                     paysonViewModel.RegId = paysonViewModel.Registrering.ID;
 
@@ -79,19 +73,23 @@ namespace SignMeUp2.Controllers
                     var scheme = Request.Url.Scheme;
                     var host = Request.Url.Host;
                     //var oldPort = Request.Url.Port.ToString();
-                    var returnUrl = Url.Action("Returned", "Payson", new RouteValueDictionary(), scheme, host) + "?regId=" + paysonViewModel.RegId;
+                    var returnUrl = Url.Action("Returned", "Payson", new RouteValueDictionary(), scheme, host) + "/" + paysonViewModel.RegId;
 
-                    var cancelUrl = Url.Action("Cancelled", "Payson", new RouteValueDictionary(), scheme, host) + "?regId=" + paysonViewModel.RegId;
+                    var cancelUrl = Url.Action("Cancelled", "Payson", new RouteValueDictionary(), scheme, host) + "/" + paysonViewModel.RegId;
 
                     var sender = new Sender(paysonViewModel.Kontaktinformation.SenderEmail);
                     sender.FirstName = paysonViewModel.Kontaktinformation.SenderFirstName;
                     sender.LastName = paysonViewModel.Kontaktinformation.SenderLastName;
 
+                    FillRegistrering(paysonViewModel.Registrering);
                     var totalAmount = Avgift.Kalk(paysonViewModel.Registrering);
 
-                    var receiver = new Receiver(PaysonViewModel.PaysonRecieverEmail, totalAmount);
-                    receiver.FirstName = PaysonViewModel.PaysonRecieverFirstName;
-                    receiver.LastName = PaysonViewModel.PaysonRecieverLastName;
+                    var orgId = paysonViewModel.Registrering.Evenemang.OrganisationsId;
+                    var org = db.Organisationer.Find(orgId);
+
+                    var receiver = new Receiver(org.Epost, totalAmount);
+                    receiver.FirstName = org.Namn;
+                    //receiver.LastName = PaysonViewModel.PaysonRecieverLastName;
                     receiver.SetPrimaryReceiver(true);
 
                     var evenemang = db.Evenemang.Find(paysonViewModel.Registrering.Evenemang_Id);
@@ -99,7 +97,7 @@ namespace SignMeUp2.Controllers
 
                     // Set IPN callback URL
                     // When the shop is hosted by Payson the IPN scheme must be http and not https
-                    var ipnNotificationUrl = Url.Action("IPN", "Payson", new RouteValueDictionary(), scheme, host) + "?regId=" + paysonViewModel.RegId;
+                    var ipnNotificationUrl = Url.Action("IPN", "Payson", new RouteValueDictionary(), scheme, host) + "/" + paysonViewModel.RegId;
                     payData.SetIpnNotificationUrl(ipnNotificationUrl);
 
                     payData.SetFundingConstraints(new List<FundingConstraint> { FundingConstraint.Bank, FundingConstraint.CreditCard });
@@ -132,11 +130,10 @@ namespace SignMeUp2.Controllers
                     payData.SetOrderItems(orderItems);
 
                     // TODO hämta från organisation
-                    var api = new PaysonApi("17224", "e656e666-3585-4453-ad39-f0ec39fa15fc", ApplicationId, false);
 
-                    //var api = new PaysonApi(PaysonViewModel.PaysonUserId, PaysonViewModel.PaysonUserKey, ApplicationId, false);
+                    var api = new PaysonApi(PaysonViewModel.PaysonUserId, PaysonViewModel.PaysonUserKey, ApplicationId, false);
 #if DEBUG
-                    api = new PaysonApi("4", "2acab30d-fe50-426f-90d7-8c60a7eb31d4"); //, ApplicationId, true);
+                    api = new PaysonApi("4", "2acab30d-fe50-426f-90d7-8c60a7eb31d4", ApplicationId, true);
 #endif
 
                     var response = api.MakePayRequest(payData);
@@ -154,14 +151,14 @@ namespace SignMeUp2.Controllers
                         return Redirect(forwardUrl);
                     }
 
-                    Session[PaysonViewModel.PAYSON_VM] = paysonViewModel;
+                    TempData[PaysonViewModel.PAYSON_VM] = paysonViewModel;
 
                     return ShowPaymentError("Error when sending payment to payson.", response.NvpContent, paysonViewModel.Registrering);
                 }
                 catch (Exception exception)
                 {
                     log.Error("Exception in Index.", exception);
-                    return ShowError("Oväntat fel vid betalning. Var god försök igen.", exception);
+                    return ShowError("Oväntat fel vid betalning. Var god försök igen.", true, exception);
                 }
             }
 
@@ -171,24 +168,22 @@ namespace SignMeUp2.Controllers
         /// <summary>
         /// Metod som kallas när betalningen är klar
         /// </summary>
-        /// <param name="regId"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Returned(string regId)
+        public ActionResult Returned(int? id)
         {
-            int registrationId = -1;
-
             log.Debug("Returned");
 
-            if (!string.IsNullOrEmpty(regId) && !int.TryParse(regId, out registrationId))
+            if (!id.HasValue)
             {
-                ShowError("regId not in querystring at checkout returned.");
+                ShowError("Ett fel inträffade när betalningen slutfördes. Kontrollera i startlistan om er registrering genomförts", true, new Exception("Felaktigt angivet regId: " + id));
             }
 
-            var registration = db.Registreringar.FirstOrDefault(regg => regg.ID == registrationId);
+            var registration = db.Registreringar.FirstOrDefault(regg => regg.ID == id);
 
             if (registration == null)
             {
-                ShowError("No registration found in db with id: " + registrationId + " in checkout returned.");
+                ShowError("Ett fel inträffade när betalningen slutfördes. Kontrollera i startlistan om er registrering genomförts", true, new Exception("Ingen registration hittad med  id: " + id + " i Returned."));
             }
 
             log.Debug("Returned. Lagnamn: " + registration.Lagnamn);
@@ -208,35 +203,36 @@ namespace SignMeUp2.Controllers
                     if (!registration.HarBetalt)
                     {
                         SetAsPaid(registration);
+                        TempData[PaysonViewModel.PAYSON_VM] = null;
                     }
                 }
                 else
                 {
-                    log.Warn("Deleting temp-registration with id: " + registrationId);
+                    log.Warn("Deleting temp-registration with id: " + id);
                     // Remove the temporary registration
-                    DeleteRegistrering(registrationId);
+                    db.Registreringar.Remove(registration);
+                    db.SaveChanges();
 
                     return ShowPaymentError("Error when payment returned.", response.NvpContent, registration);
                 }
             }
 
-            return RedirectToAction("Redirect", "Home");
+            return RedirectToAction("BekraftelseBetalning", "signmeup", new { id = id });
         }
 
-        public ActionResult Cancelled(string regId)
+        public ActionResult Cancelled(int? id)
         {
-            int registrationId = 0;
-            if (string.IsNullOrEmpty(regId) || int.TryParse(regId, out registrationId))
+            if (!id.HasValue)
             {
-                ShowError("Kunde inte återskapa dina uppgifter.");
+                return ShowError("Kunde inte återskapa dina uppgifter.", true, new Exception("Felaktigt regId: " + id + " vid cancel."));
             }
 
-            var registrering = db.Registreringar.Include("Banor").Include("Evenemang").Include("Kanoter").Include("Klasser").SingleOrDefault(r => r.ID == registrationId);
+            var registrering = db.Registreringar.Include("Banor").Include("Evenemang").Include("Kanoter").Include("Klasser").SingleOrDefault(r => r.ID == id);
 
             if (registrering != null)
             {
                 db.Registreringar.Remove(registrering);
-                log.Debug("Removed registrering with id: " + regId);
+                log.Debug("Removed registrering with id: " + id);
                 registrering.Adress = "Mamma mia...";
                 TempData["reg"] = registrering;
             }
@@ -244,14 +240,17 @@ namespace SignMeUp2.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult IPN(string regId)
+        public ActionResult IPN(int? id)
         {
-            log.Debug("IPN regId: " + regId);
+            log.Debug("IPN regId: " + id);
 
-            int regIdInt = -1;
-            int.TryParse(regId, out regIdInt);
+            if (!id.HasValue)
+            {
+                return ShowError("Ett oväntat fel inträffade vid betalning. Kontrollera om ditt lag finns med i listan på anmälda lag.",
+                    true, new Exception("Felaktigt id i IP. id: " + id));
+            }
 
-            var registration = db.Registreringar.FirstOrDefault(regg => regg.ID == regIdInt);
+            var registration = db.Registreringar.FirstOrDefault(regg => regg.ID == id);
 
             if (registration != null)
             {
@@ -268,9 +267,9 @@ namespace SignMeUp2.Controllers
                 log.Debug("IPN message content: " + response.Content);
                 log.Debug("IPN raw response: " + content);
 
-                if (status == PaymentStatus.Completed || status == PaymentStatus.Completed)
+                if (status == PaymentStatus.Completed)
                 {
-                    log.Debug("IPN message, status: " + statusText + ". regId: " + regId + " success: " + response.Success);
+                    log.Debug("IPN message, status: " + statusText + ". regId: " + id + " success: " + response.Success);
 
                     if (!registration.HarBetalt)
                     {
@@ -279,13 +278,13 @@ namespace SignMeUp2.Controllers
                 }
                 else
                 {
-                    log.Debug("IPN message for non complete transaction. regId: " + regId + ". Status: " + statusText);
+                    log.Debug("IPN message for non complete transaction. regId: " + id + ". Status: " + statusText);
                 }
             }
             else
             {
-                log.Error("Got IPN with wrong regId as query parameter: " + regId);
-                SendMail.SendErrorMessage("Got IPN with wrong regId as query parameter: " + regId);
+                log.Error("Got IPN with wrong regId as query parameter: " + id);
+                SendMail.SendErrorMessage("Got IPN with wrong regId as query parameter: " + id);
             }
 
             return new EmptyResult();

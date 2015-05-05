@@ -52,6 +52,12 @@
     <Reference Include="PaysonIntegration">
       <HintPath>..\packages\PaysonApiIntegrationDotNet.1.21\lib\PaysonIntegration.dll</HintPath>
     </Reference>
+    <Reference Include="SendGrid.SmtpApi">
+      <HintPath>..\packages\SendGrid.SmtpApi.1.3.1\lib\net40\SendGrid.SmtpApi.dll</HintPath>
+    </Reference>
+    <Reference Include="SendGridMail">
+      <HintPath>..\packages\Sendgrid.6.1.0\lib\SendGridMail.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -184,10 +190,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BanorController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BetalningsmetoderController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrganisationController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Areas\Admin\Controllers\BanorController.cs" />
     <Compile Include="Areas\Admin\Controllers\DeltagareController.cs" />
     <Compile Include="Areas\Admin\Controllers\EvenemangController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -226,13 +233,13 @@
     <Compile Include="Migrations\201505042115003_createTables.Designer.cs">
       <DependentUpon>201505042115003_createTables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201505042133256_test.cs" />
-    <Compile Include="Migrations\201505042133256_test.Designer.cs">
-      <DependentUpon>201505042133256_test.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201505050825009_användarid.cs" />
     <Compile Include="Migrations\201505050825009_användarid.Designer.cs">
       <DependentUpon>201505050825009_användarid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505051032567_vetinte.cs" />
+    <Compile Include="Migrations\201505051032567_vetinte.Designer.cs">
+      <DependentUpon>201505051032567_vetinte.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -264,6 +271,16 @@
     <Content Include="Areas\Admin\Views\Organisation\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Organisation\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Banor\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Banor\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Banor\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Banor\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Banor\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Betalningsmetoder\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Betalningsmetoder\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Betalningsmetoder\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Betalningsmetoder\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Betalningsmetoder\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -306,7 +323,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_FakturaLayout.cshtml" />
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
-    <Content Include="Views\Shared\_MailView.cshtml" />
     <Content Include="Views\Shared\_SimpleLayoutRedirect.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Evenemang\Create.cshtml" />
@@ -329,11 +345,6 @@
     <Content Include="Areas\Admin\Views\Klasser\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Klasser\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Klasser\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Banor\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Banor\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Banor\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Banor\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Banor\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Registreringar\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Registreringar\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Registreringar\Details.cshtml" />
@@ -355,21 +366,24 @@
     <Content Include="Views\Shared\EditorTemplates\ContactViewModel.cshtml" />
     <Content Include="Views\Shared\_LayoutWizzard.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\RegistrationViewModel.cshtml" />
-    <Content Include="Views\SignMeUp\ListaEvenemang.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DeltagareListViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\RegistrationViewModel.cshtml" />
     <Content Include="Views\SignMeUp\BekraftaRegistrering.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ContactViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\DeltagareListViewModel.cshtml" />
     <Content Include="Views\SignMeUp\Faktura.cshtml" />
-    <Content Include="Views\SignMeUp\BekraftaBetalning.cshtml" />
-    <Content Include="Views\SignMeUp\Startlista.cshtml" />
+    <Content Include="Views\SignMeUp\BekraftelseBetalning.cshtml" />
+    <Content Include="Views\Home\Startlista.cshtml" />
     <Content Include="Views\Payson\Index.cshtml" />
+    <Content Include="Views\Home\RegistrationDone.cshtml" />
+    <Content Include="Views\Shared\_RegDetailsView.cshtml" />
+    <Content Include="Views\Shared\_LayoutEmpty.cshtml" />
+    <Content Include="Views\SignMeUp\BekraftelseMail.cshtml" />
+    <Content Include="Views\SignMeUp\SkickaMailIgen.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -382,11 +396,11 @@
     <EmbeddedResource Include="Migrations\201505042115003_createTables.resx">
       <DependentUpon>201505042115003_createTables.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505042133256_test.resx">
-      <DependentUpon>201505042133256_test.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505050825009_användarid.resx">
       <DependentUpon>201505050825009_användarid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505051032567_vetinte.resx">
+      <DependentUpon>201505051032567_vetinte.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

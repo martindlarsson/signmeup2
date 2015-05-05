@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "SkickaMailIgen";
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+
+<h2>En bekräftelse är skickad till den angivna epostadressen.</h2>
+
+<p>
+    @Html.ActionLink("Visa startlista", "startlista", "home", new { id = Model.Evenemang_Id }, null) |
+    @Html.ActionLink("Anmäl ett lag till", "index", "signmeup", new { id = Model.Evenemang_Id }, null)
+</p>
+

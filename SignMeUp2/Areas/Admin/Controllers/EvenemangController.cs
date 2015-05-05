@@ -11,7 +11,7 @@ using SignMeUp2.DataModel;
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class EvenemangController : BaseController
+    public class EvenemangController : AdminBaseController
     {
         // GET: Evenemang
         public ActionResult Index()
