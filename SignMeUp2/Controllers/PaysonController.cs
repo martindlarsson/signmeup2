@@ -136,7 +136,7 @@ namespace SignMeUp2.Controllers
 
                     //var api = new PaysonApi(PaysonViewModel.PaysonUserId, PaysonViewModel.PaysonUserKey, ApplicationId, false);
 #if DEBUG
-                    api = new PaysonApi("4", "2acab30d-fe50-426f-90d7-8c60a7eb31d4", ApplicationId, true);
+                    api = new PaysonApi("4", "2acab30d-fe50-426f-90d7-8c60a7eb31d4"); //, ApplicationId, true);
 #endif
 
                     var response = api.MakePayRequest(payData);

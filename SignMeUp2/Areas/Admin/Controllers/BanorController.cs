@@ -11,10 +11,8 @@ using SignMeUp2.DataModel;
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class BanorController : Controller
+    public class BanorController : BaseController
     {
-        private SignMeUpDataModel db = new SignMeUpDataModel();
-
         // GET: Banor
         public ActionResult Index()
         {
@@ -58,7 +56,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.Evenemang_ID);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
             return View(banor);
         }
 
@@ -74,7 +72,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.Evenemang_ID);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
             return View(banor);
         }
 
@@ -91,7 +89,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.Evenemang_ID);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
             return View(banor);
         }
 

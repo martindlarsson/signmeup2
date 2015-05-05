@@ -55,19 +55,31 @@ namespace SignMeUp2.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Epost (användarnamn)")]
         public string Email { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Lösenord")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Bekräfta lösenord")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Organisationsnamn")]
+        public string Organisation { get; set; }
+
+        [Required]
+        [Display(Name = "Adress")]
+        public string Adress { get; set; }
+
+        [EmailAddress]
+        [Display(Name = "Epost (avsändare om annat än användarnamn)")]
+        public string EmailSender { get; set; }
     }
 
     public class ResetPasswordViewModel

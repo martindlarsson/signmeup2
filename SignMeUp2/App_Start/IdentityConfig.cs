@@ -19,6 +19,7 @@ namespace SignMeUp2
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            //var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<SignMeUp2.DataModel.SignMeUpDataModel>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
@@ -29,9 +30,9 @@ namespace SignMeUp2
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
+                RequireNonLetterOrDigit = false,
                 RequireDigit = true,
-                RequireLowercase = true,
+                RequireLowercase = false,
                 RequireUppercase = true,
             };
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user

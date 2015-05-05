@@ -1,0 +1,51 @@
+﻿@model IEnumerable<SignMeUp2.DataModel.Evenemang>
+
+@{
+    ViewBag.Title = "Admin - SignMeUp2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Välkommen till administrationssidan för SignMeUp2</h2>
+
+<p>Här kan du administrera dina evenemang och anmälningar mm.</p>
+
+<p>Plats för organisationsnamn och knappar för att redigera organisationen.</p>
+
+<p>
+    @Html.ActionLink("Skapa nytt evenemang", "Create", "Evenemang", null, null)
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Namn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegStop)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Namn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegStop)
+            </td>
+            <td>
+                @Html.ActionLink("Editera", "Edit", "Evenemang", new { id = item.Id }, null) |
+                @Html.ActionLink("Detaljer", "Details", "Evenemang", new { id = item.Id }, null) |
+                @Html.ActionLink("Radera", "Delete", "Evenemang", new { id = item.Id }, null)
+            </td>
+        </tr>
+    }
+
+</table>

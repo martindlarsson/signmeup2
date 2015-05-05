@@ -183,6 +183,9 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrganisationController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\BanorController.cs" />
     <Compile Include="Areas\Admin\Controllers\DeltagareController.cs" />
@@ -196,6 +199,7 @@
     <Compile Include="Areas\Admin\Controllers\RegistreringarController.cs" />
     <Compile Include="Controllers\SignMeUpController.cs" />
     <Compile Include="DataModel\Banor.cs" />
+    <Compile Include="DataModel\Betalningsmetoder.cs" />
     <Compile Include="DataModel\Deltagare.cs" />
     <Compile Include="DataModel\Evenemang.cs" />
     <Compile Include="DataModel\Forseningsavgift.cs" />
@@ -203,6 +207,8 @@
     <Compile Include="Areas\Admin\Controllers\InvoiceController.cs" />
     <Compile Include="DataModel\Kanoter.cs" />
     <Compile Include="DataModel\Klasser.cs" />
+    <Compile Include="DataModel\Organisation.cs" />
+    <Compile Include="DataModel\OrgBetalningar.cs" />
     <Compile Include="DataModel\Rabatter.cs" />
     <Compile Include="DataModel\Registreringar.cs" />
     <Compile Include="DataModel\SignMeUpDataModel.cs" />
@@ -216,38 +222,21 @@
     <Compile Include="Helpers\SendMail.cs" />
     <Compile Include="Helpers\SpamPreventor.cs" />
     <Compile Include="Helpers\Validators.cs" />
-    <Compile Include="Migrations\201504201212042_InitialCreate.cs" />
-    <Compile Include="Migrations\201504201212042_InitialCreate.Designer.cs">
-      <DependentUpon>201504201212042_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201505042115003_createTables.cs" />
+    <Compile Include="Migrations\201505042115003_createTables.Designer.cs">
+      <DependentUpon>201505042115003_createTables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201504201235013_removeStartStop.cs" />
-    <Compile Include="Migrations\201504201235013_removeStartStop.Designer.cs">
-      <DependentUpon>201504201235013_removeStartStop.cs</DependentUpon>
+    <Compile Include="Migrations\201505042133256_test.cs" />
+    <Compile Include="Migrations\201505042133256_test.Designer.cs">
+      <DependentUpon>201505042133256_test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201504201332307_addEvenemangEveryWhere.cs" />
-    <Compile Include="Migrations\201504201332307_addEvenemangEveryWhere.Designer.cs">
-      <DependentUpon>201504201332307_addEvenemangEveryWhere.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201504201358332_addMoreOnEvenemang.cs" />
-    <Compile Include="Migrations\201504201358332_addMoreOnEvenemang.Designer.cs">
-      <DependentUpon>201504201358332_addMoreOnEvenemang.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201504201903338_test.cs" />
-    <Compile Include="Migrations\201504201903338_test.Designer.cs">
-      <DependentUpon>201504201903338_test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201504201925528_removeAntalDeltagareEvenemang.cs" />
-    <Compile Include="Migrations\201504201925528_removeAntalDeltagareEvenemang.Designer.cs">
-      <DependentUpon>201504201925528_removeAntalDeltagareEvenemang.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201504282144425_SwitchDateTime.cs" />
-    <Compile Include="Migrations\201504282144425_SwitchDateTime.Designer.cs">
-      <DependentUpon>201504282144425_SwitchDateTime.cs</DependentUpon>
+    <Compile Include="Migrations\201505050825009_användarid.cs" />
+    <Compile Include="Migrations\201505050825009_användarid.Designer.cs">
+      <DependentUpon>201505050825009_användarid.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\PaysonViewModel.cs" />
-    <Compile Include="Models\DataAnnotations.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IWizardStep.cs" />
     <Compile Include="Models\RegIndexContainer.cs" />
@@ -269,6 +258,12 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\Organisation\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Organisation\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Organisation\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Organisation\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Organisation\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -281,7 +276,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -372,6 +369,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -381,26 +379,14 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201504201212042_InitialCreate.resx">
-      <DependentUpon>201504201212042_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201505042115003_createTables.resx">
+      <DependentUpon>201505042115003_createTables.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201504201235013_removeStartStop.resx">
-      <DependentUpon>201504201235013_removeStartStop.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201505042133256_test.resx">
+      <DependentUpon>201505042133256_test.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201504201332307_addEvenemangEveryWhere.resx">
-      <DependentUpon>201504201332307_addEvenemangEveryWhere.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201504201358332_addMoreOnEvenemang.resx">
-      <DependentUpon>201504201358332_addMoreOnEvenemang.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201504201903338_test.resx">
-      <DependentUpon>201504201903338_test.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201504201925528_removeAntalDeltagareEvenemang.resx">
-      <DependentUpon>201504201925528_removeAntalDeltagareEvenemang.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201504282144425_SwitchDateTime.resx">
-      <DependentUpon>201504282144425_SwitchDateTime.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201505050825009_användarid.resx">
+      <DependentUpon>201505050825009_användarid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

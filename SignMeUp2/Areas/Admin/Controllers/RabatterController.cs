@@ -8,13 +8,11 @@ using System.Web;
 using System.Web.Mvc;
 using SignMeUp2.DataModel;
 
-namespace SignMeUp2.Controllers
+namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class RabatterController : Controller
+    public class RabatterController : BaseController
     {
-        private SignMeUpDataModel db = new SignMeUpDataModel();
-
         // GET: Rabatter
         public ActionResult Index()
         {

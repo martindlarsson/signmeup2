@@ -10,10 +10,8 @@ using SignMeUp2.DataModel;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
-    public class InvoiceController : Controller
+    public class InvoiceController : BaseController
     {
-        private SignMeUpDataModel db = new SignMeUpDataModel();
-
         // GET: Invoice
         public ActionResult Index()
         {

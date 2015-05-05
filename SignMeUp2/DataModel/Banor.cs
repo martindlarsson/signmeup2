@@ -26,7 +26,7 @@ namespace SignMeUp2.DataModel
 
         public virtual ICollection<Registreringar> Registreringar { get; set; }
 
-        public int Evenemang_ID { get; set; }
+        public int EvenemangsId { get; set; }
         public virtual Evenemang Evenemang { get; set; }
     }
 }

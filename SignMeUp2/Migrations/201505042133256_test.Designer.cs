@@ -7,13 +7,13 @@ namespace SignMeUp2.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class SwitchDateTime : IMigrationMetadata
+    public sealed partial class test : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SwitchDateTime));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(test));
         
         string IMigrationMetadata.Id
         {
-            get { return "201504282144425_SwitchDateTime"; }
+            get { return "201505042133256_test"; }
         }
         
         string IMigrationMetadata.Source

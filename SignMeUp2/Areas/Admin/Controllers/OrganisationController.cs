@@ -11,106 +11,105 @@ using SignMeUp2.DataModel;
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class EvenemangController : BaseController
+    public class OrganisationController : BaseController
     {
-        // GET: Evenemang
+        // GET: Admin/Organisation
         public ActionResult Index()
         {
-            return View(db.Evenemang.ToList());
+            return View(db.Organisationer.ToList());
         }
 
-        // GET: Evenemang/Details/5
+        // GET: Admin/Organisation/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Evenemang evenemang = db.Evenemang.Find(id);
-            if (evenemang == null)
+            Organisation organisation = db.Organisationer.Find(id);
+            if (organisation == null)
             {
                 return HttpNotFound();
             }
-            return View(evenemang);
+            return View(organisation);
         }
 
-        // GET: Evenemang/Create
+        // GET: Admin/Organisation/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Evenemang/Create
+        // POST: Admin/Organisation/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Namn,RegStart,RegStop,AntalDeltagare")] Evenemang evenemang)
+        public ActionResult Create([Bind(Include = "ID,Namn,Epost,Adress,AnvändareId")] Organisation organisation)
         {
             if (ModelState.IsValid)
             {
-                evenemang.OrganisationsId = GetUser().OrganisationsId;
-                db.Evenemang.Add(evenemang);
+                db.Organisationer.Add(organisation);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(evenemang);
+            return View(organisation);
         }
 
-        // GET: Evenemang/Edit/5
+        // GET: Admin/Organisation/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Evenemang evenemang = db.Evenemang.Find(id);
-            if (evenemang == null)
+            Organisation organisation = db.Organisationer.Find(id);
+            if (organisation == null)
             {
                 return HttpNotFound();
             }
-            return View(evenemang);
+            return View(organisation);
         }
 
-        // POST: Evenemang/Edit/5
+        // POST: Admin/Organisation/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Namn,RegStart,RegStop,AntalDeltagare")] Evenemang evenemang)
+        public ActionResult Edit([Bind(Include = "ID,Namn,Epost,Adress,AnvändareId")] Organisation organisation)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(evenemang).State = EntityState.Modified;
+                db.Entry(organisation).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(evenemang);
+            return View(organisation);
         }
 
-        // GET: Evenemang/Delete/5
+        // GET: Admin/Organisation/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Evenemang evenemang = db.Evenemang.Find(id);
-            if (evenemang == null)
+            Organisation organisation = db.Organisationer.Find(id);
+            if (organisation == null)
             {
                 return HttpNotFound();
             }
-            return View(evenemang);
+            return View(organisation);
         }
 
-        // POST: Evenemang/Delete/5
+        // POST: Admin/Organisation/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Evenemang evenemang = db.Evenemang.Find(id);
-            db.Evenemang.Remove(evenemang);
+            Organisation organisation = db.Organisationer.Find(id);
+            db.Organisationer.Remove(organisation);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

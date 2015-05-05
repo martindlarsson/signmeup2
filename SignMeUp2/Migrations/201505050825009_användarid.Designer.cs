@@ -7,13 +7,13 @@ namespace SignMeUp2.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class test : IMigrationMetadata
+    public sealed partial class användarid : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(test));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(användarid));
         
         string IMigrationMetadata.Id
         {
-            get { return "201504201903338_test"; }
+            get { return "201505050825009_användarid"; }
         }
         
         string IMigrationMetadata.Source

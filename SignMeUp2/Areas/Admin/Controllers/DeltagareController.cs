@@ -11,10 +11,8 @@ using SignMeUp2.DataModel;
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class DeltagareController : Controller
+    public class DeltagareController : BaseController
     {
-        private SignMeUpDataModel db = new SignMeUpDataModel();
-
         // GET: Deltagare
         public ActionResult Index()
         {

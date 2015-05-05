@@ -28,6 +28,9 @@ namespace SignMeUp2.DataModel
         [Required]
         public DateTime RegStop { get; set; }
 
+        public int OrganisationsId { get; set; }
+        public Organisation Organisation { get; set; }
+
         public virtual ICollection<Registreringar> Registreringar { get; set; }
 
         public virtual ICollection<Banor> Banor { get; set; }

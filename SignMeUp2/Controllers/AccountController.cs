@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Owin;
 using SignMeUp2.Models;
+using SignMeUp2.DataModel;
 
 namespace SignMeUp2.Controllers
 {
@@ -90,10 +91,33 @@ namespace SignMeUp2.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser() { UserName = model. Email, Email = model.Email };
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // Skapa en organisation
+                    using (var db = new SignMeUp2.DataModel.SignMeUpDataModel())
+                    {
+                        var newOrg = new Organisation
+                        {
+                            Adress = model.Adress,
+                            AnvändareId = user.Id,
+                            Epost = !string.IsNullOrEmpty(model.EmailSender) ? model.EmailSender : model.Email,
+                            Namn = model.Organisation
+                        };
+
+                        // Spara
+                        db.Organisationer.Add(newOrg);
+                        db.SaveChanges();
+
+                        // Hämta skapat ID
+                        db.Entry(newOrg).GetDatabaseValues();
+                        // Sätt org-id på användaren
+                        user.OrganisationsId = newOrg.ID;
+                        // Uppdatera användaren
+                        IdentityResult result2 = await UserManager.UpdateAsync(user);
+                    }
+
                     await SignInAsync(user, isPersistent: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
@@ -102,7 +126,7 @@ namespace SignMeUp2.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Admin");
                 }
                 else
                 {
@@ -437,7 +461,8 @@ namespace SignMeUp2.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            //return RedirectToAction("Index", "Home");
+            return Redirect(Url.Content("~/"));
         }
 
         //

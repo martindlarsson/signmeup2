@@ -82,14 +82,12 @@ namespace SignMeUp2.Controllers
                 throw;
             }
             Session["reg"] = null;
-            Session["checkout"] = null;
         }
 
-        protected void SaveChanges(Registreringar reg)
+        protected void SaveChanges(Registreringar updatedReg)
         {
-            var origReg = db.Registreringar.FirstOrDefault<Registreringar>(oReg => oReg.ID == reg.ID);
-            db.Entry(reg).CurrentValues.SetValues(origReg);
-            //db.Registreringar.ApplyCurrentValues(reg);
+            var origReg = db.Registreringar.Find(updatedReg.ID);
+            db.Entry(updatedReg).CurrentValues.SetValues(origReg);
             db.SaveChanges();
         }
 

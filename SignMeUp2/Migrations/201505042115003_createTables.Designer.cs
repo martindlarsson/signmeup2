@@ -7,13 +7,13 @@ namespace SignMeUp2.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class InitialCreate : IMigrationMetadata
+    public sealed partial class createTables : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(createTables));
         
         string IMigrationMetadata.Id
         {
-            get { return "201504201212042_InitialCreate"; }
+            get { return "201505042115003_createTables"; }
         }
         
         string IMigrationMetadata.Source

@@ -11,10 +11,8 @@ using SignMeUp2.DataModel;
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class KlasserController : Controller
+    public class KlasserController : BaseController
     {
-        private SignMeUpDataModel db = new SignMeUpDataModel();
-
         // GET: Klasser
         public ActionResult Index()
         {
