@@ -44,6 +44,8 @@ namespace SignMeUp2.Controllers
                     return ShowError("Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
                 }
 
+                ViewBag.ev = evenemang.Namn;
+
                 wizard = new WizardViewModel();
                 wizard.Initialize();
                 wizard.Evenemang_Id = id.Value;
@@ -70,6 +72,9 @@ namespace SignMeUp2.Controllers
 
             if (wizard == null)
                 return ShowError("Ett oväntat fel inträffade, var god försök igen.", true, new Exception("Ingen wizard i TempData"));
+
+            var evenemang = db.Evenemang.Find(wizard.Evenemang_Id);
+            ViewBag.ev = evenemang.Namn;
 
             wizard.UpdateSetp(step);
 
@@ -142,6 +147,9 @@ namespace SignMeUp2.Controllers
             ViewBag.RegStep = regStep;
             ViewBag.Summa = regStep.Banor.Avgift + regStep.Kanoter.Avgift;
 
+            var evenemang = db.Evenemang.Find(wizard.Evenemang_Id);
+            ViewBag.ev = evenemang.Namn;
+
             return View(wizard);
         }
 
@@ -154,6 +162,9 @@ namespace SignMeUp2.Controllers
         public ActionResult BekraftaRegistrering(WizardViewModel wizard)
         {
             var tempWizard = (WizardViewModel)TempData["wizard"];
+
+            var evenemang = db.Evenemang.Find(wizard.Evenemang_Id);
+            ViewBag.ev = evenemang.Namn;
 
             if (!string.IsNullOrEmpty(Request["korrigera"]))
             {
@@ -187,6 +198,9 @@ namespace SignMeUp2.Controllers
             if (tempWizard.Fakturaadress == null)
                 tempWizard.Fakturaadress = new Invoice();
 
+            var evenemang = db.Evenemang.Find(tempWizard.Evenemang_Id);
+            ViewBag.ev = evenemang.Namn;
+
             TempData["wizard"] = tempWizard;
             return View(tempWizard.Fakturaadress);
         }
@@ -200,6 +214,9 @@ namespace SignMeUp2.Controllers
         public ActionResult Faktura(Invoice fakturaadress)
         {
             var tempWizard = (WizardViewModel)TempData["wizard"];
+
+            var evenemang = db.Evenemang.Find(tempWizard.Evenemang_Id);
+            ViewBag.ev = evenemang.Namn;
 
             if (!string.IsNullOrEmpty(Request["cancel"]))
             {
@@ -225,21 +242,6 @@ namespace SignMeUp2.Controllers
             }
         }
 
-        ///// <summary>
-        ///// Lista alla evenemang
-        ///// </summary>
-        ///// <returns></returns>
-        //public ActionResult ListaEvenemang()
-        //{   
-        //    var evenemangsLista = from eve in db.Evenemang
-        //                            where eve.RegStop >= DateTime.Now
-        //                            orderby eve.RegStart descending
-        //                                select eve;
-
-        //    var listan = evenemangsLista.ToList();
-        //    return View("ListaEvenemang", listan);
-        //}
-
         /// <summary>
         /// Visa en registrering efter genomförd betalning
         /// </summary>
@@ -251,7 +253,9 @@ namespace SignMeUp2.Controllers
                 return ShowError("Fel vid hämtning av registreringsinformation. Kontrollera i startlistan om er registrering genomförts.", false);
 
             var reg = db.Registreringar.Include("Evenemang.Organisation").SingleOrDefault(r => r.ID == id);
-            
+
+            ViewBag.ev = reg.Evenemang.Namn;
+
             return View(PopuleraRegistrering(reg));
         }
 

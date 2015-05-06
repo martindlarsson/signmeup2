@@ -4,9 +4,6 @@ namespace SignMeUp2.DataModel
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-    //using Microsoft.AspNet.Identity;
-    //using Microsoft.AspNet.Identity.EntityFramework;
-    //using SignMeUp2.Models;
 
     public partial class SignMeUpDataModel : DbContext
     {
@@ -29,12 +26,11 @@ namespace SignMeUp2.DataModel
         public virtual DbSet<Rabatter> Rabatter { get; set; }
         public virtual DbSet<Registreringar> Registreringar { get; set; }
         public virtual DbSet<Organisation> Organisationer { get; set; }
+        public virtual DbSet<Betalningsmetoder> Betalningsmetoders { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // TODO orgBetalningar
-
-            // TODO invoce cascade delete
 
             modelBuilder.Entity<Organisation>()
                 .HasMany(e => e.Evenemang)
@@ -52,7 +48,7 @@ namespace SignMeUp2.DataModel
                 .HasMany(e => e.Registreringar)
                 .WithRequired(e => e.Evenemang)
                 .HasForeignKey(e => e.Evenemang_Id)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Evenemang>()
                 .HasMany(e => e.Banor)
@@ -69,7 +65,7 @@ namespace SignMeUp2.DataModel
                 .HasMany(e => e.Rabatter)
                 .WithRequired(e => e.Evenemang)
                 .HasForeignKey(e => e.Evenemang_ID)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Evenemang>()
                 .HasMany(e => e.Kanoter)
@@ -94,7 +90,5 @@ namespace SignMeUp2.DataModel
                 .WithRequired(e => e.Registreringar)
                 .WillCascadeOnDelete(true);
         }
-
-        public System.Data.Entity.DbSet<SignMeUp2.DataModel.Betalningsmetoder> Betalningsmetoders { get; set; }
     }
 }

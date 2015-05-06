@@ -16,7 +16,7 @@ namespace SignMeUp2.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View(db.Evenemang.ToList());
+            return View(db.Evenemang.Include("Organisation").ToList());
         }
 
         //// GET: Home
@@ -57,6 +57,7 @@ namespace SignMeUp2.Controllers
 
             var startlista = StartlistaViewModel.GetStartlist(regs, evenemang.Namn, banor, klasser);
 
+            ViewBag.ev = evenemang.Namn;
             return View("Startlista", startlista);
         }
     }

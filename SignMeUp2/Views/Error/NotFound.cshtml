@@ -1,0 +1,12 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+
+<h2>404: Sidan du efterfrågar finns inte</h2>
+
+<br />
+
+<p>@Html.ActionLink("Lista på alla evenemang", "index", "home")</p>

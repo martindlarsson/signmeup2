@@ -10,13 +10,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Namn)
+            Arrangör
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RegStart)
+            Evenemang
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RegStop)
+            Anmälan öppnar
+        </th>
+        <th>
+            Anmälan stänger
         </th>
         <th></th>
     </tr>
@@ -24,6 +27,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Organisation.Namn)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Namn)
             </td>

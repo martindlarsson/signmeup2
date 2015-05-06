@@ -19,6 +19,7 @@ namespace SignMeUp2.Controllers
     public class AccountController : Controller
     {
         private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _roleManager;
 
         public AccountController()
         {
@@ -29,6 +30,12 @@ namespace SignMeUp2.Controllers
             UserManager = userManager;
         }
 
+        public AccountController(ApplicationUserManager userManager, ApplicationRoleManager roleManager)
+        {
+            UserManager = userManager;
+            RoleManager = roleManager;
+        }
+
         public ApplicationUserManager UserManager {
             get
             {
@@ -37,6 +44,18 @@ namespace SignMeUp2.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
             }
         }
 
