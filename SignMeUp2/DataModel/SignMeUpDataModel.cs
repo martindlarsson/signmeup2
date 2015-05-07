@@ -2,10 +2,12 @@ namespace SignMeUp2.DataModel
 {
     using System;
     using System.Data.Entity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using SignMeUp2.Models;
 
-    public partial class SignMeUpDataModel : DbContext
+    public partial class SignMeUpDataModel : IdentityDbContext<ApplicationUser>
     {
         public SignMeUpDataModel()
             : base("name=SignMeUpDataModel")
@@ -30,6 +32,9 @@ namespace SignMeUp2.DataModel
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            // Identity context model creation
+            base.OnModelCreating(modelBuilder);
+
             // TODO orgBetalningar
 
             modelBuilder.Entity<Organisation>()

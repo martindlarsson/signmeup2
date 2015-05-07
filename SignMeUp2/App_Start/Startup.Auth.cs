@@ -8,6 +8,7 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using System;
 using SignMeUp2.Models;
+using SignMeUp2.DataModel;
 
 namespace SignMeUp2
 {
@@ -17,7 +18,8 @@ namespace SignMeUp2
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context and user manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
+            //app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext(SignMeUpDataModel.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create); 
 

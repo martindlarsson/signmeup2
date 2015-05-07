@@ -18,7 +18,8 @@ namespace SignMeUp2
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            //var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<SignMeUp2.DataModel.SignMeUpDataModel>()));
             
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
@@ -83,7 +84,8 @@ namespace SignMeUp2
         }
         public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
         {
-            var roleStore = new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>());
+            //var roleStore = new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>());
+            var roleStore = new RoleStore<IdentityRole>(context.Get<SignMeUp2.DataModel.SignMeUpDataModel>());
             return new ApplicationRoleManager(roleStore);
         }
     }

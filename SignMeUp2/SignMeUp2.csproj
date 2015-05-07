@@ -252,6 +252,10 @@
     <Compile Include="Migrations\201505062143126_cascadeOnDelete.Designer.cs">
       <DependentUpon>201505062143126_cascadeOnDelete.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505062241476_identity.cs" />
+    <Compile Include="Migrations\201505062241476_identity.Designer.cs">
+      <DependentUpon>201505062241476_identity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\PaysonViewModel.cs" />
@@ -419,6 +423,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505062143126_cascadeOnDelete.resx">
       <DependentUpon>201505062143126_cascadeOnDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505062241476_identity.resx">
+      <DependentUpon>201505062241476_identity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
