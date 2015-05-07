@@ -11,26 +11,11 @@ namespace SignMeUp2.Controllers
 {
     public class HomeController : RegBaseController
     {
-        private SignMeUpDataModel db = new SignMeUpDataModel();
-
         // GET: Home
         public ActionResult Index()
         {
             return View(db.Evenemang.Include("Organisation").ToList());
         }
-
-        //// GET: Home
-        //public ActionResult RegistrationDone(int? id)
-        //{
-        //    var reg = db.Registreringar.Include("Evenemang.Organisation").SingleOrDefault(r => r.ID == id);
-
-        //    if (reg != null)
-        //    {
-        //        return View(reg);
-        //    }
-
-        //    return ShowError("Ingen anmälan med id: " + id + " kunde hittas. Var god gör om din anmälan.");
-        //}
 
         /// <summary>
         /// Visa startlista

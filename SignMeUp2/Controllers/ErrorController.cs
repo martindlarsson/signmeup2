@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace SignMeUp2.Controllers
 {
-    public class ErrorController : Controller
+    public class ErrorController : RegBaseController
     {
         public ViewResult Index()
         {

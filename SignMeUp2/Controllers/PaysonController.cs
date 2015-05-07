@@ -24,6 +24,8 @@ namespace SignMeUp2.Controllers
         {
             var registrering = (Registreringar)TempData["reg"];
 
+            log.Debug("Paysonbetalning påbörjad för lag " + registrering.Lagnamn);
+
             if (registrering == null)
             {   
                 return RedirectToAction("Index", "SignMeUp");
@@ -141,7 +143,7 @@ namespace SignMeUp2.Controllers
                     {
                         paysonViewModel.Token = response.Token;
                         paysonViewModel.Registrering.PaysonToken = response.Token;
-                        SaveChanges(paysonViewModel.Registrering);
+                        UpdateraReg(paysonViewModel.Registrering);
 
                         var forwardUrl = api.GetForwardPayUrl(response.Token);
 

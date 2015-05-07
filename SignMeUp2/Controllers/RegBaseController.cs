@@ -9,9 +9,9 @@ using SignMeUp2.DataModel;
 
 namespace SignMeUp2.Controllers
 {
-    public class RegBaseController : Controller
+    public abstract class RegBaseController : Controller
     {
-        protected static readonly SignMeUpDataModel db = new SignMeUpDataModel();
+        protected SignMeUpDataModel db = new SignMeUpDataModel();
         protected readonly ILog log;
 
         public RegBaseController()
@@ -35,7 +35,7 @@ namespace SignMeUp2.Controllers
         protected void SetAsPaid(Registreringar reg)
         {
             reg.HarBetalt = true;
-            SaveChanges(reg);
+            UpdateraReg(reg);
             SkickaRegMail(reg);
         }
 
@@ -47,7 +47,7 @@ namespace SignMeUp2.Controllers
                 var appUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
                 var link = appUrl + "signmeup/bekraftelsebetalning/" + reg.ID;
                 SendMail.SendRegistration(RenderRazorViewToString("BekraftelseMail", reg), appUrl, link, reg);
-                log.Debug("Sent confirmation mail. Lagnamn: " + reg.Lagnamn);
+                log.Debug("Skickat epost till lagnamn: " + reg.Lagnamn);
             }
             catch (Exception exc)
             {
@@ -82,7 +82,7 @@ namespace SignMeUp2.Controllers
             }
         }
 
-        protected void SaveChanges(Registreringar updatedReg)
+        protected void UpdateraReg(Registreringar updatedReg)
         {
             var origReg = db.Registreringar.Find(updatedReg.ID);
             db.Entry(updatedReg).CurrentValues.SetValues(origReg);
@@ -97,51 +97,6 @@ namespace SignMeUp2.Controllers
             reg.Evenemang = db.Evenemang.Find(reg.Evenemang_Id);
             reg.Evenemang.Organisation = db.Organisationer.Find(reg.Evenemang.OrganisationsId);
         }
-
-        //protected void FillViewData()
-        //{
-        //    ViewData["Kanoter"] =
-        //        from kanot in db.Kanoter.ToList()
-        //        select new SelectListItem
-        //        {
-        //            Text = kanot.Namn + " (" + kanot.Avgift + " kr)",
-        //            Value = kanot.ID.ToString()
-        //        };
-
-        //    ViewData["Banor"] =
-        //        from bana in db.Banor.ToList()
-        //        select new SelectListItem
-        //        {
-        //            Text = bana.Namn + " (" + bana.Avgift + " kr)",
-        //            Value = bana.ID.ToString()
-        //        };
-
-        //    ViewData["Klasser"] = new SelectList(db.Klasser.ToList(), "ID", "Namn");
-        //    ViewData["Forseningsavgift"] = Avgift.Forseningsavgift(db);
-        //}
-
-        //protected void DeleteRegistrering(int id)
-        //{
-        //    Registreringar registreringar = db.Registreringar.Include("Invoice").Include("Deltagare").Single(r => r.ID == id);
-        //    if (registreringar.Invoices != null)
-        //    {
-        //        // Cascade delete...
-        //        //db.Invoice.Remove(registreringar.Invoice);
-        //        db.Invoice.Remove(registreringar.Invoices);
-        //    }
-        //    DeleteDeltagare(registreringar);
-        //    db.Registreringar.Remove(registreringar);
-        //    db.SaveChanges();
-        //}
-
-        //protected static void DeleteDeltagare(Registreringar registrering)
-        //{
-        //    var deltagareToDelete = db.Deltagare.Where(delt => delt.RegistreringarID == registrering.ID);
-        //    foreach (var deltagare in deltagareToDelete)
-        //    {
-        //        db.Deltagare.Remove(deltagare); 
-        //    }
-        //}
 
         protected ActionResult ShowError(string logMessage, bool sendMial, Exception exception = null)
         {
@@ -164,7 +119,7 @@ namespace SignMeUp2.Controllers
 
             TempData["error"] = logMessage;
 
-            return View("Error");
+            return RedirectToAction("Index", "Error", null);
         }
     }
 }

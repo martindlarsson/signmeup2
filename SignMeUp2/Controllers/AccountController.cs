@@ -16,7 +16,7 @@ using SignMeUp2.DataModel;
 namespace SignMeUp2.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : RegBaseController
     {
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;

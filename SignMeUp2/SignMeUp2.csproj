@@ -197,7 +197,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\BanorController.cs" />
-    <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\BetalningsmetoderController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrganisationController.cs" />
     <Compile Include="Controllers\AccountController.cs" />

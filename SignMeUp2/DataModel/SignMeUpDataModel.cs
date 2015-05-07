@@ -10,7 +10,8 @@ namespace SignMeUp2.DataModel
     public partial class SignMeUpDataModel : IdentityDbContext<ApplicationUser>
     {
         public SignMeUpDataModel()
-            : base("name=SignMeUpDataModel")
+            //: base("name=SignMeUpDataModel")
+            : base("SignMeUpDataModel", throwIfV1Schema: false)
         {
         }
 

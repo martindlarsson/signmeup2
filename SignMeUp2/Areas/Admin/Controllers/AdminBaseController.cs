@@ -10,12 +10,20 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Owin;
+using log4net;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
-    public class AdminBaseController : Controller
+    public abstract class AdminBaseController : Controller
     {
         protected SignMeUpDataModel db = new SignMeUpDataModel();
+
+        protected readonly ILog log;
+
+        public AdminBaseController()
+        {   
+            log = LogManager.GetLogger(GetType());
+        }
 
         protected ApplicationUser GetUser()
         {

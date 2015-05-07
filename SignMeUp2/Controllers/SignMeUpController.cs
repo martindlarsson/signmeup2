@@ -16,8 +16,6 @@ namespace SignMeUp2.Controllers
 {
     public class SignMeUpController : RegBaseController
     {
-        private SignMeUpDataModel db = new SignMeUpDataModel();
-
         public ActionResult Index(int? id)
         {   
             WizardViewModel wizard = (WizardViewModel)TempData["wizard"];
@@ -28,6 +26,8 @@ namespace SignMeUp2.Controllers
                     return ShowError("Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.", false);
 
                 var evenemang = db.Evenemang.Where(ev => ev.Id == id).FirstOrDefault();
+
+                log.Info("Användare går in på anmälan för: " + evenemang.Namn);
 
                 var evenemangResult = EvenemangHelper.EvaluateEvenemang(evenemang);
 
@@ -75,6 +75,8 @@ namespace SignMeUp2.Controllers
 
             var evenemang = db.Evenemang.Find(wizard.Evenemang_Id);
             ViewBag.ev = evenemang.Namn;
+
+            log.Info("Användare är i steg " + wizard.CurrentStepIndex + " av anmälan till " + evenemang.Namn);
 
             wizard.UpdateSetp(step);
 
@@ -150,6 +152,8 @@ namespace SignMeUp2.Controllers
             var evenemang = db.Evenemang.Find(wizard.Evenemang_Id);
             ViewBag.ev = evenemang.Namn;
 
+            log.Info("Användare bekräfta registrering (GET) för " + evenemang.Namn);
+
             return View(wizard);
         }
 
@@ -163,8 +167,15 @@ namespace SignMeUp2.Controllers
         {
             var tempWizard = (WizardViewModel)TempData["wizard"];
 
-            var evenemang = db.Evenemang.Find(wizard.Evenemang_Id);
+            if (tempWizard == null)
+            {
+                ShowError("Ett oväntat fel uppstod. Var god försök senare.", true, new Exception("wizard was null in TempData. (BekraftaRegistrering POST)"));
+            }
+
+            var evenemang = db.Evenemang.Find(tempWizard.Evenemang_Id);
             ViewBag.ev = evenemang.Namn;
+
+            log.Info("Användare bekräfta registrering (POST) för " + evenemang.Namn);
 
             if (!string.IsNullOrEmpty(Request["korrigera"]))
             {
@@ -201,6 +212,8 @@ namespace SignMeUp2.Controllers
             var evenemang = db.Evenemang.Find(tempWizard.Evenemang_Id);
             ViewBag.ev = evenemang.Namn;
 
+            log.Info("Användare valt faktura (GET) för " + evenemang.Namn);
+
             TempData["wizard"] = tempWizard;
             return View(tempWizard.Fakturaadress);
         }
@@ -217,6 +230,8 @@ namespace SignMeUp2.Controllers
 
             var evenemang = db.Evenemang.Find(tempWizard.Evenemang_Id);
             ViewBag.ev = evenemang.Namn;
+
+            log.Info("Användare valt faktura (POST) för " + evenemang.Namn);
 
             if (!string.IsNullOrEmpty(Request["cancel"]))
             {
@@ -256,6 +271,8 @@ namespace SignMeUp2.Controllers
 
             ViewBag.ev = reg.Evenemang.Namn;
 
+            log.Info("Användare bekräftelse betalning (GET) för " + reg.Evenemang.Namn);
+
             return View(PopuleraRegistrering(reg));
         }
 
@@ -272,6 +289,9 @@ namespace SignMeUp2.Controllers
             }
 
             var reg = db.Registreringar.Include("Evenemang.Organisation").SingleOrDefault(r => r.ID == id);
+
+            log.Info("Skicka mail igen för " + reg.Evenemang.Namn + " lagnamn: " + reg.Lagnamn);
+
             SkickaRegMail(reg);
 
             return View();
@@ -283,7 +303,9 @@ namespace SignMeUp2.Controllers
         /// <param name="wizard"></param>
         private Registreringar SparaNyRegistrering(WizardViewModel wizard, bool harBetalt)
         {
+            log.Debug("Sparar ny registrering");
             var reg = Helpers.ClassMapper.MapToRegistreringar(wizard);
+            log.Debug("Konverterat wizard till registrering för lag " + reg.Lagnamn);
             reg.Registreringstid = DateTime.Now;
             reg.HarBetalt = harBetalt;
             db.Registreringar.Add(reg);
@@ -296,6 +318,8 @@ namespace SignMeUp2.Controllers
                 db.Invoice.Add(reg.Invoices);
 
             db.SaveChanges();
+
+            log.Debug("Sparat registrering för lag " + reg.Lagnamn);
 
             db.Entry(reg).GetDatabaseValues();
             return reg;
