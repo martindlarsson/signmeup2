@@ -56,7 +56,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.Evenemang_ID);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
             return View(klasser);
         }
 
@@ -72,7 +72,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.Evenemang_ID);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
             return View(klasser);
         }
 
@@ -89,7 +89,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.Evenemang_ID);
+            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
             return View(klasser);
         }
 

@@ -19,6 +19,14 @@ namespace SignMeUp2.Migrations
 
         protected override void Seed(SignMeUp2.DataModel.SignMeUpDataModel context)
         {
+            var adminOrg = context.Organisationer.SingleOrDefault(o => o.Namn == "SignMeUp");
+
+            // Då har vi redan kört seed tidigare
+            if (adminOrg != null)
+            {
+                return;
+            }
+
             var org = new Organisation
             {
                 Namn = "SignMeUp",
@@ -26,11 +34,11 @@ namespace SignMeUp2.Migrations
                 Adress = "Kätterud"
             };
 
-            context.Organisationer.Add(org);
+            context.Organisationer.AddOrUpdate(org);
             context.SaveChanges();
             context.Entry(org).GetDatabaseValues();
-
-            string userId = AddUserAndRole(context, org.ID);
+                
+            string userId = AddUserAndRole(context, org.Id);
 
             if (!string.IsNullOrEmpty(userId))
             {
@@ -41,24 +49,31 @@ namespace SignMeUp2.Migrations
 
         private string AddUserAndRole(SignMeUp2.DataModel.SignMeUpDataModel context, int orgId)
         {
-            IdentityResult ir;
-            var rm = new RoleManager<IdentityRole>
-                (new RoleStore<IdentityRole>(context));
-            ir = rm.Create(new IdentityRole("admin"));
-            var um = new UserManager<ApplicationUser>(
-                new UserStore<ApplicationUser>(context));
-            var user = new ApplicationUser()
+            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var admin = um.Users.FirstOrDefault(u => u.UserName == "martin.d.andersson@gmail.com");
+
+            if (admin == null)
             {
-                UserName = "martin.d.andersson@gmail.com",
-                OrganisationsId = orgId,
-                Email = "martin.d.andersson@gmail.com",
-                EmailConfirmed = true
-            };
-            ir = um.Create(user, "a0oa9ia8uAA");
-            if (ir.Succeeded == false)
-                return null;
-            ir = um.AddToRole(user.Id, "admin");
-            return user.Id;
+                IdentityResult ir;
+                var rm = new RoleManager<IdentityRole>
+                    (new RoleStore<IdentityRole>(context));
+                ir = rm.Create(new IdentityRole("admin"));
+
+                var user = new ApplicationUser()
+                {
+                    UserName = "martin.d.andersson@gmail.com",
+                    OrganisationsId = orgId,
+                    Email = "martin.d.andersson@gmail.com",
+                    EmailConfirmed = true
+                };
+                ir = um.Create(user, "a0oa9ia8uAA");
+                if (ir.Succeeded == false)
+                    return null;
+                ir = um.AddToRole(user.Id, "admin");
+                return user.Id;
+            }
+
+            return null;
         }
     }
 }

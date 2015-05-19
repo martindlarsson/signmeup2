@@ -22,26 +22,38 @@ namespace SignMeUp2.Controllers
         // GET: Payson
         public ActionResult Index()
         {
-            var registrering = (Registreringar)TempData["reg"];
+            // Om PaysonViewModel finns i TempData kommmer vi från Cancelled och ska visa
+            // felmeddelande
+            if (TempData[PaysonViewModel.PAYSON_VM] != null)
+            {
+                var paysonVM = TempData[PaysonViewModel.PAYSON_VM] as PaysonViewModel;
+                TempData[PaysonViewModel.PAYSON_VM] = paysonVM;
 
-            log.Debug("Paysonbetalning påbörjad för lag " + registrering.Lagnamn);
+                ViewBag.ev = paysonVM.Registrering.Evenemang.Namn;
+                return View(paysonVM.Kontaktinformation);
+            }
 
-            if (registrering == null)
+            var reg = (Registreringar)TempData["reg"];
+            smuService.FillRegistrering(reg);
+
+            log.Debug("Paysonbetalning påbörjad för lag " + reg.Lagnamn);
+
+            if (reg == null)
             {   
                 return RedirectToAction("Index", "SignMeUp");
             }
 
-            var paysonViewModel = new PaysonViewModel { Registrering = registrering };
+            var paysonViewModel = new PaysonViewModel { Registrering = reg };
             TempData[PaysonViewModel.PAYSON_VM] = paysonViewModel;
 
             var paysonKontaktinfo = new PaysonKontaktViewModel
             {
-                SenderEmail = registrering.Epost,
-                SenderFirstName = registrering.Deltagare.FirstOrDefault().Förnamn,
-                SenderLastName = registrering.Deltagare.FirstOrDefault().Efternamn
+                SenderEmail = reg.Epost,
+                SenderFirstName = reg.Deltagare.FirstOrDefault().Förnamn,
+                SenderLastName = reg.Deltagare.FirstOrDefault().Efternamn
             };
 
-            ViewBag.ev = registrering.Evenemang.Namn;
+            ViewBag.ev = reg.Evenemang.Namn;
             return View(paysonKontaktinfo);
         }
 
@@ -59,95 +71,44 @@ namespace SignMeUp2.Controllers
             {
                 try
                 {
-                    if (paysonViewModel == null || paysonViewModel.Registrering == null)
+                    var reg = paysonViewModel.Registrering;
+
+                    if (paysonViewModel == null || reg == null)
                     {
                         return ShowError("Oväntat fel. Var god försök senare", true, new Exception("Ingen paysonViewModel i TempData."));
                     }
 
                     paysonViewModel.Kontaktinformation = kontaktInfo;
 
-                    log.Debug("Payment: Lagnamn: " + paysonViewModel.Registrering.Lagnamn);
+                    log.Debug("Payment: Lagnamn: " + reg.Lagnamn);
 
-                    SaveNewRegistration(paysonViewModel.Registrering);
+                    // Spara temporärt i databasen
+                    smuService.SparaNyRegistrering(reg);
+                    smuService.FillRegistrering(reg);
 
-                    paysonViewModel.RegId = paysonViewModel.Registrering.ID;
-
-                    // We remove port info to help when the site is behind a load balancer/firewall that does port rewrites.
-                    var scheme = Request.Url.Scheme;
-                    var host = Request.Url.Host;
-
-                    var returnUrl = Url.Action("Returned", "Payson", new RouteValueDictionary(), scheme, host) + "/" + paysonViewModel.RegId;
-
-                    var cancelUrl = Url.Action("Cancelled", "Payson", new RouteValueDictionary(), scheme, host) + "/" + paysonViewModel.RegId;
-
-                    var sender = new Sender(paysonViewModel.Kontaktinformation.SenderEmail);
-                    sender.FirstName = paysonViewModel.Kontaktinformation.SenderFirstName;
-                    sender.LastName = paysonViewModel.Kontaktinformation.SenderLastName;
-
-                    FillRegistrering(paysonViewModel.Registrering);
-                    var totalAmount = Avgift.Kalk(paysonViewModel.Registrering);
+                    paysonViewModel.RegId = reg.Id;
 
                     var orgId = paysonViewModel.Registrering.Evenemang.OrganisationsId;
-                    var org = db.Organisationer.Include("Betalningsmetoder").Single(o => o.ID == orgId);
+                    var org = smuService.Db.Organisationer.Include("Betalningsmetoder").Single(o => o.Id == orgId);
 
-                    var receiver = new Receiver(org.Epost, totalAmount);
-                    receiver.FirstName = org.Namn;
-                    //receiver.LastName = PaysonViewModel.PaysonRecieverLastName;
-                    receiver.SetPrimaryReceiver(true);
-
-                    var evenemang = db.Evenemang.Find(paysonViewModel.Registrering.Evenemang_Id);
-                    var payData = new PayData(returnUrl, cancelUrl, evenemang.Namn + " - " + paysonViewModel.Registrering.Lagnamn, sender, new List<Receiver> { receiver });
-
-                    // Set IPN callback URL
-                    // When the shop is hosted by Payson the IPN scheme must be http and not https
-                    var ipnNotificationUrl = Url.Action("IPN", "Payson", new RouteValueDictionary(), scheme, host) + "/" + paysonViewModel.RegId;
-                    payData.SetIpnNotificationUrl(ipnNotificationUrl);
-
-                    payData.SetFundingConstraints(new List<FundingConstraint> { FundingConstraint.Bank, FundingConstraint.CreditCard });
-                    payData.SetTrackingId(paysonViewModel.Registrering.ID.ToString());
-
-                    var orderItems = new List<PaysonIntegration.Utils.OrderItem>();
-                    var reg = paysonViewModel.Registrering;
-                    // Lägg in värden på kvitto
-                    var oi1 = new PaysonIntegration.Utils.OrderItem("Utmaningen " + DateTime.Now.Year + ", bana " + reg.Banor.Namn);
-                    oi1.SetOptionalParameters("st", 1, reg.Banor.Avgift, 0);
-                    orderItems.Add(oi1);
-                    if (reg.Kanoter.Avgift != 0)
-                    {
-                        var oi2 = new PaysonIntegration.Utils.OrderItem("Kanot, " + reg.Kanoter.Namn);
-                        oi2.SetOptionalParameters("st", 1, (decimal)reg.Kanoter.Avgift, 0);
-                        orderItems.Add(oi2);
-                    }
-                    if (reg.Forseningsavgift != 0)
-                    {
-                        var oi3 = new PaysonIntegration.Utils.OrderItem("Avgift för sen anmälan");
-                        oi3.SetOptionalParameters("st", 1, (decimal)reg.Forseningsavgift, 0);
-                        orderItems.Add(oi3);
-                    }
-                    if (reg.Rabatter != 0)
-                    {
-                        var oi4 = new PaysonIntegration.Utils.OrderItem("Rabatter");
-                        oi4.SetOptionalParameters("st", 1, -(decimal)reg.Rabatter, 0);
-                        orderItems.Add(oi4);
-                    }
-                    payData.SetOrderItems(orderItems);
+                    PayData payData = SkapaPaysonPayData(paysonViewModel, org);
 
                     var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
 #if DEBUG
                     api = new PaysonApi("4", "2acab30d-fe50-426f-90d7-8c60a7eb31d4", ApplicationId, true);
-#endif
-
+#endif                    
                     var response = api.MakePayRequest(payData);
 
                     if (response.Success)
                     {
                         paysonViewModel.Token = response.Token;
                         paysonViewModel.Registrering.PaysonToken = response.Token;
-                        UpdateraReg(paysonViewModel.Registrering);
+                        smuService.UpdateraRegistrering(paysonViewModel.Registrering);
 
                         var forwardUrl = api.GetForwardPayUrl(response.Token);
 
-                        Session[PaysonViewModel.PAYSON_VM] = paysonViewModel;
+                        TempData[PaysonViewModel.PAYSON_VM] = paysonViewModel;
+                        TempData["reg"] = paysonViewModel.Registrering;
 
                         return Redirect(forwardUrl);
                     }
@@ -163,8 +124,59 @@ namespace SignMeUp2.Controllers
                 }
             }
 
+            TempData["reg"] = paysonViewModel.Registrering;
             ViewBag.ev = paysonViewModel.Registrering.Evenemang.Namn;
             return View(kontaktInfo);
+        }
+
+        private PayData SkapaPaysonPayData(PaysonViewModel paysonViewModel, Organisation org)
+        {
+            // We remove port info to help when the site is behind a load balancer/firewall that does port rewrites.
+            var scheme = Request.Url.Scheme;
+            var host = Request.Url.Host;
+
+            var returnUrl = Url.Action("Returned", "Payson", new RouteValueDictionary(), scheme, host) + "/" + paysonViewModel.RegId;
+
+            var cancelUrl = Url.Action("Cancelled", "Payson", new RouteValueDictionary(), scheme, host) + "/" + paysonViewModel.RegId;
+
+            var sender = new Sender(paysonViewModel.Kontaktinformation.SenderEmail);
+            sender.FirstName = paysonViewModel.Kontaktinformation.SenderFirstName;
+            sender.LastName = paysonViewModel.Kontaktinformation.SenderLastName;
+
+            var reg = paysonViewModel.Registrering;
+            var betalningVM = new BetalningViewModel(reg.Bana, reg.Kanot, reg.Rabatt, reg.Forseningsavgift);
+
+            var receiver = new Receiver(org.Epost, betalningVM.SummaAttBetala);
+            receiver.FirstName = org.Namn;
+            //receiver.LastName = PaysonViewModel.PaysonRecieverLastName;
+            receiver.SetPrimaryReceiver(true);
+
+            var payData = new PayData(returnUrl,
+                cancelUrl,
+                smuService.HamtaEvenemang(paysonViewModel.Registrering.EvenemangsId).Namn + " - " + paysonViewModel.Registrering.Lagnamn,
+                sender,
+                new List<Receiver> { receiver });
+
+            // Set IPN callback URL
+            // When the shop is hosted by Payson the IPN scheme must be http and not https
+            var ipnNotificationUrl = Url.Action("IPN", "Payson", new RouteValueDictionary(), scheme, host) + "/" + paysonViewModel.RegId;
+            payData.SetIpnNotificationUrl(ipnNotificationUrl);
+
+            payData.SetFundingConstraints(new List<FundingConstraint> { FundingConstraint.Bank, FundingConstraint.CreditCard });
+            payData.SetTrackingId(paysonViewModel.Registrering.Id.ToString());
+
+            // Skapa poster för betalning
+            var orderItems = new List<PaysonIntegration.Utils.OrderItem>();
+            foreach (TripletViewModel post in betalningVM.Poster)
+            {
+                var oi = new PaysonIntegration.Utils.OrderItem(post.TypNamn + ": " + post.Namn);
+                oi.SetOptionalParameters("st", 1, post.Avgift, 0);
+                orderItems.Add(oi);
+            }
+
+            payData.SetOrderItems(orderItems);
+
+            return payData;
         }
 
         /// <summary>
@@ -181,7 +193,7 @@ namespace SignMeUp2.Controllers
                 ShowError("Ett fel inträffade när betalningen slutfördes. Kontrollera i startlistan om er registrering genomförts", true, new Exception("Felaktigt angivet regId: " + id));
             }
 
-            var registration = db.Registreringar.FirstOrDefault(regg => regg.ID == id);
+            var registration = smuService.Db.Registreringar.Find(id);
 
             if (registration == null)
             {
@@ -193,7 +205,7 @@ namespace SignMeUp2.Controllers
             // If no payment message has been sent (IPN)
             if (!registration.HarBetalt)
             {
-                var org = db.Organisationer.Include("Betalningsmetoder").Single(o => o.ID == registration.Evenemang.OrganisationsId);
+                var org = smuService.Db.Organisationer.Include("Betalningsmetoder").Single(o => o.Id == registration.Evenemang.OrganisationsId);
 
                 var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
 #if DEBUG
@@ -206,16 +218,17 @@ namespace SignMeUp2.Controllers
                 {
                     if (!registration.HarBetalt)
                     {
-                        SetAsPaid(registration);
+                        smuService.HarBetalt(registration);
+                        SkickaRegMail(registration);
                         TempData[PaysonViewModel.PAYSON_VM] = null;
                     }
                 }
                 else
                 {
                     log.Warn("Deleting temp-registration with id: " + id);
+
                     // Remove the temporary registration
-                    db.Registreringar.Remove(registration);
-                    db.SaveChanges();
+                    smuService.TabortRegistrering(registration);
 
                     return ShowPaymentError("Error when payment returned.", response.NvpContent, registration);
                 }
@@ -232,14 +245,14 @@ namespace SignMeUp2.Controllers
                 return ShowError("Kunde inte återskapa dina uppgifter.", true, new Exception("Felaktigt regId: " + id + " vid cancel."));
             }
 
-            var registrering = db.Registreringar.Find(id);
+            var registrering = smuService.Db.Registreringar.Find(id);
 
             if (registrering == null)
             {
                 return ShowError("Betalningen avbröts av okänd anledning", true, new Exception("Payson betalning avbruten och ingen registrering i TempData hittades."));
             }
 
-            var org = db.Organisationer.Include("Betalningsmetoder").Single(o => o.ID == registrering.Evenemang.OrganisationsId);
+            var org = smuService.Db.Organisationer.Include("Betalningsmetoder").Single(o => o.Id == registrering.Evenemang.OrganisationsId);
 
             var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
 #if DEBUG
@@ -247,9 +260,18 @@ namespace SignMeUp2.Controllers
 #endif
             var response = api.MakePaymentDetailsRequest(new PaymentDetailsData(registrering.PaysonToken));
 
-            db.Registreringar.Remove(registrering);
-            log.Debug("Removed registrering with id: " + id);
+            // Ta bort temporär registrering
+            smuService.TabortRegistrering(registrering);
+            registrering.PaysonToken = null;
+
             TempData["reg"] = registrering;
+
+            var paysonVM = TempData[PaysonViewModel.PAYSON_VM] as PaysonViewModel;
+            if (paysonVM != null)
+            {
+                paysonVM.Registrering.PaysonToken = null;
+                TempData[PaysonViewModel.PAYSON_VM] = paysonVM;
+            }
 
             return ShowPaymentError("Betalningen avbruten.", response.NvpContent, registrering);
         }
@@ -264,7 +286,7 @@ namespace SignMeUp2.Controllers
                     true, new Exception("Felaktigt id i IP. id: " + id));
             }
 
-            var registration = db.Registreringar.FirstOrDefault(regg => regg.ID == id);
+            var registration = smuService.Db.Registreringar.Find(id);
 
             if (registration != null)
             {
@@ -287,7 +309,7 @@ namespace SignMeUp2.Controllers
 
                     if (!registration.HarBetalt)
                     {
-                        SetAsPaid(registration);
+                        smuService.HarBetalt(registration);
                     }
                 }
                 else
@@ -342,7 +364,9 @@ namespace SignMeUp2.Controllers
             }
 
             TempData["reg"] = registration;
+            smuService.FillRegistrering(registration);
             ViewBag.ev = registration.Evenemang.Namn;
+
             return RedirectToAction("Index");
         }
     }

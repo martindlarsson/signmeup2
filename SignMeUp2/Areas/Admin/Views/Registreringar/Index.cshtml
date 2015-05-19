@@ -13,16 +13,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Banor.Namn)
+            @Html.DisplayNameFor(model => model.Bana.Namn)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Evenemang.Namn)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Kanoter.Namn)
+            @Html.DisplayNameFor(model => model.Kanot.Namn)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Klasser.Namn)
+            @Html.DisplayNameFor(model => model.Klass.Namn)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Adress)
@@ -58,7 +58,7 @@
             @Html.DisplayNameFor(model => model.Kommentar)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Rabatter)
+            @Html.DisplayNameFor(model => model.Rabatt)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PaysonToken)
@@ -72,16 +72,16 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Banor.Namn)
+            @Html.DisplayFor(modelItem => item.Bana.Namn)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Evenemang.Namn)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Kanoter.Namn)
+            @Html.DisplayFor(modelItem => item.Kanot.Namn)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Klasser.Namn)
+            @Html.DisplayFor(modelItem => item.Klass.Namn)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Adress)
@@ -117,7 +117,7 @@
             @Html.DisplayFor(modelItem => item.Kommentar)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Rabatter)
+            @Html.DisplayFor(modelItem => item.Rabatt)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PaysonToken)
@@ -126,9 +126,9 @@
             @Html.DisplayFor(modelItem => item.Invoice)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
         </td>
     </tr>
 }

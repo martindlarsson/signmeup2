@@ -1,5 +1,6 @@
 ﻿using System;
 using SignMeUp2.DataModel;
+using SignMeUp2.Models;
 
 namespace SignMeUp2.Helpers
 {
@@ -7,25 +8,26 @@ namespace SignMeUp2.Helpers
     {
         public static int Kalk(Registreringar registrering)
         {
-            var avgift = registrering.Banor.Avgift
-                + (registrering.Kanoter != null ? registrering.Kanoter.Avgift : 0)
-                + registrering.Forseningsavgift
-                - registrering.Rabatter;
-            return avgift != null ? avgift.Value : 0;
+            return registrering.Bana.Avgift
+                + (registrering.Kanot != null ? registrering.Kanot.Avgift : 0)
+                + registrering.Forseningsavgift.Summa
+                - registrering.Rabatt.Summa;
         }
 
-        public static int Forseningsavgift(SignMeUpDataModel db)
-        {
-            var avgift = 0;
 
-            foreach (Forseningsavgift forseningsavgift in db.Forseningsavgift)
-            {
-                if (DateTime.Now > forseningsavgift.FranDatum)
-                {
-                    avgift = forseningsavgift.Summa;   
-                }
-            }
-            return avgift;
-        }
+
+        //public static int Forseningsavgift(SignMeUpDataModel db)
+        //{
+        //    var avgift = 0;
+
+        //    foreach (Forseningsavgift forseningsavgift in db.Forseningsavgift)
+        //    {
+        //        if (DateTime.Now > forseningsavgift.FranDatum)
+        //        {
+        //            avgift = forseningsavgift.Summa;   
+        //        }
+        //    }
+        //    return avgift;
+        //}
     }
 }

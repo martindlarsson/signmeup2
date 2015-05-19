@@ -15,6 +15,6 @@
 @Html.Partial("_RegDetailsView", Model)
 
 <p>
-    @Html.ActionLink("Visa startlista", "startlista", "home", new { id = Model.Evenemang_Id }, null) |
-    @Html.ActionLink("Anmäl ett lag till", "index", "signmeup", new { id = Model.Evenemang_Id }, null)
+    @Html.ActionLink("Visa startlista", "startlista", "home", new { id = Model.EvenemangsId }, null) |
+    @Html.ActionLink("Anmäl ett lag till", "index", "signmeup", new { id = Model.EvenemangsId }, null)
 </p>

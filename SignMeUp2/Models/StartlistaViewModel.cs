@@ -109,8 +109,8 @@ namespace SignMeUp2.Models
             }
 
             // Hitta rätt lista att stoppa in registreringen i
-            var banList = regList.BanLista.FirstOrDefault(banReg => banReg.Namn == reg.Banor.Namn);
-            var klassList = banList.KlassLista.FirstOrDefault(klassL => klassL.Namn == reg.Klasser.Namn);
+            var banList = regList.BanLista.FirstOrDefault(banReg => banReg.Namn == reg.Bana.Namn);
+            var klassList = banList.KlassLista.FirstOrDefault(klassL => klassL.Namn == reg.Klass.Namn);
             klassList.RegistreringarList.Add(registrering);
         }
 

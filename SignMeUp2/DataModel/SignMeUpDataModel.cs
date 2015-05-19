@@ -33,68 +33,22 @@ namespace SignMeUp2.DataModel
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            // Identity context model creation
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Configurations.Add(new EvenemangMap());
+            modelBuilder.Configurations.Add(new ForseningsavgiftMap());
+            modelBuilder.Configurations.Add(new BanorMap());
+            modelBuilder.Configurations.Add(new KlasserMap());
+            modelBuilder.Configurations.Add(new KanoterMap());
+            modelBuilder.Configurations.Add(new RegistreringarMap());
+            modelBuilder.Configurations.Add(new DeltagareMap());
+            modelBuilder.Configurations.Add(new BetalningsmetoderMap());
+            modelBuilder.Configurations.Add(new InvoiceMap());
+            modelBuilder.Configurations.Add(new OrgMap());
+            modelBuilder.Configurations.Add(new RabattMap());
 
             // TODO orgBetalningar
 
-            modelBuilder.Entity<Organisation>()
-                .HasMany(e => e.Evenemang)
-                .WithRequired(e => e.Organisation)
-                .HasForeignKey(e => e.OrganisationsId)
-                .WillCascadeOnDelete(true);
-
-            modelBuilder.Entity<Banor>()
-                .HasMany(e => e.Registreringar)
-                .WithRequired(e => e.Banor)
-                .HasForeignKey(e => e.Bana)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Evenemang>()
-                .HasMany(e => e.Registreringar)
-                .WithRequired(e => e.Evenemang)
-                .HasForeignKey(e => e.Evenemang_Id)
-                .WillCascadeOnDelete(true);
-
-            modelBuilder.Entity<Evenemang>()
-                .HasMany(e => e.Banor)
-                .WithRequired(e => e.Evenemang)
-                .HasForeignKey(e => e.EvenemangsId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Evenemang>()
-                .HasMany(e => e.Klasser)
-                .WithRequired(e => e.Evenemang)
-                .HasForeignKey(e => e.Evenemang_ID);
-
-            modelBuilder.Entity<Evenemang>()
-                .HasMany(e => e.Rabatter)
-                .WithRequired(e => e.Evenemang)
-                .HasForeignKey(e => e.Evenemang_ID)
-                .WillCascadeOnDelete(true);
-
-            modelBuilder.Entity<Evenemang>()
-                .HasMany(e => e.Kanoter)
-                .WithRequired(e => e.Evenemang)
-                .HasForeignKey(e => e.Evenemang_ID)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Kanoter>()
-                .HasMany(e => e.Registreringar)
-                .WithRequired(e => e.Kanoter)
-                .HasForeignKey(e => e.Kanot)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Klasser>()
-                .HasMany(e => e.Registreringar)
-                .WithRequired(e => e.Klasser)
-                .HasForeignKey(e => e.Klass)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Registreringar>()
-                .HasMany(e => e.Deltagare)
-                .WithRequired(e => e.Registreringar)
-                .WillCascadeOnDelete(true);
+            // Identity context model creation
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

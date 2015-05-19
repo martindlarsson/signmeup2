@@ -5,6 +5,7 @@ namespace SignMeUp2.DataModel
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Data.Entity.ModelConfiguration;
 
     [Table("Kanoter")]
     public partial class Kanoter
@@ -14,16 +15,34 @@ namespace SignMeUp2.DataModel
             Registreringar = new HashSet<Registreringar>();
         }
 
-        public int ID { get; set; }
+        public int Id { get; set; }
 
-        [StringLength(50)]
         public string Namn { get; set; }
 
-        public int? Avgift { get; set; }
+        public int Avgift { get; set; }
 
         public virtual ICollection<Registreringar> Registreringar { get; set; }
 
-        public int Evenemang_ID { get; set; }
+        public int EvenemangsId { get; set; }
         public virtual Evenemang Evenemang { get; set; }
+    }
+
+    public class KanoterMap : EntityTypeConfiguration<Kanoter>
+    {
+        public KanoterMap()
+        {
+            // Key
+            HasKey(e => e.Id);
+
+            // Properties
+            Property(e => e.Namn).IsRequired();
+            Property(e => e.Avgift).IsRequired();
+
+            // Relatiionship
+            HasRequired(k => k.Evenemang)
+                .WithMany(e => e.Kanoter)
+                .HasForeignKey(k => k.EvenemangsId)
+                .WillCascadeOnDelete(true);
+        }
     }
 }

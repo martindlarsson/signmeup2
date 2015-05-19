@@ -5,6 +5,7 @@ namespace SignMeUp2.DataModel
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Data.Entity.ModelConfiguration;
 
     [Table("Klasser")]
     public partial class Klasser
@@ -14,13 +15,31 @@ namespace SignMeUp2.DataModel
             Registreringar = new HashSet<Registreringar>();
         }
 
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         public string Namn { get; set; }
 
         public virtual ICollection<Registreringar> Registreringar { get; set; }
 
-        public int Evenemang_ID { get; set; }
+        public int EvenemangsId { get; set; }
         public virtual Evenemang Evenemang { get; set; }
+    }
+
+    public class KlasserMap : EntityTypeConfiguration<Klasser>
+    {
+        public KlasserMap()
+        {
+            // Key
+            HasKey(e => e.Id);
+
+            // Properties
+            Property(e => e.Namn).IsRequired();
+
+            // Relatiionship
+            HasRequired(k => k.Evenemang)
+                .WithMany(e => e.Klasser)
+                .HasForeignKey(k => k.EvenemangsId)
+                .WillCascadeOnDelete(true);
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Registreringar
         public ActionResult Index()
         {
-            var registreringar = db.Registreringar.Include(r => r.Banor).Include(r => r.Evenemang).Include(r => r.Kanoter).Include(r => r.Klasser);
+            var registreringar = db.Registreringar.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass);
             return View(registreringar.ToList());
         }
 
@@ -59,10 +59,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.Bana);
-            ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.Evenemang_Id);
-            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.Kanot);
-            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.Klass);
+            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.BanId);
+            ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.EvenemangsId);
+            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.KanotId);
+            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.KlassId);
             return View(registreringar);
         }
 
@@ -78,10 +78,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.Bana);
-            ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.Evenemang_Id);
-            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.Kanot);
-            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.Klass);
+            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.BanId);
+            ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.EvenemangsId);
+            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.KanotId);
+            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.KlassId);
             return View(registreringar);
         }
 
@@ -98,10 +98,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.Bana);
-            ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.Evenemang_Id);
-            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.Kanot);
-            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.Klass);
+            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.BanId);
+            ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.EvenemangsId);
+            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.KanotId);
+            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.KlassId);
             return View(registreringar);
         }
 

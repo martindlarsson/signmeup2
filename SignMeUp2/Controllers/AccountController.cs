@@ -132,7 +132,7 @@ namespace SignMeUp2.Controllers
                         // Hämta skapat ID
                         db.Entry(newOrg).GetDatabaseValues();
                         // Sätt org-id på användaren
-                        user.OrganisationsId = newOrg.ID;
+                        user.OrganisationsId = newOrg.Id;
                         // Uppdatera användaren
                         IdentityResult result2 = await UserManager.UpdateAsync(user);
                     }

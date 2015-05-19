@@ -1,0 +1,19 @@
+﻿@model SignMeUp2.DataModel.Evenemang
+@{
+    ViewBag.Title = "Anmälan är inte öppen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Closed)
+{
+    <h2>Anmälan till @Model.Namn är stängd sedan @Model.RegStop.ToShortDateString()</h2>
+}
+else if (ViewBag.NotOpen)
+{
+    <h2>Anmälan till @Model.Namn är ännu inte öppnad men öppnar @Model.RegStop.ToShortDateString()</h2>
+}
+
+<p>@Html.ActionLink("Lista på alla evenemang", "index", "home")</p>
+
+
+

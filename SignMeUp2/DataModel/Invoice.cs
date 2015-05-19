@@ -5,6 +5,7 @@ namespace SignMeUp2.DataModel
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Data.Entity.ModelConfiguration;
 
     [Table("Invoice")]
     public partial class Invoice
@@ -31,8 +32,29 @@ namespace SignMeUp2.DataModel
 
         public string Att { get; set; }
 
-        //public int Registreringar_ID { get; set; }
+        public Registreringar Registrering { get; set; }
+    }
 
-        //public virtual Registreringar Registreringar { get; set; }
+    public class InvoiceMap : EntityTypeConfiguration<Invoice>
+    {
+        public InvoiceMap()
+        {
+            // Key
+            HasKey(i => i.Id);
+
+            // Properties
+            Property(i => i.Box).IsOptional();
+            Property(i => i.Postnummer).IsRequired();
+            Property(i => i.Organisationsnummer).IsRequired();
+            Property(i => i.Postort).IsRequired();
+            Property(i => i.Postadress).IsRequired();
+            Property(i => i.Namn).IsRequired();
+            Property(i => i.Att).IsRequired();
+
+            // Relatiionship
+            HasRequired(i => i.Registrering)
+                .WithRequiredDependent(r => r.Invoice)
+                .WillCascadeOnDelete(true);
+        }
     }
 }

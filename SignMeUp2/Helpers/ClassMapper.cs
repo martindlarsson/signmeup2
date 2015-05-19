@@ -13,9 +13,13 @@ namespace SignMeUp2.Helpers
         {
             var reg = new Registreringar();
 
-            reg.Evenemang_Id = wizard.Evenemang_Id;
+            reg.EvenemangsId = wizard.Evenemang_Id;
 
-            reg.Invoices = wizard.Fakturaadress;
+            reg.Invoice = wizard.Fakturaadress;
+
+            reg.Rabatt = wizard.Rabatt;
+
+            reg.Forseningsavgift = wizard.Forseningsavgift;
 
             foreach (IWizardStep step in wizard.Steps)
             {
@@ -23,9 +27,9 @@ namespace SignMeUp2.Helpers
                 {
                     var regStep = (RegistrationViewModel)step;
                     reg.Lagnamn = regStep.Lagnamn;
-                    reg.Bana = regStep.Bana;
-                    reg.Klass = regStep.Klass;
-                    reg.Kanot = regStep.Kanot;
+                    reg.BanId = regStep.Bana;
+                    reg.KlassId = regStep.Klass;
+                    reg.KanotId = regStep.Kanot;
                     reg.Ranking = regStep.Ranking;
                 }
                 else if (step is ContactViewModel)

@@ -19,8 +19,13 @@ namespace SignMeUp2.Models
 
         public Invoice Fakturaadress { get; set; }
 
-        //public enum Betalningssätt { Payson = 1, Faktura = 2 }
-        //public Betalningssätt Betalningsmetod { get; set; }
+        public Rabatter Rabatt { get; set; }
+
+        public string Rabattkod { get; set; }
+
+        public Forseningsavgift Forseningsavgift { get; set; }
+
+        public BetalningViewModel Betalnignsposter { get; set; }
 
         public void Initialize()
         {
@@ -34,6 +39,14 @@ namespace SignMeUp2.Models
         public void UpdateSetp(IWizardStep step)
         {
             Steps[CurrentStepIndex] = step;
+        }
+
+        public RegistrationViewModel GetRegStep()
+        {
+            if (Steps == null)
+                return null;
+
+            return Steps.OfType<RegistrationViewModel>().FirstOrDefault();
         }
     }
 }

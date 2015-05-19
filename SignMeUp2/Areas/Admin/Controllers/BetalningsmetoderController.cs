@@ -13,8 +13,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class BetalningsmetoderController : AdminBaseController
     {
-        private SignMeUpDataModel db = new SignMeUpDataModel();
-
         public ActionResult CreateOrUpdate()
         {
             var user = GetUser();
@@ -27,7 +25,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             }
             else
             {
-                return RedirectToAction("update", new { id = org.Betalningsmetoder.ID });
+                return RedirectToAction("update", new { id = org.Betalningsmetoder.Id });
             }
         }
 
@@ -67,7 +65,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Betalningsmetoders.Add(betalningsmetoder);
+                //db.Betalningsmetoders.Add(betalningsmetoder);
+                var orgId = GetUser().OrganisationsId;
+                var org = db.Organisationer.Find(orgId);
+                org.Betalningsmetoder = betalningsmetoder;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

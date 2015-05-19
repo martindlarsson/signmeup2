@@ -14,7 +14,7 @@ namespace SignMeUp2.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View(db.Evenemang.Include("Organisation").ToList());
+            return View(smuService.Db.Evenemang.Include("Organisation").ToList());
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace SignMeUp2.Controllers
             if (id == null)
                 return ShowError("Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.", false);
 
-            var evenemang = db.Evenemang.Where(ev => ev.Id == id).FirstOrDefault();
+            var evenemang = smuService.Db.Evenemang.Find(id);
 
             var evenemangResult = EvenemangHelper.EvaluateEvenemang(evenemang);
 
@@ -36,9 +36,9 @@ namespace SignMeUp2.Controllers
                 return ShowError("Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
             }
 
-            var regs = db.Registreringar.Where(reg => reg.Evenemang_Id == id.Value).ToList();
-            var banor = db.Banor.ToList();
-            var klasser = db.Klasser.ToList();
+            var regs = smuService.Db.Registreringar.Where(reg => reg.EvenemangsId == id.Value).ToList();
+            var banor = smuService.Db.Banor.ToList();
+            var klasser = smuService.Db.Klasser.ToList();
 
             var startlista = StartlistaViewModel.GetStartlist(regs, evenemang.Namn, banor, klasser);
 

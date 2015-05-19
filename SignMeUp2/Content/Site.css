@@ -21,3 +21,5 @@ textarea {
     vertical-align: middle;
     float: none;
 }
+
+.top-buffer { margin-top:20px; }

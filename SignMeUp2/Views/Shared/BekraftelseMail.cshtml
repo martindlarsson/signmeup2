@@ -1,0 +1,20 @@
+﻿@using SignMeUp2.Models;
+@using SignMeUp2.DataModel;
+@using SignMeUp2.Helpers;
+@{
+    ViewBag.Title = "Bekräfta registrering";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+@model SignMeUp2.DataModel.Registreringar
+
+<h2>Tack för din anmälan till @Model.Evenemang.Namn</h2>
+   
+<h4>Arrangör är @Model.Evenemang.Organisation.Namn</h4>
+
+@Html.Partial("_RegDetailsView", Model)
+
+<p>
+    @Html.ActionLink("Visa startlista", "startlista", "home", new { id = Model.EvenemangsId }, null) |
+    @Html.ActionLink("Anmäl ett lag till", "index", "signmeup", new { id = Model.EvenemangsId }, null)
+</p>
