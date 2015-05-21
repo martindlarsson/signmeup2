@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
 namespace SignMeUp2.Helpers
 {

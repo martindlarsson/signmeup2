@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
 namespace SignMeUp2.Helpers
 {

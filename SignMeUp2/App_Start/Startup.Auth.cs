@@ -8,7 +8,7 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using System;
 using SignMeUp2.Models;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
 namespace SignMeUp2
 {

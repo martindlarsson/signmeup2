@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -38,7 +38,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Rabatter/Create
         public ActionResult Create()
         {
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn");
+            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn");
             return View();
         }
 
@@ -47,7 +47,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Kod,Summa,Beskrivning,Evenemang_ID")] Rabatter rabatter)
+        public ActionResult Create([Bind(Include = "Id,Kod,Summa,Beskrivning,EvenemangsId")] Rabatter rabatter)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +56,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", rabatter.EvenemangsId);
+            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", rabatter.EvenemangsId);
             return View(rabatter);
         }
 
@@ -81,7 +81,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Kod,Summa,Beskrivning,Evenemang_ID")] Rabatter rabatter)
+        public ActionResult Edit([Bind(Include = "Id,Kod,Summa,Beskrivning,EvenemangsId")] Rabatter rabatter)
         {
             if (ModelState.IsValid)
             {

@@ -1,4 +1,4 @@
-namespace SignMeUp2.DataModel
+namespace SignMeUp2.Data
 {
     using System;
     using System.Collections.Generic;
@@ -22,11 +22,14 @@ namespace SignMeUp2.DataModel
 
         public int Id { get; set; }
 
+        [Required]
         public string Namn { get; set; }
 
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime RegStart { get; set; }
 
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime RegStop { get; set; }
 

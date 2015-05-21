@@ -6,18 +6,18 @@ namespace SignMeUp2.Migrations
     using System.Linq;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using SignMeUp2.DataModel;
+    using SignMeUp2.Data;
     using SignMeUp2.Models;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<SignMeUp2.DataModel.SignMeUpDataModel>
+    internal sealed class Configuration : DbMigrationsConfiguration<SignMeUp2.Data.SignMeUpDataModel>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "SignMeUp2.DataModel.SignMeUpDataModel";
+            ContextKey = "SignMeUp2.Data.SignMeUpDataModel";
         }
 
-        protected override void Seed(SignMeUp2.DataModel.SignMeUpDataModel context)
+        protected override void Seed(SignMeUp2.Data.SignMeUpDataModel context)
         {
             var adminOrg = context.Organisationer.SingleOrDefault(o => o.Namn == "SignMeUp");
 
@@ -47,7 +47,7 @@ namespace SignMeUp2.Migrations
             }
         }
 
-        private string AddUserAndRole(SignMeUp2.DataModel.SignMeUpDataModel context, int orgId)
+        private string AddUserAndRole(SignMeUp2.Data.SignMeUpDataModel context, int orgId)
         {
             var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             var admin = um.Users.FirstOrDefault(u => u.UserName == "martin.d.andersson@gmail.com");

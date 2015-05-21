@@ -1,5 +1,5 @@
 ﻿using System;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 using SignMeUp2.Models;
 
 namespace SignMeUp2.Helpers

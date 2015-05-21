@@ -52,14 +52,27 @@ namespace SignMeUp2.Migrations
                 .Index(t => t.EvenemangsId);
             
             CreateTable(
+                "dbo.Kanoter",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Namn = c.String(nullable: false),
+                        Avgift = c.Int(nullable: false),
+                        EvenemangsId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Evenemang", t => t.EvenemangsId, cascadeDelete: true)
+                .Index(t => t.EvenemangsId);
+            
+            CreateTable(
                 "dbo.Registreringar",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         EvenemangsId = c.Int(nullable: false),
                         Lagnamn = c.String(nullable: false),
-                        Ranking = c.Boolean(),
-                        Startnummer = c.Int(),
+                        Ranking = c.Boolean(nullable: false),
+                        Startnummer = c.Int(nullable: false),
                         HarBetalt = c.Boolean(nullable: false),
                         Kommentar = c.String(),
                         Adress = c.String(nullable: false),
@@ -68,34 +81,33 @@ namespace SignMeUp2.Migrations
                         Klubb = c.String(),
                         PaysonToken = c.String(),
                         Registreringstid = c.DateTime(nullable: false),
-                        ForseningsavgiftsId = c.Int(nullable: false),
                         BanId = c.Int(nullable: false),
-                        RabattId = c.Int(nullable: false),
-                        InvoiceId = c.Int(nullable: false),
-                        KanotId = c.Int(nullable: false),
                         KlassId = c.Int(nullable: false),
+                        KanotId = c.Int(nullable: false),
+                        Forseningsavgift_Id = c.Int(),
+                        Rabatt_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Banor", t => t.BanId)
-                .ForeignKey("dbo.Evenemang", t => t.EvenemangsId, cascadeDelete: true)
-                .ForeignKey("dbo.Forseningsavgift", t => t.ForseningsavgiftsId)
+                .ForeignKey("dbo.Forseningsavgift", t => t.Forseningsavgift_Id)
                 .ForeignKey("dbo.Kanoter", t => t.KanotId)
                 .ForeignKey("dbo.Klasser", t => t.KlassId)
-                .ForeignKey("dbo.Rabatter", t => t.RabattId)
+                .ForeignKey("dbo.Rabatter", t => t.Rabatt_Id)
+                .ForeignKey("dbo.Evenemang", t => t.EvenemangsId)
                 .Index(t => t.EvenemangsId)
-                .Index(t => t.ForseningsavgiftsId)
                 .Index(t => t.BanId)
-                .Index(t => t.RabattId)
+                .Index(t => t.KlassId)
                 .Index(t => t.KanotId)
-                .Index(t => t.KlassId);
+                .Index(t => t.Forseningsavgift_Id)
+                .Index(t => t.Rabatt_Id);
             
             CreateTable(
                 "dbo.Deltagare",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Förnamn = c.String(nullable: false),
-                        Efternamn = c.String(nullable: false),
+                        Förnamn = c.String(),
+                        Efternamn = c.String(),
                         Personnummer = c.String(),
                         RegistreringarID = c.Int(nullable: false),
                     })
@@ -114,24 +126,11 @@ namespace SignMeUp2.Migrations
                         Postort = c.String(nullable: false),
                         Postadress = c.String(nullable: false),
                         Namn = c.String(nullable: false),
-                        Att = c.String(nullable: false),
+                        Att = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Registreringar", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
-            
-            CreateTable(
-                "dbo.Kanoter",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Namn = c.String(nullable: false),
-                        Avgift = c.Int(nullable: false),
-                        EvenemangsId = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Evenemang", t => t.EvenemangsId, cascadeDelete: true)
-                .Index(t => t.EvenemangsId);
             
             CreateTable(
                 "dbo.Klasser",
@@ -182,7 +181,7 @@ namespace SignMeUp2.Migrations
                         PaysonUserKey = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Organisationer", t => t.Id)
+                .ForeignKey("dbo.Organisationer", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -262,21 +261,21 @@ namespace SignMeUp2.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.Banor", "EvenemangsId", "dbo.Evenemang");
+            DropForeignKey("dbo.Registreringar", "EvenemangsId", "dbo.Evenemang");
+            DropForeignKey("dbo.Rabatter", "EvenemangsId", "dbo.Evenemang");
             DropForeignKey("dbo.Evenemang", "OrganisationsId", "dbo.Organisationer");
             DropForeignKey("dbo.Betalningsmetoder", "Id", "dbo.Organisationer");
-            DropForeignKey("dbo.Registreringar", "RabattId", "dbo.Rabatter");
-            DropForeignKey("dbo.Rabatter", "EvenemangsId", "dbo.Evenemang");
-            DropForeignKey("dbo.Registreringar", "KlassId", "dbo.Klasser");
             DropForeignKey("dbo.Klasser", "EvenemangsId", "dbo.Evenemang");
-            DropForeignKey("dbo.Registreringar", "KanotId", "dbo.Kanoter");
             DropForeignKey("dbo.Kanoter", "EvenemangsId", "dbo.Evenemang");
+            DropForeignKey("dbo.Registreringar", "Rabatt_Id", "dbo.Rabatter");
+            DropForeignKey("dbo.Registreringar", "KlassId", "dbo.Klasser");
+            DropForeignKey("dbo.Registreringar", "KanotId", "dbo.Kanoter");
             DropForeignKey("dbo.Invoice", "Id", "dbo.Registreringar");
-            DropForeignKey("dbo.Registreringar", "ForseningsavgiftsId", "dbo.Forseningsavgift");
-            DropForeignKey("dbo.Registreringar", "EvenemangsId", "dbo.Evenemang");
+            DropForeignKey("dbo.Registreringar", "Forseningsavgift_Id", "dbo.Forseningsavgift");
             DropForeignKey("dbo.Deltagare", "RegistreringarID", "dbo.Registreringar");
             DropForeignKey("dbo.Registreringar", "BanId", "dbo.Banor");
             DropForeignKey("dbo.Forseningsavgift", "EvenemangsId", "dbo.Evenemang");
+            DropForeignKey("dbo.Banor", "EvenemangsId", "dbo.Evenemang");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
@@ -286,15 +285,15 @@ namespace SignMeUp2.Migrations
             DropIndex("dbo.Betalningsmetoder", new[] { "Id" });
             DropIndex("dbo.Rabatter", new[] { "EvenemangsId" });
             DropIndex("dbo.Klasser", new[] { "EvenemangsId" });
-            DropIndex("dbo.Kanoter", new[] { "EvenemangsId" });
             DropIndex("dbo.Invoice", new[] { "Id" });
             DropIndex("dbo.Deltagare", new[] { "RegistreringarID" });
-            DropIndex("dbo.Registreringar", new[] { "KlassId" });
+            DropIndex("dbo.Registreringar", new[] { "Rabatt_Id" });
+            DropIndex("dbo.Registreringar", new[] { "Forseningsavgift_Id" });
             DropIndex("dbo.Registreringar", new[] { "KanotId" });
-            DropIndex("dbo.Registreringar", new[] { "RabattId" });
+            DropIndex("dbo.Registreringar", new[] { "KlassId" });
             DropIndex("dbo.Registreringar", new[] { "BanId" });
-            DropIndex("dbo.Registreringar", new[] { "ForseningsavgiftsId" });
             DropIndex("dbo.Registreringar", new[] { "EvenemangsId" });
+            DropIndex("dbo.Kanoter", new[] { "EvenemangsId" });
             DropIndex("dbo.Forseningsavgift", new[] { "EvenemangsId" });
             DropIndex("dbo.Evenemang", new[] { "OrganisationsId" });
             DropIndex("dbo.Banor", new[] { "EvenemangsId" });
@@ -307,10 +306,10 @@ namespace SignMeUp2.Migrations
             DropTable("dbo.Organisationer");
             DropTable("dbo.Rabatter");
             DropTable("dbo.Klasser");
-            DropTable("dbo.Kanoter");
             DropTable("dbo.Invoice");
             DropTable("dbo.Deltagare");
             DropTable("dbo.Registreringar");
+            DropTable("dbo.Kanoter");
             DropTable("dbo.Forseningsavgift");
             DropTable("dbo.Evenemang");
             DropTable("dbo.Banor");

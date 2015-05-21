@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 using SignMeUp2.Models;
 using SignMeUp2.Helpers;
 
@@ -36,7 +36,7 @@ namespace SignMeUp2.Controllers
                 return ShowError("Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
             }
 
-            var regs = smuService.Db.Registreringar.Where(reg => reg.EvenemangsId == id.Value).ToList();
+            var regs = smuService.Db.Registreringar.Where(reg => reg.EvenemangsId == id.Value && reg.HarBetalt).ToList();
             var banor = smuService.Db.Banor.ToList();
             var klasser = smuService.Db.Klasser.ToList();
 

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -38,7 +38,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Klasser/Create
         public ActionResult Create()
         {
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn");
+            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn");
             return View();
         }
 
@@ -47,7 +47,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Namn,Evenemang_ID")] Klasser klasser)
+        public ActionResult Create([Bind(Include = "ID,Namn,EvenemangsId")] Klasser klasser)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +56,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
+            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
             return View(klasser);
         }
 
@@ -72,7 +72,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
+
+            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
             return View(klasser);
         }
 
@@ -81,7 +82,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Namn,Evenemang_ID")] Klasser klasser)
+        public ActionResult Edit([Bind(Include = "ID,Namn,EvenemangsId")] Klasser klasser)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +90,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
+
+            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
             return View(klasser);
         }
 

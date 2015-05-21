@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -59,10 +59,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.BanId);
+            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.Bana.Id);
             ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.EvenemangsId);
-            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.KanotId);
-            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.KlassId);
+            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.Kanot.Id);
+            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.Klass.Id);
             return View(registreringar);
         }
 
@@ -78,10 +78,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.BanId);
+            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.Bana.Id);
             ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.EvenemangsId);
-            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.KanotId);
-            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.KlassId);
+            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.Kanot.Id);
+            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.Klass.Id);
             return View(registreringar);
         }
 
@@ -98,10 +98,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.BanId);
+            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.Bana.Id);
             ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.EvenemangsId);
-            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.KanotId);
-            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.KlassId);
+            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.Kanot.Id);
+            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.Klass.Id);
             return View(registreringar);
         }
 

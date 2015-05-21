@@ -1,4 +1,4 @@
-namespace SignMeUp2.DataModel
+namespace SignMeUp2.Data
 {
     using System;
     using System.Collections.Generic;
@@ -12,8 +12,10 @@ namespace SignMeUp2.DataModel
     {
         public int Id { get; set; }
 
+        [Required]
         public string Kod { get; set; }
 
+        [Required]
         public int Summa { get; set; }
 
         public string Beskrivning { get; set; }
@@ -21,7 +23,7 @@ namespace SignMeUp2.DataModel
         public virtual Evenemang Evenemang { get; set; }
         public int EvenemangsId { get; set; }
 
-        public virtual ICollection<Registreringar> Registreringar { get; set; }
+        //public virtual ICollection<Registreringar> Registreringar { get; set; }
     }
 
     public class RabattMap : EntityTypeConfiguration<Rabatter>
@@ -34,7 +36,7 @@ namespace SignMeUp2.DataModel
             // Properties
             Property(r => r.Kod).IsRequired();
             Property(r => r.Summa).IsRequired();
-            Property(r => r.Beskrivning);
+            Property(r => r.Beskrivning).IsOptional();
 
             // Relatiionship
             HasRequired(r => r.Evenemang)

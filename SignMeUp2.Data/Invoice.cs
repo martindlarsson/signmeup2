@@ -1,4 +1,4 @@
-namespace SignMeUp2.DataModel
+namespace SignMeUp2.Data
 {
     using System;
     using System.Collections.Generic;
@@ -49,7 +49,7 @@ namespace SignMeUp2.DataModel
             Property(i => i.Postort).IsRequired();
             Property(i => i.Postadress).IsRequired();
             Property(i => i.Namn).IsRequired();
-            Property(i => i.Att).IsRequired();
+            Property(i => i.Att).IsOptional();
 
             // Relatiionship
             HasRequired(i => i.Registrering)

@@ -6,15 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class BanorController : Controller
+    public class BanorController : AdminBaseController
     {
-        private SignMeUpDataModel db = new SignMeUpDataModel();
-
         // GET: Admin/Banor
         public ActionResult Index()
         {

@@ -1,4 +1,4 @@
-﻿namespace SignMeUp2.DataModel
+﻿namespace SignMeUp2.Data
 {
     using System;
     using System.Collections.Generic;

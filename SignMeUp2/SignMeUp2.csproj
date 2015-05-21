@@ -199,6 +199,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ForseningsavgiftController.cs" />
     <Compile Include="Areas\Admin\Controllers\BanorController.cs" />
     <Compile Include="Areas\Admin\Controllers\BetalningsmetoderController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrganisationController.cs" />
@@ -214,20 +215,7 @@
     <Compile Include="Controllers\RegBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\RegistreringarController.cs" />
     <Compile Include="Controllers\SignMeUpController.cs" />
-    <Compile Include="DataModel\Banor.cs" />
-    <Compile Include="DataModel\Betalningsmetoder.cs" />
-    <Compile Include="DataModel\Deltagare.cs" />
-    <Compile Include="DataModel\Evenemang.cs" />
-    <Compile Include="DataModel\Forseningsavgift.cs" />
-    <Compile Include="DataModel\Invoice.cs" />
     <Compile Include="Areas\Admin\Controllers\InvoiceController.cs" />
-    <Compile Include="DataModel\Kanoter.cs" />
-    <Compile Include="DataModel\Klasser.cs" />
-    <Compile Include="DataModel\Organisation.cs" />
-    <Compile Include="DataModel\OrgBetalningar.cs" />
-    <Compile Include="DataModel\Rabatter.cs" />
-    <Compile Include="DataModel\Registreringar.cs" />
-    <Compile Include="DataModel\SignMeUpDataModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -238,16 +226,15 @@
     <Compile Include="Helpers\SendMail.cs" />
     <Compile Include="Helpers\SpamPreventor.cs" />
     <Compile Include="Helpers\Validators.cs" />
-    <Compile Include="Migrations\201505182031235_skapa.cs" />
-    <Compile Include="Migrations\201505182031235_skapa.Designer.cs">
-      <DependentUpon>201505182031235_skapa.cs</DependentUpon>
+    <Compile Include="Migrations\201505212051246_skapa.cs" />
+    <Compile Include="Migrations\201505212051246_skapa.Designer.cs">
+      <DependentUpon>201505212051246_skapa.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BekraftaRegistreringViewModel.cs" />
     <Compile Include="Models\BetalningViewModel.cs" />
     <Compile Include="Models\PaysonViewModel.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IWizardStep.cs" />
     <Compile Include="Models\StartlistaViewModel.cs" />
     <Compile Include="Models\WizardModelBinder.cs" />
@@ -334,6 +321,11 @@
     <Content Include="Areas\Admin\Views\Banor\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Banor\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Banor\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Forseningsavgift\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Forseningsavgift\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Forseningsavgift\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Forseningsavgift\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Forseningsavgift\Index.cshtml" />
     <None Include="Properties\PublishProfiles\SignMeUp2.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\DatePickerReady.js" />
@@ -447,6 +439,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="DataModel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -456,9 +449,14 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201505182031235_skapa.resx">
-      <DependentUpon>201505182031235_skapa.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <ProjectReference Include="..\SignMeUp2.Data\SignMeUp2.Data.csproj">
+      <Project>{017f4eb5-c8d6-42ce-833f-83e2098bbb33}</Project>
+      <Name>SignMeUp2.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201505212051246_skapa.resx">
+      <DependentUpon>201505212051246_skapa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

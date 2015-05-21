@@ -3,7 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using SignMeUp2.Models;
+using SignMeUp2.Data;
 
 namespace SignMeUp2
 {
@@ -19,7 +19,7 @@ namespace SignMeUp2
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
             //var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<SignMeUp2.DataModel.SignMeUpDataModel>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<SignMeUp2.Data.SignMeUpDataModel>()));
             
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
@@ -85,7 +85,7 @@ namespace SignMeUp2
         public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
         {
             //var roleStore = new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>());
-            var roleStore = new RoleStore<IdentityRole>(context.Get<SignMeUp2.DataModel.SignMeUpDataModel>());
+            var roleStore = new RoleStore<IdentityRole>(context.Get<SignMeUp2.Data.SignMeUpDataModel>());
             return new ApplicationRoleManager(roleStore);
         }
     }

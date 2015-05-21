@@ -1,0 +1,73 @@
+﻿@model SignMeUp2.Data.Forseningsavgift
+
+@{
+    ViewBag.Title = "Ta bort";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Ta bort</h2>
+
+<h3>Är du säker på att du vill ta bort denna?</h3>
+<div>
+    <h4>Förseningsavgift</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Evenemang.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Evenemang.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Summa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Summa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlusEllerMinus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlusEllerMinus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FranDatum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FranDatum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TillDatum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TillDatum)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Ta bort" class="btn btn-default" /> |
+            @Html.ActionLink("Tillbaka till listan", "Index")
+        </div>
+    }
+</div>

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -110,6 +110,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Evenemang evenemang = db.Evenemang.Find(id);
+            foreach (Registreringar reg in evenemang.Registreringar)
+            {
+                evenemang.Registreringar.Remove(reg);
+            }
             db.Evenemang.Remove(evenemang);
             db.SaveChanges();
             return RedirectToAction("Index");

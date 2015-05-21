@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 using SignMeUp2.Models;
 
 namespace SignMeUp2.Helpers
@@ -27,9 +27,9 @@ namespace SignMeUp2.Helpers
                 {
                     var regStep = (RegistrationViewModel)step;
                     reg.Lagnamn = regStep.Lagnamn;
-                    reg.BanId = regStep.Bana;
-                    reg.KlassId = regStep.Klass;
-                    reg.KanotId = regStep.Kanot;
+                    reg.Bana = regStep.Banor;
+                    reg.Klass = regStep.Klasser;
+                    reg.Kanot = regStep.Kanoter;
                     reg.Ranking = regStep.Ranking;
                 }
                 else if (step is ContactViewModel)

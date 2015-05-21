@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Mail;
 using SendGrid;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
 namespace SignMeUp2.Helpers
 {

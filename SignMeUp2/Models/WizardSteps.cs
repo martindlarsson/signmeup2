@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
 namespace SignMeUp2.Models
 {
@@ -78,7 +78,7 @@ namespace SignMeUp2.Models
         [Required(ErrorMessage = "Förnamn måste anges")]
         public string Förnamn { get; set; }
 
-        [Required(ErrorMessage = "Förnamn måste anges")]
+        [Required(ErrorMessage = "Efternamn måste anges")]
         public string Efternamn { get; set; }
 
         [Display(Name = "Personnr.")]

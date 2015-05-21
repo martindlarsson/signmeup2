@@ -1,4 +1,4 @@
-namespace SignMeUp2.DataModel
+namespace SignMeUp2.Data
 {
     using System;
     using System.Collections.Generic;
@@ -7,17 +7,24 @@ namespace SignMeUp2.DataModel
     using System.Data.Entity.Spatial;
     using System.Data.Entity.ModelConfiguration;
 
-    [Table("Klasser")]
-    public partial class Klasser
+    [Table("Banor")]
+    public partial class Banor
     {
-        public Klasser()
+        public Banor()
         {
             Registreringar = new HashSet<Registreringar>();
         }
 
         public int Id { get; set; }
 
+        [Required]
         public string Namn { get; set; }
+
+        [Required]
+        public int Avgift { get; set; }
+
+        [Required]
+        public int AntalDeltagare { get; set; }
 
         public virtual ICollection<Registreringar> Registreringar { get; set; }
 
@@ -25,21 +32,23 @@ namespace SignMeUp2.DataModel
         public virtual Evenemang Evenemang { get; set; }
     }
 
-    public class KlasserMap : EntityTypeConfiguration<Klasser>
+    public class BanorMap : EntityTypeConfiguration<Banor>
     {
-        public KlasserMap()
+        public BanorMap()
         {
             // Key
             HasKey(e => e.Id);
 
             // Properties
             Property(e => e.Namn).IsRequired();
+            Property(e => e.Avgift).IsRequired();
+            Property(e => e.AntalDeltagare).IsRequired();
 
             // Relatiionship
-            HasRequired(k => k.Evenemang)
-                .WithMany(e => e.Klasser)
-                .HasForeignKey(k => k.EvenemangsId)
-                .WillCascadeOnDelete(true);
+            HasRequired(b => b.Evenemang)
+                .WithMany(e => e.Banor)
+                .HasForeignKey(b => b.EvenemangsId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

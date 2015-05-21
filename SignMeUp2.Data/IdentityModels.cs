@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
-namespace SignMeUp2.Models
+namespace SignMeUp2.Data
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser

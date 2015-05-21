@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using SignMeUp2.Models;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 using SignMeUp2.Services;
 using log4net;
 using System.Data.Entity.Migrations;
@@ -26,7 +26,7 @@ namespace SignMeUp2
             ModelBinders.Binders.Add(typeof(IWizardStep), new WizardModelBinder());
 
             // Run migrations at startup
-            System.Data.Entity.Database.SetInitializer<DataModel.SignMeUpDataModel>(new System.Data.Entity.MigrateDatabaseToLatestVersion<DataModel.SignMeUpDataModel, Migrations.Configuration>());
+            System.Data.Entity.Database.SetInitializer<SignMeUpDataModel>(new System.Data.Entity.MigrateDatabaseToLatestVersion<SignMeUpDataModel, Migrations.Configuration>());
         }
 
         //protected virtual void Application_BeginRequest()

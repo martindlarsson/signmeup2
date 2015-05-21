@@ -1,4 +1,4 @@
-﻿namespace SignMeUp2.DataModel
+﻿namespace SignMeUp2.Data
 {
     using System;
     using System.Collections.Generic;
@@ -18,10 +18,13 @@
 
         public int Id { get; set; }
 
+        [Required]
         public string Namn { get; set; }
 
+        [Required]
         public string Epost { get; set; }
 
+        [Required]
         public string Adress { get; set; }
 
         public virtual ICollection<Evenemang> Evenemang { get; set; }

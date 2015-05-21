@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using SignMeUp2.Models;
 using SignMeUp2.Helpers;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 using PaysonIntegration;
 using PaysonIntegration.Data;
 using PaysonIntegration.Utils;
@@ -153,7 +153,7 @@ namespace SignMeUp2.Controllers
 
             var payData = new PayData(returnUrl,
                 cancelUrl,
-                smuService.HamtaEvenemang(paysonViewModel.Registrering.EvenemangsId).Namn + " - " + paysonViewModel.Registrering.Lagnamn,
+                smuService.HamtaEvenemang(paysonViewModel.Registrering.EvenemangsId.Value).Namn + " - " + paysonViewModel.Registrering.Lagnamn,
                 sender,
                 new List<Receiver> { receiver });
 

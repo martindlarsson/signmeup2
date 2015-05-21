@@ -1,4 +1,4 @@
-namespace SignMeUp2.DataModel
+namespace SignMeUp2.Data
 {
     using System;
     using System.Collections.Generic;
@@ -14,6 +14,7 @@ namespace SignMeUp2.DataModel
     {
         public int Id { get; set; }
 
+        [Required]
         public string Namn { get; set; }
 
         //[InverseProperty("Forseningsavgifter")]
@@ -21,15 +22,19 @@ namespace SignMeUp2.DataModel
         public Evenemang Evenemang { get; set; }
         public int? EvenemangsId { get; set; }
 
+        [Required]
         public DateTime FranDatum { get; set; }
 
+        [Required]
         public DateTime TillDatum { get; set; }
 
+        [Required]
         public TypAvgift PlusEllerMinus { get; set; }
 
+        [Required]
         public int Summa { get; set; }
 
-        public virtual ICollection<Registreringar> Registreringar { get; set; }
+        //public virtual ICollection<Registreringar> Registreringar { get; set; }
     }
 
     public class ForseningsavgiftMap : EntityTypeConfiguration<Forseningsavgift>

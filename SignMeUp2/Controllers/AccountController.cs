@@ -11,7 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Owin;
 using SignMeUp2.Models;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 
 namespace SignMeUp2.Controllers
 {
@@ -115,7 +115,7 @@ namespace SignMeUp2.Controllers
                 if (result.Succeeded)
                 {
                     // Skapa en organisation
-                    using (var db = new SignMeUp2.DataModel.SignMeUpDataModel())
+                    using (var db = new SignMeUp2.Data.SignMeUpDataModel())
                     {
                         var newOrg = new Organisation
                         {

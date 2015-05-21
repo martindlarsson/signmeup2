@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SignMeUp2.DataModel;
+using SignMeUp2.Data;
 using SignMeUp2.Models;
 using SignMeUp2.Helpers;
 using System.ComponentModel.DataAnnotations;
@@ -61,7 +61,7 @@ namespace SignMeUp2.Controllers
                 wizard.Initialize();
             }
 
-            FillViewBag();
+            FillViewBag(id.Value);
 
             TempData["wizard"] = wizard;
 
@@ -115,7 +115,13 @@ namespace SignMeUp2.Controllers
             // Om registreringssteget, populera drop down listor
             if (wizard.Steps[wizard.CurrentStepIndex] is RegistrationViewModel)
             {
-                FillViewBag();
+                FillViewBag(ev.Id);
+            }
+
+            // Om vi just fyllt i registreringssteget, fyll på bana, klass och kanot
+            if (wizard.Steps[wizard.CurrentStepIndex - 1] is RegistrationViewModel)
+            {
+                wizard = FillRegStep(wizard);
             }
 
             // Om deltagarsteget, hämta antal deltagare och
@@ -134,6 +140,29 @@ namespace SignMeUp2.Controllers
 
             TempData["wizard"] = wizard;
             return View(wizard);
+        }
+
+        private WizardViewModel FillRegStep(WizardViewModel wizard)
+        {
+            RegistrationViewModel regStep = wizard.Steps.Where(s => s is RegistrationViewModel).FirstOrDefault() as RegistrationViewModel;
+
+            if (regStep == null)
+                throw new ArgumentException("No RegistrationViewModel found in WizardViewModel.Steps.");
+
+            if (regStep.Banor == null)
+            {
+                regStep.Banor = smuService.Db.Banor.Find(regStep.Bana);
+            }
+            if (regStep.Klasser == null)
+            {
+                regStep.Klasser = smuService.Db.Klasser.Find(regStep.Klass);
+            }
+            if (regStep.Kanoter == null)
+            {
+                regStep.Kanoter = smuService.Db.Kanoter.Find(regStep.Kanot);
+            }
+
+            return wizard;
         }
 
         /// <summary>
@@ -196,6 +225,7 @@ namespace SignMeUp2.Controllers
             {
                 // Payson
                 TempData["wizard"] = tempWizard;
+                FillRegStep(tempWizard);
                 var registrering = ClassMapper.MapToRegistreringar(tempWizard);
                 TempData["reg"] = registrering;
                 // TODO 
@@ -235,6 +265,12 @@ namespace SignMeUp2.Controllers
         public ActionResult Faktura()
         {
             var tempWizard = (WizardViewModel)TempData["wizard"];
+
+            if (tempWizard == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (tempWizard.Fakturaadress == null)
                 tempWizard.Fakturaadress = new Invoice();
 
@@ -257,6 +293,11 @@ namespace SignMeUp2.Controllers
         {
             var tempWizard = (WizardViewModel)TempData["wizard"];
 
+            if (tempWizard == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             var ev = smuService.HamtaEvenemang(tempWizard.Evenemang_Id);
             ViewBag.ev = ev.Namn;
 
@@ -273,7 +314,8 @@ namespace SignMeUp2.Controllers
             {
                 tempWizard.Fakturaadress = fakturaadress;
                 // Spara i databasen
-                var reg = smuService.SparaNyRegistrering(tempWizard, false);
+                FillRegStep(tempWizard);
+                var reg = smuService.SparaNyRegistrering(tempWizard);
                 TempData["wizard"] = null;
                 TempData["reg"] = null;
                 return RedirectToAction("BekraftelseBetalning", new { id = reg.Id });
