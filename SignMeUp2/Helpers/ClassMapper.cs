@@ -28,8 +28,11 @@ namespace SignMeUp2.Helpers
                     var regStep = (RegistrationViewModel)step;
                     reg.Lagnamn = regStep.Lagnamn;
                     reg.Bana = regStep.Banor;
+                    reg.BanId = reg.Bana.Id;
                     reg.Klass = regStep.Klasser;
+                    reg.KlassId = reg.Klass.Id;
                     reg.Kanot = regStep.Kanoter;
+                    reg.KanotId = reg.Kanot.Id;
                     reg.Ranking = regStep.Ranking;
                 }
                 else if (step is ContactViewModel)

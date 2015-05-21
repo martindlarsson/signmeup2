@@ -51,25 +51,25 @@ namespace SignMeUp2.Data
         [Required]
         public DateTime? Registreringstid { get; set; }
 
-        //public int? ForseningsavgiftsId { get; set; }
         public Forseningsavgift Forseningsavgift { get; set; }
 
-        //public int? RabattId { get; set; }
         public Rabatter Rabatt { get; set; }
 
-        public int BanId { get; set; }
+        public int? BanId { get; set; }
         [Required]
+        [ForeignKey("BanId")]
         public Banor Bana { get; set; }
 
-        public int KlassId { get; set; }
+        public int? KlassId { get; set; }
         [Required]
+        [ForeignKey("KlassId")]
         public Klasser Klass { get; set; }
 
-        public int KanotId { get; set; }
+        public int? KanotId { get; set; }
         [Required]
+        [ForeignKey("KanotId")]
         public Kanoter Kanot { get; set; }
 
-        //public int InvoiceId { get; set; }
         public Invoice Invoice { get; set; }
 
         public ICollection<Deltagare> Deltagare { get; set; }

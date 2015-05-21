@@ -89,23 +89,26 @@ namespace SignMeUp2.Services
         {
             try
             {
-                reg.Bana = null;
-                reg.Kanot = null;
-                reg.Klass = null;
-                //reg.Evenemang = null;
-
-                //if (reg.Evenemang != null)
-                //{
-                //    var state = Db.Entry(reg.Evenemang).State;
-                //    Db.Evenemang.Attach(reg.Evenemang);
-                //}
-
                 reg.Registreringstid = DateTime.Now;
+
+                if (reg.Bana != null)
+                {
+                    Db.Banor.Attach(reg.Bana);
+                }
+
+                if (reg.Kanot != null)
+                {
+                    Db.Kanoter.Attach(reg.Kanot);
+                }
+
+                if (reg.Klass != null)
+                {
+                    Db.Klasser.Attach(reg.Klass);
+                }
 
                 var ev = Db.Evenemang.Include("Registreringar").Where(e => e.Id == reg.EvenemangsId).FirstOrDefault();
                 ev.Registreringar.Add(reg);
 
-                //Db.Registreringar.Add(reg);
                 Db.SaveChanges();
             }
             catch (Exception exc)
@@ -126,8 +129,7 @@ namespace SignMeUp2.Services
                 log.Debug("Sparar ny registrering");
                 var reg = Helpers.ClassMapper.MapToRegistreringar(wizard);
                 log.Debug("Konverterat wizard till registrering för lag " + reg.Lagnamn);
-                //FillRegistrering(reg);
-                reg.Registreringstid = DateTime.Now;
+
                 SparaNyRegistrering(reg);
 
                 log.Debug("Sparat registrering för lag " + reg.Lagnamn);

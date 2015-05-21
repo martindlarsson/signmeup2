@@ -62,7 +62,6 @@ namespace SignMeUp2.Data
 
             modelBuilder.Entity<Evenemang>()
                 .HasMany(e => e.Registreringar)
-                //.WithOptional(r => r.Evenemang)
                 .WithRequired(r => r.Evenemang)
                 .HasForeignKey(r => r.EvenemangsId)
                 .WillCascadeOnDelete(false);
