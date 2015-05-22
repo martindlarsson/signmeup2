@@ -52,22 +52,18 @@ namespace SignMeUp2.Data
         public DateTime? Registreringstid { get; set; }
 
         public Forseningsavgift Forseningsavgift { get; set; }
+        public int? ForseningsavgiftId { get; set; }
 
         public Rabatter Rabatt { get; set; }
+        public int? RabattId { get; set; }
 
-        public int? BanId { get; set; }
         [Required]
-        [ForeignKey("BanId")]
         public Banor Bana { get; set; }
 
-        public int? KlassId { get; set; }
         [Required]
-        [ForeignKey("KlassId")]
         public Klasser Klass { get; set; }
 
-        public int? KanotId { get; set; }
         [Required]
-        [ForeignKey("KanotId")]
         public Kanoter Kanot { get; set; }
 
         public Invoice Invoice { get; set; }
@@ -75,59 +71,43 @@ namespace SignMeUp2.Data
         public ICollection<Deltagare> Deltagare { get; set; }
     }
 
-    public class RegistreringarMap : EntityTypeConfiguration<Registreringar>
-    {
-        public RegistreringarMap()
-        {
-            // Key
-            HasKey(e => e.Id);
+    //public class RegistreringarMap : EntityTypeConfiguration<Registreringar>
+    //{
+    //    public RegistreringarMap()
+    //    {
+    //        // Key
+    //        HasKey(e => e.Id);
 
-            // Properties
-            Property(r => r.Lagnamn).IsRequired();
-            Property(r => r.Adress).IsRequired();
-            Property(r => r.Epost).IsRequired();
-            Property(r => r.HarBetalt);
-            Property(r => r.Kommentar).IsOptional();
-            Property(r => r.PaysonToken).IsOptional();
-            Property(r => r.Ranking).IsOptional();
-            Property(r => r.Registreringstid).IsRequired();
-            Property(r => r.Startnummer).IsOptional();
-            Property(r => r.Telefon).IsRequired();
+    //        // Properties
+    //        Property(r => r.Lagnamn).IsRequired();
+    //        Property(r => r.Adress).IsRequired();
+    //        Property(r => r.Epost).IsRequired();
+    //        Property(r => r.HarBetalt);
+    //        Property(r => r.Kommentar).IsOptional();
+    //        Property(r => r.PaysonToken).IsOptional();
+    //        Property(r => r.Ranking).IsOptional();
+    //        Property(r => r.Registreringstid).IsRequired();
+    //        Property(r => r.Startnummer).IsOptional();
+    //        Property(r => r.Telefon).IsRequired();
 
-            // Relatiionship
-            //HasRequired(r => r.Bana)
-            //    .WithMany(b => b.Registreringar)
-            //    .HasForeignKey(e => e.BanId)
-            //    .WillCascadeOnDelete(false);
+    //        // Relatiionship
+    //        HasRequired(r => r.Bana)
+    //            .WithMany(b => b.Registreringar);
 
-            //HasRequired(r => r.Kanot)
-            //    .WithMany(k => k.Registreringar)
-            //    .HasForeignKey(e => e.KanotId)
-            //    .WillCascadeOnDelete(false);
+    //        HasRequired(r => r.Kanot)
+    //            .WithMany(k => k.Registreringar);
 
-            //HasRequired(e => e.Klass)
-            //    .WithMany(k => k.Registreringar)
-            //    .HasForeignKey(e => e.KlassId)
-            //    .WillCascadeOnDelete(false);
+    //        HasRequired(e => e.Klass)
+    //            .WithMany(k => k.Registreringar);
 
-            HasRequired(r => r.Evenemang)
-                .WithMany(e => e.Registreringar)
-                .HasForeignKey(r => r.EvenemangsId)
-                .WillCascadeOnDelete(false);
+    //        HasRequired(r => r.Evenemang)
+    //            .WithMany(e => e.Registreringar)
+    //            .HasForeignKey(r => r.EvenemangsId)
+    //            .WillCascadeOnDelete(false);
 
-            HasOptional(r => r.Rabatt);
-                //.WithMany(r => r.Registreringar)
-                //.HasForeignKey(r => r.RabattId)
-                //.WillCascadeOnDelete(false);
+    //        HasOptional(r => r.Rabatt);
 
-            HasOptional(r => r.Forseningsavgift);
-                //.WithOptionalDependent(f => f.Registreringar)
-                //.WillCascadeOnDelete(false);
-
-            //HasOptional(r => r.Forseningsavgift)
-            //    .WithMany(r => r.Registreringar)
-            //    .HasForeignKey(r => r.ForseningsavgiftsId)
-            //    .WillCascadeOnDelete(false);
-        }
-    }
+    //        HasOptional(r => r.Forseningsavgift);
+    //    }
+    //}
 }

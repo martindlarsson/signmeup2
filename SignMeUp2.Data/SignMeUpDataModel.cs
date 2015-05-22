@@ -99,19 +99,16 @@ namespace SignMeUp2.Data
             modelBuilder.Entity<Registreringar>()
                 .HasRequired(r => r.Bana)
                 .WithMany(b => b.Registreringar)
-                .HasForeignKey(r => r.BanId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Registreringar>()
                 .HasRequired(r => r.Kanot)
                 .WithMany(k => k.Registreringar)
-                .HasForeignKey(r => r.KanotId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Registreringar>()
                 .HasRequired(r => r.Klass)
                 .WithMany(k => k.Registreringar)
-                .HasForeignKey(r => r.KlassId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Registreringar>()
@@ -123,6 +120,18 @@ namespace SignMeUp2.Data
                 .HasOptional(r => r.Invoice)
                 .WithRequired(i => i.Registrering)
                 .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Registreringar>()
+                .HasOptional(r => r.Forseningsavgift)
+                .WithMany()
+                .HasForeignKey(r => r.ForseningsavgiftId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Registreringar>()
+                .HasOptional(r => r.Rabatt)
+                .WithMany()
+                .HasForeignKey(r => r.RabattId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

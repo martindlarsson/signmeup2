@@ -230,6 +230,18 @@
     <Compile Include="Migrations\201505212051246_skapa.Designer.cs">
       <DependentUpon>201505212051246_skapa.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505212201408_skapa2.cs" />
+    <Compile Include="Migrations\201505212201408_skapa2.Designer.cs">
+      <DependentUpon>201505212201408_skapa2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505222010428_skapa3.cs" />
+    <Compile Include="Migrations\201505222010428_skapa3.Designer.cs">
+      <DependentUpon>201505222010428_skapa3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505222018095_skapa4.cs" />
+    <Compile Include="Migrations\201505222018095_skapa4.Designer.cs">
+      <DependentUpon>201505222018095_skapa4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BekraftaRegistreringViewModel.cs" />
@@ -457,6 +469,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201505212051246_skapa.resx">
       <DependentUpon>201505212051246_skapa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505212201408_skapa2.resx">
+      <DependentUpon>201505212201408_skapa2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505222010428_skapa3.resx">
+      <DependentUpon>201505222010428_skapa3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505222018095_skapa4.resx">
+      <DependentUpon>201505222018095_skapa4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

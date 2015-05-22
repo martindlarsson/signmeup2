@@ -17,9 +17,7 @@ namespace SignMeUp2.Data
         [Required]
         public string Namn { get; set; }
 
-        //[InverseProperty("Forseningsavgifter")]
-        //[ForeignKey("EvenemangsId")]
-        public Evenemang Evenemang { get; set; }
+        public virtual Evenemang Evenemang { get; set; }
         public int? EvenemangsId { get; set; }
 
         [Required]
@@ -33,29 +31,27 @@ namespace SignMeUp2.Data
 
         [Required]
         public int Summa { get; set; }
-
-        //public virtual ICollection<Registreringar> Registreringar { get; set; }
     }
 
-    public class ForseningsavgiftMap : EntityTypeConfiguration<Forseningsavgift>
-    {
-        public ForseningsavgiftMap()
-        {
-            // Key
-            HasKey(f => f.Id);
+    //public class ForseningsavgiftMap : EntityTypeConfiguration<Forseningsavgift>
+    //{
+    //    public ForseningsavgiftMap()
+    //    {
+    //        // Key
+    //        HasKey(f => f.Id);
 
-            // Properties
-            Property(f => f.Namn).IsRequired();
-            Property(f => f.FranDatum).IsRequired();
-            Property(f => f.TillDatum).IsRequired();
-            Property(f => f.PlusEllerMinus).IsRequired();
-            Property(f => f.Summa).IsRequired();
+    //        // Properties
+    //        Property(f => f.Namn).IsRequired();
+    //        Property(f => f.FranDatum).IsRequired();
+    //        Property(f => f.TillDatum).IsRequired();
+    //        Property(f => f.PlusEllerMinus).IsRequired();
+    //        Property(f => f.Summa).IsRequired();
 
-            // Relatiionship
-            HasRequired(f => f.Evenemang)
-                .WithMany(e => e.Forseningsavgifter)
-                .HasForeignKey(f => f.EvenemangsId)
-                .WillCascadeOnDelete(true);
-        }
-    }
+    //        // Relatiionship
+    //        HasRequired(f => f.Evenemang)
+    //            .WithMany(e => e.Forseningsavgifter)
+    //            .HasForeignKey(f => f.EvenemangsId)
+    //            .WillCascadeOnDelete(true);
+    //    }
+    //}
 }

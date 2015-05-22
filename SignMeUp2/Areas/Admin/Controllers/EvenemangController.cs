@@ -110,10 +110,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Evenemang evenemang = db.Evenemang.Find(id);
-            foreach (Registreringar reg in evenemang.Registreringar)
-            {
-                evenemang.Registreringar.Remove(reg);
-            }
+            evenemang.Registreringar.Clear();
+            //foreach (Registreringar reg in evenemang.Registreringar)
+            //{
+            //    evenemang.Registreringar.Remove(reg);
+            //}
+            db.SaveChanges();
             db.Evenemang.Remove(evenemang);
             db.SaveChanges();
             return RedirectToAction("Index");

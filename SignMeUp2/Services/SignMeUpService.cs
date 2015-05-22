@@ -5,6 +5,7 @@ using System.Web;
 using SignMeUp2.Data;
 using SignMeUp2.Models;
 using log4net;
+using System.Data.Entity;
 
 namespace SignMeUp2.Services
 {
@@ -85,6 +86,10 @@ namespace SignMeUp2.Services
             return reg;
         }
 
+        /// <summary>
+        /// Spara ny registrering i databasen
+        /// </summary>
+        /// <param name="reg"></param>
         public void SparaNyRegistrering(Registreringar reg)
         {
             try
@@ -106,6 +111,23 @@ namespace SignMeUp2.Services
                     Db.Klasser.Attach(reg.Klass);
                 }
 
+                if (reg.Evenemang != null)
+                {
+                    Db.Evenemang.Attach(reg.Evenemang);
+                }
+
+                if (reg.Forseningsavgift != null && reg.ForseningsavgiftId == null)
+                {
+                    reg.ForseningsavgiftId = reg.Forseningsavgift.Id;
+                    reg.Forseningsavgift = null;
+                }
+
+                if (reg.Rabatt != null && reg.RabattId == null)
+                {
+                    reg.RabattId = reg.Rabatt.Id;
+                    reg.Rabatt = null;
+                }
+
                 var ev = Db.Evenemang.Include("Registreringar").Where(e => e.Id == reg.EvenemangsId).FirstOrDefault();
                 ev.Registreringar.Add(reg);
 
@@ -119,7 +141,7 @@ namespace SignMeUp2.Services
         }
 
         /// <summary>
-        /// Spara en ny registrering i databasen
+        /// Spara en ny registrering i form av en wizard i databasen
         /// </summary>
         /// <param name="wizard"></param>
         public Registreringar SparaNyRegistrering(WizardViewModel wizard)
