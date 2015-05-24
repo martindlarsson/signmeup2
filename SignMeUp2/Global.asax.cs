@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -27,15 +28,18 @@ namespace SignMeUp2
 
             // Run migrations at startup
             System.Data.Entity.Database.SetInitializer<SignMeUpDataModel>(new System.Data.Entity.MigrateDatabaseToLatestVersion<SignMeUpDataModel, Migrations.Configuration>());
+
+            Trace.TraceInformation("Applikationen startad");
         }
 
-        //protected virtual void Application_BeginRequest()
-        //{
-        //    var service = SignMeUpService.Instance;
-        //}
+        protected virtual void Application_BeginRequest()
+        {
+            Trace.TraceInformation("BeginRequest");
+        }
 
         protected virtual void Application_EndRequest()
         {
+            Trace.TraceInformation("Application_EndRequest");
             var service = SignMeUpService.Instance;
             service.Dispose();
             //var entityContext = HttpContext.Current.Items["_EntityContext"] as SignMeUpDataModel;

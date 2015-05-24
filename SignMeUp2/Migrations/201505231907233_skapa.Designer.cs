@@ -7,13 +7,13 @@ namespace SignMeUp2.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class skapa4 : IMigrationMetadata
+    public sealed partial class skapa : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(skapa4));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(skapa));
         
         string IMigrationMetadata.Id
         {
-            get { return "201505222018095_skapa4"; }
+            get { return "201505231907233_skapa"; }
         }
         
         string IMigrationMetadata.Source

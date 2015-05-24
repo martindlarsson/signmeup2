@@ -81,25 +81,25 @@ namespace SignMeUp2.Migrations
                         Klubb = c.String(),
                         PaysonToken = c.String(),
                         Registreringstid = c.DateTime(nullable: false),
-                        BanId = c.Int(nullable: false),
-                        KlassId = c.Int(nullable: false),
-                        KanotId = c.Int(nullable: false),
-                        Forseningsavgift_Id = c.Int(),
-                        Rabatt_Id = c.Int(),
+                        ForseningsavgiftId = c.Int(),
+                        RabattId = c.Int(),
+                        Bana_Id = c.Int(nullable: false),
+                        Kanot_Id = c.Int(nullable: false),
+                        Klass_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Banor", t => t.BanId)
-                .ForeignKey("dbo.Forseningsavgift", t => t.Forseningsavgift_Id)
-                .ForeignKey("dbo.Kanoter", t => t.KanotId)
-                .ForeignKey("dbo.Klasser", t => t.KlassId)
-                .ForeignKey("dbo.Rabatter", t => t.Rabatt_Id)
+                .ForeignKey("dbo.Banor", t => t.Bana_Id)
+                .ForeignKey("dbo.Forseningsavgift", t => t.ForseningsavgiftId)
+                .ForeignKey("dbo.Kanoter", t => t.Kanot_Id)
+                .ForeignKey("dbo.Klasser", t => t.Klass_Id)
+                .ForeignKey("dbo.Rabatter", t => t.RabattId)
                 .ForeignKey("dbo.Evenemang", t => t.EvenemangsId)
                 .Index(t => t.EvenemangsId)
-                .Index(t => t.BanId)
-                .Index(t => t.KlassId)
-                .Index(t => t.KanotId)
-                .Index(t => t.Forseningsavgift_Id)
-                .Index(t => t.Rabatt_Id);
+                .Index(t => t.ForseningsavgiftId)
+                .Index(t => t.RabattId)
+                .Index(t => t.Bana_Id)
+                .Index(t => t.Kanot_Id)
+                .Index(t => t.Klass_Id);
             
             CreateTable(
                 "dbo.Deltagare",
@@ -267,13 +267,13 @@ namespace SignMeUp2.Migrations
             DropForeignKey("dbo.Betalningsmetoder", "Id", "dbo.Organisationer");
             DropForeignKey("dbo.Klasser", "EvenemangsId", "dbo.Evenemang");
             DropForeignKey("dbo.Kanoter", "EvenemangsId", "dbo.Evenemang");
-            DropForeignKey("dbo.Registreringar", "Rabatt_Id", "dbo.Rabatter");
-            DropForeignKey("dbo.Registreringar", "KlassId", "dbo.Klasser");
-            DropForeignKey("dbo.Registreringar", "KanotId", "dbo.Kanoter");
+            DropForeignKey("dbo.Registreringar", "RabattId", "dbo.Rabatter");
+            DropForeignKey("dbo.Registreringar", "Klass_Id", "dbo.Klasser");
+            DropForeignKey("dbo.Registreringar", "Kanot_Id", "dbo.Kanoter");
             DropForeignKey("dbo.Invoice", "Id", "dbo.Registreringar");
-            DropForeignKey("dbo.Registreringar", "Forseningsavgift_Id", "dbo.Forseningsavgift");
+            DropForeignKey("dbo.Registreringar", "ForseningsavgiftId", "dbo.Forseningsavgift");
             DropForeignKey("dbo.Deltagare", "RegistreringarID", "dbo.Registreringar");
-            DropForeignKey("dbo.Registreringar", "BanId", "dbo.Banor");
+            DropForeignKey("dbo.Registreringar", "Bana_Id", "dbo.Banor");
             DropForeignKey("dbo.Forseningsavgift", "EvenemangsId", "dbo.Evenemang");
             DropForeignKey("dbo.Banor", "EvenemangsId", "dbo.Evenemang");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
@@ -287,11 +287,11 @@ namespace SignMeUp2.Migrations
             DropIndex("dbo.Klasser", new[] { "EvenemangsId" });
             DropIndex("dbo.Invoice", new[] { "Id" });
             DropIndex("dbo.Deltagare", new[] { "RegistreringarID" });
-            DropIndex("dbo.Registreringar", new[] { "Rabatt_Id" });
-            DropIndex("dbo.Registreringar", new[] { "Forseningsavgift_Id" });
-            DropIndex("dbo.Registreringar", new[] { "KanotId" });
-            DropIndex("dbo.Registreringar", new[] { "KlassId" });
-            DropIndex("dbo.Registreringar", new[] { "BanId" });
+            DropIndex("dbo.Registreringar", new[] { "Klass_Id" });
+            DropIndex("dbo.Registreringar", new[] { "Kanot_Id" });
+            DropIndex("dbo.Registreringar", new[] { "Bana_Id" });
+            DropIndex("dbo.Registreringar", new[] { "RabattId" });
+            DropIndex("dbo.Registreringar", new[] { "ForseningsavgiftId" });
             DropIndex("dbo.Registreringar", new[] { "EvenemangsId" });
             DropIndex("dbo.Kanoter", new[] { "EvenemangsId" });
             DropIndex("dbo.Forseningsavgift", new[] { "EvenemangsId" });
