@@ -22,7 +22,7 @@ namespace SignMeUp2
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                         //"~/Scripts/bootstrap-datepicker.js",
-                      "~/Scripts/DatePickerReady.js",
+                      //"~/Scripts/DatePickerReady.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
@@ -31,9 +31,13 @@ namespace SignMeUp2
                       "~/Content/site.css"));
 
             // För datetimepicker
-            bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
-                    "~/Scripts/moment*",
-                    "~/Scripts/bootstrap-datetimepicker*"));
+            //bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
+            //        "~/Scripts/moment*",
+            //        "~/Scripts/bootstrap-datetimepicker*"));
+
+            // applicationInsights.js
+            bundles.Add(new ScriptBundle("~/bundles/ai").Include(
+                    "~/Scripts/applicationInsights.js"));
 
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862

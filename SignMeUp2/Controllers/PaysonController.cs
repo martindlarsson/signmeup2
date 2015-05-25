@@ -44,7 +44,6 @@ namespace SignMeUp2.Controllers
             }
 
             var paysonViewModel = new PaysonViewModel { Registrering = reg };
-            TempData[PaysonViewModel.PAYSON_VM] = paysonViewModel;
 
             var paysonKontaktinfo = new PaysonKontaktViewModel
             {
@@ -52,6 +51,9 @@ namespace SignMeUp2.Controllers
                 SenderFirstName = reg.Deltagare.FirstOrDefault().Förnamn,
                 SenderLastName = reg.Deltagare.FirstOrDefault().Efternamn
             };
+            paysonViewModel.Kontaktinformation = paysonKontaktinfo;
+
+            TempData[PaysonViewModel.PAYSON_VM] = paysonViewModel;
 
             ViewBag.ev = reg.Evenemang.Namn;
             return View(paysonKontaktinfo);
@@ -144,6 +146,7 @@ namespace SignMeUp2.Controllers
             sender.LastName = paysonViewModel.Kontaktinformation.SenderLastName;
 
             var reg = paysonViewModel.Registrering;
+            smuService.FillRegistrering(reg);
             var betalningVM = new BetalningViewModel(reg.Bana, reg.Kanot, reg.Rabatt, reg.Forseningsavgift);
 
             var receiver = new Receiver(org.Epost, betalningVM.SummaAttBetala);
@@ -264,8 +267,6 @@ namespace SignMeUp2.Controllers
             smuService.TabortRegistrering(registrering);
             registrering.PaysonToken = null;
 
-            TempData["reg"] = registrering;
-
             var paysonVM = TempData[PaysonViewModel.PAYSON_VM] as PaysonViewModel;
             if (paysonVM != null)
             {
@@ -363,9 +364,12 @@ namespace SignMeUp2.Controllers
                 TempData["PaymentErrorParameter"] = "Okänd";
             }
 
-            TempData["reg"] = registration;
-            smuService.FillRegistrering(registration);
-            ViewBag.ev = registration.Evenemang.Namn;
+            //if (registration != null)
+            //{
+            //    TempData["reg"] = registration;
+            //    smuService.FillRegistrering(registration);
+            //    ViewBag.ev = registration.Evenemang.Namn;
+            //}
 
             return RedirectToAction("Index");
         }

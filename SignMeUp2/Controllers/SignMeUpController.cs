@@ -61,6 +61,11 @@ namespace SignMeUp2.Controllers
                 wizard.Initialize();
             }
 
+            if (id == null && wizard != null && wizard.Evenemang_Id != 0)
+            {
+                id = wizard.Evenemang_Id;
+            }
+
             FillViewBag(id.Value);
 
             TempData["wizard"] = wizard;
@@ -74,7 +79,7 @@ namespace SignMeUp2.Controllers
         /// <param name="step"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Index(IWizardStep step)
+        public ActionResult Index(IWizardStep step, string prev, string ok)
         {
             WizardViewModel wizard = (WizardViewModel)TempData["wizard"];
 
@@ -90,22 +95,29 @@ namespace SignMeUp2.Controllers
 
             if (ModelState.IsValid)
             {
-                if (!string.IsNullOrEmpty(Request["next"]))
+                if (!string.IsNullOrEmpty(ok))
                 {
+                    TempData["wizard"] = wizard;
+
+                    // Om det är sista steget vi fyllt i
+                    if (wizard.CurrentStepIndex + 1 == wizard.CountSteps)
+                    {
+                        return RedirectToAction("BekraftaRegistrering");
+                    }
+
+                    // Annars går vi till nästa
                     wizard.CurrentStepIndex++;
                 }
-                else if (!string.IsNullOrEmpty(Request["prev"]))
+                else if (!string.IsNullOrEmpty(prev))
                 {
                     wizard.CurrentStepIndex--;
                 }
                 else
                 {
-                    TempData["wizard"] = wizard;
-
-                    return RedirectToAction("BekraftaRegistrering");
+                    return ShowError("Ett oväntat fel inträffade.", false);
                 }
             }
-            else if (!string.IsNullOrEmpty(Request["prev"]))
+            else if (!string.IsNullOrEmpty(prev))
             {
                 // Even if validation failed we allow the user to
                 // navigate to previous steps
@@ -119,7 +131,8 @@ namespace SignMeUp2.Controllers
             }
 
             // Om vi just fyllt i registreringssteget, fyll på bana, klass och kanot
-            if (wizard.Steps[wizard.CurrentStepIndex - 1] is RegistrationViewModel)
+            // OBS, förutsätter att RegStep är på position 0
+            if (wizard.CurrentStepIndex > 0 && wizard.Steps[wizard.CurrentStepIndex - 1] is RegistrationViewModel)
             {
                 wizard = FillRegStep(wizard);
             }

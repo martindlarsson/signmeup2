@@ -133,5 +133,13 @@ namespace SignMeUp2.Data
                 .HasForeignKey(r => r.RabattId)
                 .WillCascadeOnDelete(false);
         }
+
+        public bool IsDisposed { get; private set; }
+
+        protected override void Dispose(bool disposing)
+        {
+            IsDisposed = true;
+            base.Dispose(disposing);
+        }
     }
 }

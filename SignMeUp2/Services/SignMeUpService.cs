@@ -12,7 +12,7 @@ namespace SignMeUp2.Services
 {
     public class SignMeUpService : IDisposable
     {
-        //protected readonly ILog log;
+        protected readonly ILog log;
         private SignMeUpDataModel _context;
 
         private Evenemang CurrentEvenemang { get; set; }
@@ -31,16 +31,16 @@ namespace SignMeUp2.Services
             }
         }
 
-        //private SignMeUpService()
-        //{
-        //    log = LogManager.GetLogger(GetType());
-        //}
+        private SignMeUpService()
+        {
+            log = LogManager.GetLogger(GetType());
+        }
 
         public SignMeUpDataModel Db
         {
             get
             {
-                if (_context == null)
+                if (_context == null || _context.IsDisposed)
                 {
                     _context = new SignMeUpDataModel();
                 }
@@ -68,21 +68,18 @@ namespace SignMeUp2.Services
 
         public Registreringar FillRegistrering(Registreringar reg)
         {
-            //reg.Kanot = Db.Kanoter.Find(reg.KanotId);
-            //reg.Bana = Db.Banor.Find(reg.BanId);
-            //reg.Klass = Db.Klasser.Find(reg.KlassId);
             reg.Evenemang = Db.Evenemang.Find(reg.EvenemangsId);
             reg.Evenemang.Organisation = Db.Organisationer.Find(reg.Evenemang.OrganisationsId);
 
-            //if (reg.Rabatt == null && reg.RabattId != 0)
-            //{
-            //    reg.Rabatt = Db.Rabatter.Find(reg.RabattId);
-            //}
+            if (reg.Rabatt == null && reg.RabattId != 0)
+            {
+                reg.Rabatt = Db.Rabatter.Find(reg.RabattId);
+            }
 
-            //if (reg.Forseningsavgift == null && reg.ForseningsavgiftsId != 0)
-            //{
-            //    reg.Forseningsavgift = Db.Forseningsavgift.Find(reg.ForseningsavgiftsId);
-            //}
+            if (reg.Forseningsavgift == null && reg.ForseningsavgiftId != 0)
+            {
+                reg.Forseningsavgift = Db.Forseningsavgift.Find(reg.ForseningsavgiftId);
+            }
 
             return reg;
         }
@@ -93,7 +90,7 @@ namespace SignMeUp2.Services
         /// <param name="reg"></param>
         public void SparaNyRegistrering(Registreringar reg)
         {
-            Trace.TraceInformation("Sparar ny registrering");
+            log.Debug("Sparar ny registrering");
 
             try
             {
@@ -138,8 +135,8 @@ namespace SignMeUp2.Services
             }
             catch (Exception exc)
             {
-                Trace.TraceError("Fel vid sparande av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
-                //log.Error("Error while saving a new registration.", exc);
+                //Trace.TraceError("Fel vid sparande av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
+                log.Error("Error while saving a new registration.", exc);
                 throw new Exception("Error while saving a new registration", exc);
             }
         }
@@ -152,23 +149,23 @@ namespace SignMeUp2.Services
         {
             try
             {
-                Trace.TraceInformation("Sparar ny registrering");
-                //log.Debug("Sparar ny registrering");
+                //Trace.TraceInformation("Sparar ny registrering");
+                log.Debug("Sparar ny registrering");
                 var reg = Helpers.ClassMapper.MapToRegistreringar(wizard);
-                //log.Debug("Konverterat wizard till registrering för lag " + reg.Lagnamn);
+                log.Debug("Konverterat wizard till registrering för lag " + reg.Lagnamn);
 
                 SparaNyRegistrering(reg);
 
                 Trace.TraceInformation("Sparat registrering för lag " + reg.Lagnamn);
-                //log.Debug("Sparat registrering för lag " + reg.Lagnamn);
+                log.Debug("Sparat registrering för lag " + reg.Lagnamn);
 
                 Db.Entry(reg).GetDatabaseValues();
                 return reg;
             }
             catch (Exception exc)
             {
-                Trace.TraceError("Fel vid sparande av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
-                //log.Error("Error while saving new registration.", exc);
+                //Trace.TraceError("Fel vid sparande av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
+                log.Error("Error while saving new registration.", exc);
                 throw new Exception("Error while saving a new registration", exc);
             }
         }
@@ -184,8 +181,8 @@ namespace SignMeUp2.Services
             }
             catch (Exception exc)
             {
-                Trace.TraceError("Fel vid uppdatering av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
-                //log.Error("Error updating registration", exc);
+                //Trace.TraceError("Fel vid uppdatering av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
+                log.Error("Error updating registration", exc);
                 throw new Exception("Error while updating a registration", exc);
             }
         }
@@ -196,13 +193,13 @@ namespace SignMeUp2.Services
             {
                 Db.Registreringar.Remove(reg);
                 Db.SaveChanges();
-                Trace.TraceInformation("Removed registration with id: " + reg.Id + " and Lagnamn: " + reg.Lagnamn);
-                //log.Debug("Removed registration with id: " + reg.Id + " and Lagnamn: " + reg.Lagnamn);
+                //Trace.TraceInformation("Removed registration with id: " + reg.Id + " and Lagnamn: " + reg.Lagnamn);
+                log.Debug("Removed registration with id: " + reg.Id + " and Lagnamn: " + reg.Lagnamn);
             }
             catch (Exception exc)
             {
-                Trace.TraceError("Fel vid borttagning av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
-                //log.Error("Error while deleting a registration", exc);
+                //Trace.TraceError("Fel vid borttagning av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
+                log.Error("Error while deleting a registration", exc);
                 throw new Exception("Error while deleting a registration", exc);
             }
         }

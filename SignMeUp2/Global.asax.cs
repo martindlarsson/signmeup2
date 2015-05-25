@@ -17,6 +17,13 @@ namespace SignMeUp2
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        protected readonly ILog log;
+
+        public MvcApplication()
+        {
+            log = LogManager.GetLogger(GetType());
+        }
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -29,17 +36,18 @@ namespace SignMeUp2
             // Run migrations at startup
             System.Data.Entity.Database.SetInitializer<SignMeUpDataModel>(new System.Data.Entity.MigrateDatabaseToLatestVersion<SignMeUpDataModel, Migrations.Configuration>());
 
-            Trace.TraceInformation("Applikationen startad");
+            log.Debug("Application startad.");
+            //Trace.TraceInformation("Applikationen startad");
         }
 
         protected virtual void Application_BeginRequest()
         {
-            Trace.TraceInformation("BeginRequest");
+            log.Debug("Application_BeginRequest");
         }
 
         protected virtual void Application_EndRequest()
         {
-            Trace.TraceInformation("Application_EndRequest");
+            log.Debug("Application_EndRequest");
             var service = SignMeUpService.Instance;
             service.Dispose();
             //var entityContext = HttpContext.Current.Items["_EntityContext"] as SignMeUpDataModel;
