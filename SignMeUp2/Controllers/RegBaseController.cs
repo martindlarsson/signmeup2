@@ -118,11 +118,11 @@ namespace SignMeUp2.Controllers
             log.Error(logMessage, exception);
             try
             {
-                if (exception != null)
-                {
-                    SendMail.SendErrorMessage(logMessage + "\n\n" + exception.Message + "\n\n" + exception.StackTrace);
+                if (sendMial && exception != null)
+                {   
+                    SendMail.SendErrorMessage(logMessage + "<br/><br/>Felmeddelande: " + exception.Message + "<br/><br/>StackTrace: " + exception.ToString());
                 }
-                else
+                else if (sendMial)
                 {
                     SendMail.SendErrorMessage(logMessage);
                 }

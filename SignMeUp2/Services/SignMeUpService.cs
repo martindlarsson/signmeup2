@@ -61,9 +61,15 @@ namespace SignMeUp2.Services
 
         public Registreringar GetRegistrering(int id, bool fill)
         {
-            var reg = Db.Registreringar.Find(id);
+            var reg = Db.Registreringar
+                .Include("Bana")
+                .Include("Klass")
+                .Include("Kanot")
+                .Include("Deltagare")
+                .Where(r => r.Id == id)
+                .FirstOrDefault();
 
-            return fill ? FillRegistrering(reg) : reg;
+            return fill && reg != null ? FillRegistrering(reg) : reg;
         }
 
         public Registreringar FillRegistrering(Registreringar reg)
@@ -175,7 +181,7 @@ namespace SignMeUp2.Services
             try
             {
                 Trace.TraceInformation("Uppdaterar registrering");
-                var origReg = Db.Registreringar.Find(updatedReg.Id);
+                var origReg = GetRegistrering(updatedReg.Id, false);
                 Db.Entry(updatedReg).CurrentValues.SetValues(origReg);
                 Db.SaveChanges();
             }
@@ -206,8 +212,9 @@ namespace SignMeUp2.Services
 
         public void HarBetalt(Registreringar reg)
         {
-            reg.HarBetalt = true;
-            UpdateraRegistrering(reg);
+            var registrering = GetRegistrering(reg.Id, false);
+            registrering.HarBetalt = true;
+            UpdateraRegistrering(registrering);
         }
 
         public Evenemang HamtaEvenemang(int id)

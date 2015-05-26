@@ -279,6 +279,7 @@ namespace SignMeUp2.Controllers
 
         public ActionResult IPN(int? id)
         {
+            SendMail.SendErrorMessage("Vi fick en IPN!! reg id: " + id);
             log.Debug("IPN regId: " + id);
 
             if (!id.HasValue)
@@ -303,18 +304,24 @@ namespace SignMeUp2.Controllers
 
                 log.Debug("IPN message content: " + response.Content);
                 log.Debug("IPN raw response: " + content);
+                log.Debug("IPN message, status: " + statusText + ". regId: " + id + " success: " + response.Success);
 
                 if (status == PaymentStatus.Completed)
                 {
-                    log.Debug("IPN message, status: " + statusText + ". regId: " + id + " success: " + response.Success);
-
                     if (!registration.HarBetalt)
                     {
                         smuService.HarBetalt(registration);
+                        SkickaRegMail(registration);
+                        TempData[PaysonViewModel.PAYSON_VM] = null;
+                    }
+                    else
+                    {
+                        log.Debug("Registreringen var redan markerad som betald. Skickar inget meddelande.");
                     }
                 }
                 else
                 {
+                    SendMail.SendErrorMessage("IPN message for non complete transaction. regId: " + id + ". Status: " + statusText);
                     log.Debug("IPN message for non complete transaction. regId: " + id + ". Status: " + statusText);
                 }
             }

@@ -14,7 +14,10 @@ namespace SignMeUp2.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View(smuService.Db.Evenemang.Include("Organisation").ToList());
+            return View(smuService.Db.Evenemang
+                .Include("Organisation")
+                .Where(e => e.RegStart <= DateTime.Now && e.RegStop > DateTime.Now)
+                .ToList());
         }
 
         /// <summary>
@@ -36,7 +39,7 @@ namespace SignMeUp2.Controllers
                 return ShowError("Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
             }
 
-            var regs = smuService.Db.Registreringar.Where(reg => reg.EvenemangsId == id.Value && reg.HarBetalt).ToList();
+            var regs = smuService.Db.Registreringar.Include("Deltagare").Where(reg => reg.EvenemangsId == id.Value && reg.HarBetalt).ToList();
             var banor = smuService.Db.Banor.ToList();
             var klasser = smuService.Db.Klasser.ToList();
 

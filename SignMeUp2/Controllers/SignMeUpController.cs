@@ -351,7 +351,7 @@ namespace SignMeUp2.Controllers
             if (id == null)
                 return ShowError("Fel vid hämtning av registreringsinformation. Kontrollera i startlistan om er registrering genomförts.", false);
 
-            var reg = smuService.Db.Registreringar.Include("Evenemang.Organisation").SingleOrDefault(r => r.Id == id);
+            var reg = smuService.GetRegistrering(id.Value, true);
 
             ViewBag.ev = reg.Evenemang.Namn;
 

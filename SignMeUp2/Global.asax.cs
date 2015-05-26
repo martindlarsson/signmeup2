@@ -13,6 +13,8 @@ using SignMeUp2.Services;
 using log4net;
 using System.Data.Entity.Migrations;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 namespace SignMeUp2
 {
     public class MvcApplication : System.Web.HttpApplication
@@ -42,12 +44,12 @@ namespace SignMeUp2
 
         protected virtual void Application_BeginRequest()
         {
-            log.Debug("Application_BeginRequest");
+            log.Info("Application_BeginRequest");
         }
 
         protected virtual void Application_EndRequest()
         {
-            log.Debug("Application_EndRequest");
+            log.Info("Application_EndRequest");
             var service = SignMeUpService.Instance;
             service.Dispose();
             //var entityContext = HttpContext.Current.Items["_EntityContext"] as SignMeUpDataModel;
