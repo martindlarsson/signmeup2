@@ -229,26 +229,29 @@ namespace SignMeUp2.Controllers
 
             log.Info("Användare bekräfta registrering (POST) för " + ev.Namn);
 
+            // Korrigera
             if (!string.IsNullOrEmpty(Request["korrigera"]))
             {
                 TempData["wizard"] = tempWizard;
                 return RedirectToAction("Index");
             }
+            // Payson
             else if (!string.IsNullOrEmpty(Request["betala"]))
             {
-                // Payson
                 TempData["wizard"] = tempWizard;
                 FillRegStep(tempWizard);
                 var registrering = ClassMapper.MapToRegistreringar(tempWizard);
                 TempData["reg"] = registrering;
-                // TODO 
+
                 return RedirectToAction("Index", "Payson");
             }
+            // Faktura
             else if (!string.IsNullOrEmpty(Request["faktura"]))
             {
                 TempData["wizard"] = tempWizard;
                 return RedirectToAction("Fakturaadress");
             }
+            // Rabatt
             else if (!string.IsNullOrEmpty(Request["rabatt"]))
             {
                 if (!string.IsNullOrEmpty(viewModel.Rabattkod))
@@ -263,6 +266,10 @@ namespace SignMeUp2.Controllers
                     {
                         ViewBag.RabattError = "Rabattkoden är inte giltig eller felaktig";
                     }
+                }
+                else
+                {
+                    ViewBag.RabattError = "Ingen rabattkod angiven";
                 }
             }
 

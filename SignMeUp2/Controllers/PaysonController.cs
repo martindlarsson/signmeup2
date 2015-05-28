@@ -284,51 +284,63 @@ namespace SignMeUp2.Controllers
 
             if (!id.HasValue)
             {
-                return ShowError("Ett oväntat fel inträffade vid betalning. Kontrollera om ditt lag finns med i listan på anmälda lag.",
-                    true, new Exception("Felaktigt id i IP. id: " + id));
+                log.Error("IPN, id har inget värde");
+                SendMail.SendErrorMessage("IPN, id har inget värde");
             }
 
-            var registration = smuService.Db.Registreringar.Find(id);
-
-            if (registration != null)
+            try
             {
-                Request.InputStream.Position = 0;
-                var content = new StreamReader(Request.InputStream).ReadToEnd();
+                var registrering = smuService.Db.Registreringar.Find(id);
 
-                var api = new PaysonApi("17224", "e656e666-3585-4453-ad39-f0ec39fa15fc", ApplicationId, false);
-                var response = api.MakeValidateIpnContentRequest(content);
-                var statusText = response.ProcessedIpnMessage.PaymentStatus.HasValue
-                                    ? response.ProcessedIpnMessage.PaymentStatus.ToString()
-                                    : "N/A";
-                var status = response.ProcessedIpnMessage.PaymentStatus;
-
-                log.Debug("IPN message content: " + response.Content);
-                log.Debug("IPN raw response: " + content);
-                log.Debug("IPN message, status: " + statusText + ". regId: " + id + " success: " + response.Success);
-
-                if (status == PaymentStatus.Completed)
+                if (registrering != null)
                 {
-                    if (!registration.HarBetalt)
+                    Request.InputStream.Position = 0;
+                    var content = new StreamReader(Request.InputStream).ReadToEnd();
+
+                    // Hämta betalningsmetoder
+                    smuService.FillRegistrering(registrering);
+                    var org = smuService.HamtaOrganisation(registrering.Evenemang.OrganisationsId);
+                    var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
+
+                    var response = api.MakeValidateIpnContentRequest(content);
+                    var statusText = response.ProcessedIpnMessage.PaymentStatus.HasValue
+                                        ? response.ProcessedIpnMessage.PaymentStatus.ToString()
+                                        : "N/A";
+                    var status = response.ProcessedIpnMessage.PaymentStatus;
+
+                    log.Debug("IPN message content: " + response.Content);
+                    log.Debug("IPN raw response: " + content);
+                    log.Debug("IPN message, status: " + statusText + ". regId: " + id + " success: " + response.Success);
+
+                    if (status == PaymentStatus.Completed)
                     {
-                        smuService.HarBetalt(registration);
-                        SkickaRegMail(registration);
-                        TempData[PaysonViewModel.PAYSON_VM] = null;
+                        if (!registrering.HarBetalt)
+                        {
+                            smuService.HarBetalt(registrering);
+                            SkickaRegMail(registrering);
+                            TempData[PaysonViewModel.PAYSON_VM] = null;
+                        }
+                        else
+                        {
+                            log.Debug("Registreringen var redan markerad som betald. Skickar inget meddelande.");
+                        }
                     }
                     else
                     {
-                        log.Debug("Registreringen var redan markerad som betald. Skickar inget meddelande.");
+                        SendMail.SendErrorMessage("IPN message for non complete transaction. regId: " + id + ". Status: " + statusText);
+                        log.Debug("IPN message for non complete transaction. regId: " + id + ". Status: " + statusText);
                     }
                 }
                 else
                 {
-                    SendMail.SendErrorMessage("IPN message for non complete transaction. regId: " + id + ". Status: " + statusText);
-                    log.Debug("IPN message for non complete transaction. regId: " + id + ". Status: " + statusText);
+                    log.Error("Got IPN with wrong regId as query parameter: " + id);
+                    SendMail.SendErrorMessage("Got IPN with wrong regId as query parameter: " + id);
                 }
             }
-            else
+            catch (Exception exc)
             {
-                log.Error("Got IPN with wrong regId as query parameter: " + id);
-                SendMail.SendErrorMessage("Got IPN with wrong regId as query parameter: " + id);
+                log.Error("Ett fel inträffade i IPN metoden.", exc);
+                SendMail.SendErrorMessage(string.Format("Ett fel inträffade i IPN metoden. Exception: {0}", exc.ToString()));
             }
 
             return new EmptyResult();

@@ -11,18 +11,22 @@
 
 @using (Html.BeginForm())
 {
-    @*@Html.Hidden("StepType", Model.Wizard.GetType())*@
+    <div class="grid form-group">
+        <div class="col-md-12">
 
-    for (int stepIndex = 0; stepIndex < Model.CountSteps; stepIndex++)
-    {
-        @Html.DisplayFor(model => model.Steps[stepIndex], "", null)
-    }
+            @for (int stepIndex = 0; stepIndex < Model.CountSteps; stepIndex++)
+            {
+               @Html.DisplayFor(model => model.Steps[stepIndex], "", null)
+            }
 
-    <div class="grid">
-        <div class="row">
+        </div>
+    </div>
+    
+    <div class="grid form-group">
+        <div class="col-md-12">
             <h3>Att betala</h3>
         </div>
-        
+
         <div class="col-md-12">
             <div class="row col-md-5">
                 <table class="table">
@@ -38,7 +42,7 @@
                         </th>
                     </tr>
                     @foreach (TripletViewModel post in Model.Betalnignsposter.Poster)
-                    {
+                {
                         <tr>
                             <td>
                                 @post.TypNamn
@@ -50,7 +54,7 @@
                                 @post.Avgift
                             </td>
                         </tr>
-                    }
+                }
                     <tr>
                         <td></td>
                         <td>
@@ -68,48 +72,52 @@
         @if (ViewBag.RabattError != null)
         {
             <div class="clearfix"></div>
-            
-            <div class="row top-buffer">
-                <div class="alert alert-danger col-md-5" role="alert">@ViewBag.RabattError</div>
+
+            <div class="row form-group top-buffer">
+                <div class="col-md-5">
+                    <div class="alert alert-danger" role="alert">@ViewBag.RabattError</div>
+                </div>
             </div>
         }
 
         @if (Model.Rabatt == null)
-        {
+    {
             <div class="clearfix"></div>
-            
+
             <div class="row form-group">
-                @Html.LabelFor(model => model.Rabattkod, htmlAttributes: new { @class = "control-label col-md-1" })
-                <div class="col-md-2">
-                    @Html.EditorFor(model => model.Rabattkod, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(model => model.Rabattkod, htmlAttributes: new { @class = "control-label col-md-1 hidden-xs" })
+                <div class="col-md-2 col-xs-6">
+                    @Html.EditorFor(model => model.Rabattkod, new { htmlAttributes = new { @class = "form-control", @placeholder = "Rabattkod" } })
                     @Html.ValidationMessageFor(model => model.Rabattkod, "", new { @class = "text-danger" })
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 col-xs-6">
                     <input type="submit" value="Använd rabattkod" name="rabatt" class="btn btn-default cancel" />
                 </div>
             </div>
-        }
+    }
 
         <div class="clearfix"></div>
 
-        <div class="row">
-            <div class="alert alert-warning col-md-5" role="alert">Vi tillåter enbart företag att betala mot faktura.</div>
+        <div class="form-group row">
+            <div class="col-md-5 col-xs-12">
+                <div class="alert alert-warning" role="alert">Vi tillåter enbart företag att betala mot faktura.</div>
+            </div>
         </div>
 
         <div class="form-group row">
-            <div class="col-md-1">
+            <div class="col-md-1 col-xs-4">
                 <input type="submit" value="Korrigera" name="korrigera" class="btn btn-default cancel" />
             </div>
 
-            <div class="col-md-offset-1 col-md-1">
+            <div class="col-md-offset-1 col-md-1 col-xs-4">
                 <input type="submit" value="Faktura" name="faktura" class="btn btn-default" />
             </div>
 
-            <div class="col-md-1">
+            <div class="col-md-1 col-xs-4">
                 <input type="submit" value="Betala" name="betala" class="btn btn-default" />
             </div>
         </div>
     </div>
-}
+    }
 
 

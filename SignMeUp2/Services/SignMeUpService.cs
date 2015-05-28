@@ -242,6 +242,11 @@ namespace SignMeUp2.Services
             return forseningsavgifterQuery.FirstOrDefault();
         }
 
+        public Organisation HamtaOrganisation(int organisationsId)
+        {
+            return Db.Organisationer.Include("Betalningsmetoder").Single(o => o.Id == organisationsId);
+        }
+
         /// <summary>
         /// Disposing
         /// </summary>
