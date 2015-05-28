@@ -2,8 +2,18 @@
 
 @{
     ViewBag.Title = "Fakturaadress";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
 }
+
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $(document).keypress(function (e) {
+        if (e.keyCode == 13) {
+            $("input[data='send']").focus().click();
+            return false;
+        }
+    });
+</script>
 
 <h2>Ange fakturaadress</h2>
 
@@ -18,7 +28,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Namn, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Namn, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Namn, new { htmlAttributes = new { @autofocus = "autofocus", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Namn, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -76,7 +86,7 @@
                 <input type="submit" value="Backa" name="cancel" class="btn btn-default cancel" />
             </div>
             <div class="col-md-offset-3 col-md-1">
-                <input type="submit" value="Slutför" class="btn btn-default" />
+                <input type="submit" value="Slutför" data="send" class="btn btn-default" />
             </div>
         </div>
     </div>

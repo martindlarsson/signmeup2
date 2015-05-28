@@ -247,7 +247,7 @@ namespace SignMeUp2.Controllers
             else if (!string.IsNullOrEmpty(Request["faktura"]))
             {
                 TempData["wizard"] = tempWizard;
-                return RedirectToAction("Faktura");
+                return RedirectToAction("Fakturaadress");
             }
             else if (!string.IsNullOrEmpty(Request["rabatt"]))
             {
@@ -275,7 +275,7 @@ namespace SignMeUp2.Controllers
         /// Faktura Get
         /// </summary>
         /// <returns></returns>
-        public ActionResult Faktura()
+        public ActionResult Fakturaadress()
         {
             var tempWizard = (WizardViewModel)TempData["wizard"];
 
@@ -302,7 +302,7 @@ namespace SignMeUp2.Controllers
         /// <param name="fakturaadress"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Faktura(Invoice fakturaadress)
+        public ActionResult Fakturaadress(Invoice fakturaadress)
         {
             var tempWizard = (WizardViewModel)TempData["wizard"];
 
