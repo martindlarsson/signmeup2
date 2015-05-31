@@ -25,7 +25,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             }
             else
             {
-                return RedirectToAction("update", new { id = org.Betalningsmetoder.Id });
+                return RedirectToAction("edit", new { id = org.Betalningsmetoder.Id });
             }
         }
 

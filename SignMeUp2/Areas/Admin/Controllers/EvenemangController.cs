@@ -16,7 +16,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Evenemang
         public ActionResult Index()
         {
-            return View(db.Evenemang.ToList());
+            return View(HamtaEvenemangForAnv());
         }
 
         // GET: Evenemang/Details/5

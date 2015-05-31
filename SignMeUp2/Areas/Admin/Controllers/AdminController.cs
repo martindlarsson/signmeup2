@@ -18,18 +18,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Admin/Admin
         public ActionResult Index()
         {
-            // TODO, rollen admin ska se alla organisation
-            var user = GetUser();
-
-            //if (user.Organisation == null) then redirect to create a new one
-
-            //var org = db.Organisationer.Find(user.OrganisationsId);
-            var events = from e in db.Evenemang
-                         where e.OrganisationsId == user.OrganisationsId
-                         select e;
-
             // if role admin then show all
-            return View(db.Evenemang.ToList());
+            return View(HamtaEvenemangForAnv());
         }
     }
 }

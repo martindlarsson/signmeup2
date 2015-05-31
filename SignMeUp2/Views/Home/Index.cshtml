@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_LayoutSimple.cshtml";
 }
 
-<h2>Alla evenemang</h2>
+<h2>Evenemang</h2>
 
 <table class="table">
     <tr>
@@ -16,32 +16,28 @@
             Evenemang
         </th>
         <th>
-            Anmälan öppnar
-        </th>
-        <th>
-            Anmälan stänger
+            Anmälan öppen t.o.m
         </th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
+        item.RegStop = item.RegStop.AddDays(-1);
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Organisation.Namn)
+            <td class="vert-align">
+                @Html.DisplayTextFor(model => item.Organisation.Namn)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Namn)
+            <td class="vert-align">
+                @Html.DisplayTextFor(model => item.Namn)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegStart)
+            <td class="vert-align">
+                @item.RegStop.ToShortDateString()
+                @*@Html.DisplayTextFor(model => item.RegStop)*@
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegStop)
-            </td>
-            <td>
-                @Html.ActionLink("Jag vill anmäla mig!", "Index", "SignMeUp", new {  id = item.Id}, null) |
-                @Html.ActionLink("Lista på anmälda", "Startlista", "Home", new { id = item.Id }, null)
+            <td class="vert-align">
+                @Html.ActionLink("Jag vill anmäla mig!", "Index", "SignMeUp", new { id = item.Id }, new { @class = "btn btn-success" })
+                @Html.ActionLink("Lista på anmälda", "Startlista", "Home", new { id = item.Id }, new { @class = "btn btn-info" })
             </td>
         </tr>
     }

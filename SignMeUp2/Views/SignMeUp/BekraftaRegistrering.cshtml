@@ -85,7 +85,9 @@
             <div class="clearfix"></div>
 
             <div class="row form-group">
-                @Html.LabelFor(model => model.Rabattkod, htmlAttributes: new { @class = "control-label col-md-1 hidden-xs" })
+                <div class="vert-align">
+                    @Html.LabelFor(model => model.Rabattkod, htmlAttributes: new { @class = "control-label col-md-1 hidden-xs vert-align" })
+                </div>
                 <div class="col-md-2 col-xs-6">
                     @Html.EditorFor(model => model.Rabattkod, new { htmlAttributes = new { @class = "form-control", @placeholder = "Rabattkod" } })
                     @Html.ValidationMessageFor(model => model.Rabattkod, "", new { @class = "text-danger" })

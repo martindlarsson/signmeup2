@@ -4,34 +4,46 @@ using System.Net;
 using System.Net.Mail;
 using SendGrid;
 using SignMeUp2.Data;
+using log4net;
 
 namespace SignMeUp2.Helpers
 {
     public class SendMail
     {
+
         public static void SendRegistration(string message, string hostAddress, string link, Registreringar reg)
-        {   
-            message = message.Replace("href=\"/", string.Format("href=\"{0}", hostAddress));
-            message = message.Replace("src=\"/", string.Format("src=\"{0}", hostAddress));
-            message = message.Replace("<html>", string.Format("<html>Ser meddelandet konstigt ut? Öppna följande adress i en webbläsare: {0}<br/><br/>", link));
+        {
+            ILog log = LogManager.GetLogger("SendMail");
+            log.Debug("Skickar registreringsmail med meddelande: " + message);
 
-            // Create the email object first, then add the properties.
-            SendGridMessage myMessage = new SendGridMessage();
-            myMessage.AddTo(reg.Epost);
-            myMessage.From = new MailAddress(reg.Evenemang.Organisation.Epost, reg.Evenemang.Organisation.Namn);
-            myMessage.Subject = string.Format("Bekräftelse anmälan till " + reg.Evenemang.Namn);
-            myMessage.Html = message;
-            myMessage.Text = "Följ länken för en bekräftelse på din anmälan: " + link;
+            try
+            {
+                message = message.Replace("href=\"/", string.Format("href=\"{0}", hostAddress));
+                message = message.Replace("src=\"/", string.Format("src=\"{0}", hostAddress));
+                message = message.Replace("<html>", string.Format("<html>Ser meddelandet konstigt ut? Öppna följande adress i en webbläsare: {0}<br/><br/>", link));
 
-            // Create credentials, specifying your user name and password.
-            var credentials = new NetworkCredential(ConfigurationManager.AppSettings["SendGridUser"], ConfigurationManager.AppSettings["SendGridPwd"]);
+                // Create the email object first, then add the properties.
+                SendGridMessage myMessage = new SendGridMessage();
+                myMessage.AddTo(reg.Epost);
+                myMessage.From = new MailAddress(reg.Evenemang.Organisation.Epost, reg.Evenemang.Organisation.Namn);
+                myMessage.Subject = string.Format("Bekräftelse anmälan till " + reg.Evenemang.Namn);
+                myMessage.Html = message;
+                myMessage.Text = "Följ länken för en bekräftelse på din anmälan: " + link;
 
-            // Create an Web transport for sending email.
-            var transportWeb = new Web(credentials);
+                // Create credentials, specifying your user name and password.
+                var credentials = new NetworkCredential(ConfigurationManager.AppSettings["SendGridUser"], ConfigurationManager.AppSettings["SendGridPwd"]);
 
-            // Send the email.
-            // You can also use the **DeliverAsync** method, which returns an awaitable task.
-            transportWeb.DeliverAsync(myMessage);
+                // Create an Web transport for sending email.
+                var transportWeb = new Web(credentials);
+
+                // Send the email.
+                // You can also use the **DeliverAsync** method, which returns an awaitable task.
+                transportWeb.DeliverAsync(myMessage);
+            }
+            catch (Exception exc)
+            {
+                log.Error("Fel vid skickande av mail.", exc);
+            }
         }
 
         public static void SendErrorMessage(string errorMessage)
@@ -39,6 +51,10 @@ namespace SignMeUp2.Helpers
 #if DEBUG
             return;
 #endif
+
+            ILog log = LogManager.GetLogger("SendMail");
+            log.Debug("Skickar error-mail med meddelande: " + errorMessage);
+
             try
             {
                 // Create the email object first, then add the properties.
@@ -58,8 +74,9 @@ namespace SignMeUp2.Helpers
                 // You can also use the **DeliverAsync** method, which returns an awaitable task.
                 transportWeb.DeliverAsync(myMessage);
             }
-            catch (Exception)
+            catch (Exception exc)
             {
+                log.Error("Fel vid skickande av mail.", exc);
             }
         }
     }

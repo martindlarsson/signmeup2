@@ -23,3 +23,7 @@ textarea {
 }
 
 .top-buffer { margin-top:20px; }
+
+.table tbody>tr>td.vert-align{
+    vertical-align: middle;
+}

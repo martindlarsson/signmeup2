@@ -32,5 +32,23 @@ namespace SignMeUp2.Areas.Admin.Controllers
             var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             return userManager.FindById(User.Identity.GetUserId());
         }
+
+        protected IList<Evenemang> HamtaEvenemangForAnv()
+        {
+            var user = GetUser();
+
+            //var isAdmin = false;
+            //foreach (var role in user.Roles)
+            //{
+            //    isAdmin = role.RoleId == 1;
+            //}
+
+            var events = from e in db.Evenemang
+                         where e.OrganisationsId == user.OrganisationsId
+                         select e;
+
+            // if role admin then show all
+            return events.ToList();
+        }
     }
 }
