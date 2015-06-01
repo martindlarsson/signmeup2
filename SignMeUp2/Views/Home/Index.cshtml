@@ -32,8 +32,7 @@
                 @Html.DisplayTextFor(model => item.Namn)
             </td>
             <td class="vert-align">
-                @item.RegStop.ToShortDateString()
-                @*@Html.DisplayTextFor(model => item.RegStop)*@
+                @item.RegStop.ToString("yyyy-MM-dd")
             </td>
             <td class="vert-align">
                 @Html.ActionLink("Jag vill anmäla mig!", "Index", "SignMeUp", new { id = item.Id }, new { @class = "btn btn-success" })

@@ -49,7 +49,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                evenemang.OrganisationsId = GetUser().OrganisationsId;
+                evenemang.OrganisationsId = HamtaUser().OrganisationsId;
                 db.Evenemang.Add(evenemang);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -82,6 +82,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = HamtaUser();
+                evenemang.OrganisationsId = user.OrganisationsId;
                 db.Entry(evenemang).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

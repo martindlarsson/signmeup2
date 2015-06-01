@@ -27,15 +27,21 @@ namespace SignMeUp2.Areas.Admin.Controllers
             db = SignMeUpService.Instance.Db; //System.Web.HttpContext.Current.Items["_EntityContext"] as SignMeUpDataModel;
         }
 
-        protected ApplicationUser GetUser()
+        protected ApplicationUser HamtaUser()
         {
             var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             return userManager.FindById(User.Identity.GetUserId());
         }
 
+        protected Organisation HamtaOrganisation()
+        {
+            var user = HamtaUser();
+            return db.Organisationer.Find(user.OrganisationsId);
+        }
+
         protected IList<Evenemang> HamtaEvenemangForAnv()
         {
-            var user = GetUser();
+            var user = HamtaUser();
 
             //var isAdmin = false;
             //foreach (var role in user.Roles)

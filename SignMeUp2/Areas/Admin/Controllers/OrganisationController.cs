@@ -16,7 +16,13 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Admin/Organisation
         public ActionResult Index()
         {
-            return View(db.Organisationer.ToList());
+            if (User.IsInRole("admin"))
+            {
+                return View(db.Organisationer.ToList());
+            }
+            
+            var org = HamtaOrganisation();
+            return RedirectToAction("Edit", new { id = org.Id });
         }
 
         // GET: Admin/Organisation/Details/5

@@ -15,9 +15,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
     {
         public ActionResult CreateOrUpdate()
         {
-            var user = GetUser();
-
-            var org = db.Organisationer.Find(user.OrganisationsId);
+            var org = HamtaOrganisation();
 
             if (org.Betalningsmetoder == null)
             {
@@ -66,7 +64,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 //db.Betalningsmetoders.Add(betalningsmetoder);
-                var orgId = GetUser().OrganisationsId;
+                var orgId = HamtaUser().OrganisationsId;
                 var org = db.Organisationer.Find(orgId);
                 org.Betalningsmetoder = betalningsmetoder;
                 db.SaveChanges();
