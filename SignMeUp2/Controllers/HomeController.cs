@@ -28,7 +28,7 @@ namespace SignMeUp2.Controllers
         public ActionResult Startlista(int? id)
         {
             if (id == null)
-                return ShowError("Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.", false);
+                return ShowError(log, "Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.", false);
 
             var evenemang = smuService.Db.Evenemang.Find(id);
 
@@ -36,7 +36,7 @@ namespace SignMeUp2.Controllers
 
             if (evenemangResult == EvenemangHelper.EvenemangValidationResult.DoesNotExist)
             {
-                return ShowError("Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
+                return ShowError(log, "Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
             }
 
             var regs = smuService.Db.Registreringar.Include("Deltagare").Where(reg => reg.EvenemangsId == id.Value && reg.HarBetalt).ToList();

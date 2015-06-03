@@ -46,14 +46,14 @@ namespace SignMeUp2.Helpers
             }
         }
 
-        public static void SendErrorMessage(string errorMessage)
+        public static void SendErrorMessage(string errorMessage, string host)
         {
 #if DEBUG
             return;
 #endif
 
             ILog log = LogManager.GetLogger("SendMail");
-            log.Debug("Skickar error-mail med meddelande: " + errorMessage);
+            log.Debug("Skickar error-mail");
 
             try
             {
@@ -61,7 +61,7 @@ namespace SignMeUp2.Helpers
                 SendGridMessage myMessage = new SendGridMessage();
                 myMessage.AddTo(ConfigurationManager.AppSettings["AdminEmail"]);
                 myMessage.From = new MailAddress(ConfigurationManager.AppSettings["SystemEmail"], ConfigurationManager.AppSettings["SystemName"]);
-                myMessage.Subject = string.Format("Fel i SignMeUp2");
+                myMessage.Subject = string.Format("Fel i SignMeUp2 ({0}) {1}", host, DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
                 myMessage.Html = errorMessage;
 
                 // Create credentials, specifying your user name and password.

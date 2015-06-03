@@ -9,8 +9,6 @@ using System.Web.Mvc;
 using SignMeUp2.Data;
 using SignMeUp2.Models;
 using SignMeUp2.Helpers;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SignMeUp2.Controllers
 {
@@ -23,11 +21,13 @@ namespace SignMeUp2.Controllers
             if (wizard == null)
             {
                 if (id == null)
-                    return ShowError("Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.", false);
+                    return ShowError(log, "Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.", false);
 
                 var evenemang = smuService.Db.Evenemang.Find(id);
 
-                log.Info("Användare går in på anmälan för: " + evenemang.Namn);
+                LogDebug(log, "Användare går in på anmälan för: " + evenemang.Namn);
+                //log.Info(string.Format("Session: {0}. {2}", HttpContext.Session.SessionID, str.ToString()));
+                //log.Info("Användare går in på anmälan för: " + evenemang.Namn);
 
                 var evenemangResult = EvenemangHelper.EvaluateEvenemang(evenemang);
 
@@ -45,7 +45,7 @@ namespace SignMeUp2.Controllers
                 }
                 else if (evenemangResult == EvenemangHelper.EvenemangValidationResult.DoesNotExist)
                 {
-                    return ShowError("Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
+                    return ShowError(log, "Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
                 }
 
                 ViewBag.ev = evenemang.Namn;
@@ -60,6 +60,8 @@ namespace SignMeUp2.Controllers
                 };
                 wizard.Initialize();
             }
+
+            HanteraPaymentError();
 
             if (id == null && wizard != null && wizard.Evenemang_Id != 0)
             {
@@ -84,12 +86,12 @@ namespace SignMeUp2.Controllers
             WizardViewModel wizard = (WizardViewModel)TempData["wizard"];
 
             if (wizard == null)
-                return ShowError("Ett oväntat fel inträffade, var god försök igen.", true, new Exception("Ingen wizard i TempData"));
+                return ShowError(log, "Ett oväntat fel inträffade, var god försök igen.", true, new Exception("Ingen wizard i TempData"));
 
             var ev = smuService.HamtaEvenemang(wizard.Evenemang_Id);
             ViewBag.ev = ev.Namn;
 
-            log.Info("Användare är i steg " + wizard.CurrentStepIndex + " av anmälan till " + ev.Namn);
+            LogDebug(log, "Användare är i steg " + wizard.CurrentStepIndex + " av anmälan till " + ev.Namn);
 
             wizard.UpdateSetp(step);
 
@@ -114,7 +116,7 @@ namespace SignMeUp2.Controllers
                 }
                 else
                 {
-                    return ShowError("Ett oväntat fel inträffade.", false);
+                    return ShowError(log, "Ett oväntat fel inträffade.", false);
                 }
             }
             else if (!string.IsNullOrEmpty(prev))
@@ -188,7 +190,7 @@ namespace SignMeUp2.Controllers
 
             if (wizard == null)
             {
-                return ShowError("Ett oväntat fel uppstod. Var god försök senare.", true, new Exception("reg was null in TempData. (BekraftaRegistrering POST)"));
+                return ShowError(log, "Ett oväntat fel uppstod. Var god försök senare.", true, new Exception("reg was null in TempData. (BekraftaRegistrering POST)"));
             }
 
             var ev = smuService.HamtaEvenemang(wizard.Evenemang_Id);
@@ -201,7 +203,7 @@ namespace SignMeUp2.Controllers
             regStep.Klasser = smuService.Db.Klasser.Find(regStep.Klass);
             wizard.Betalnignsposter = new BetalningViewModel(regStep.Banor, regStep.Kanoter, wizard.Rabatt, wizard.Forseningsavgift);
             
-            log.Info("Användare bekräfta registrering (GET) för " + ev.Namn);
+            LogDebug(log, "Användare bekräfta registrering (GET) för " + ev.Namn);
 
             TempData["wizard"] = wizard;
             return View(wizard);
@@ -219,7 +221,7 @@ namespace SignMeUp2.Controllers
 
             if (tempWizard == null)
             {
-                return ShowError("Ett oväntat fel uppstod. Var god försök senare.", true, new Exception("tempWizard was null in TempData. (BekraftaRegistrering POST)"));
+                return ShowError(log, "Ett oväntat fel uppstod. Var god försök senare.", true, new Exception("tempWizard was null in TempData. (BekraftaRegistrering POST)"));
             }
 
             var ev = smuService.HamtaEvenemang(tempWizard.Evenemang_Id);
@@ -227,7 +229,7 @@ namespace SignMeUp2.Controllers
 
             var regStep = tempWizard.GetRegStep();
 
-            log.Info("Användare bekräfta registrering (POST) för " + ev.Namn);
+            LogDebug(log, "Användare bekräfta registrering (POST) för " + ev.Namn);
 
             // Korrigera
             if (!string.IsNullOrEmpty(Request["korrigera"]))
@@ -297,7 +299,7 @@ namespace SignMeUp2.Controllers
             var ev = smuService.HamtaEvenemang(tempWizard.Evenemang_Id);
             ViewBag.ev = ev.Namn;
 
-            log.Info("Användare valt faktura (GET) för " + ev.Namn);
+            LogDebug(log, "Användare valt faktura (GET) för " + ev.Namn);
 
             TempData["wizard"] = tempWizard;
             return View(tempWizard.Fakturaadress);
@@ -321,7 +323,7 @@ namespace SignMeUp2.Controllers
             var ev = smuService.HamtaEvenemang(tempWizard.Evenemang_Id);
             ViewBag.ev = ev.Namn;
 
-            log.Info("Användare valt faktura (POST) för " + ev.Namn);
+            LogDebug(log, "Användare valt faktura (POST) för " + ev.Namn);
 
             if (!string.IsNullOrEmpty(Request["cancel"]))
             {
@@ -356,13 +358,13 @@ namespace SignMeUp2.Controllers
         public ActionResult BekraftelseBetalning(int? id)
         {
             if (id == null)
-                return ShowError("Fel vid hämtning av registreringsinformation. Kontrollera i startlistan om er registrering genomförts.", false);
+                return ShowError(log, "Fel vid hämtning av registreringsinformation. Kontrollera i startlistan om er registrering genomförts.", false);
 
             var reg = smuService.GetRegistrering(id.Value, true);
 
             ViewBag.ev = reg.Evenemang.Namn;
 
-            log.Info("Användare bekräftelse betalning (GET) för " + reg.Evenemang.Namn);
+            LogDebug(log, "Användare bekräftelse betalning (GET) för " + reg.Evenemang.Namn);
 
             return View(smuService.FillRegistrering(reg));
         }
@@ -376,25 +378,27 @@ namespace SignMeUp2.Controllers
         {
             if (id == null)
             {
-                ShowError("Ingen anmälan med id " + id.Value + " hittades.", false);
+                return ShowError(log, "Ingen anmälan med id " + id.Value + " hittades.", false);
             }
 
             var reg = smuService.Db.Registreringar.Include("Evenemang.Organisation").SingleOrDefault(r => r.Id == id);
 
-            log.Info("Skicka mail igen för " + reg.Evenemang.Namn + " lagnamn: " + reg.Lagnamn);
+            LogDebug(log, "Skicka mail igen för " + reg.Evenemang.Namn + " lagnamn: " + reg.Lagnamn);
 
             SkickaRegMail(reg);
 
             return View();
         }
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        smuService.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
+        private void HanteraPaymentError()
+        {
+            if (TempData["PaymentErrorMessage"] != null)
+            {
+                ViewBag.PaymentErrorMessage = TempData["PaymentErrorMessage"];
+                ViewBag.PaymentErrorParameter = TempData["PaymentErrorParameter"];
+                TempData["PaymentErrorMessage"] = null;
+                TempData["PaymentErrorParameter"] = null;
+            }
+        }
     }
 }

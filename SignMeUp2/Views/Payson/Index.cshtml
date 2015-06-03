@@ -16,13 +16,13 @@
 
 <h2>Kontaktinformation för betalning</h2>
 
-@if (TempData["PaymentErrorMessage"] != null)
+@*@if (ViewBag.PaymentErrorMessage != null)
 {
     <div class="row">
-        <div class="alert alert-danger col-md-5" role="alert">Betalningen misslyckades. Felmeddelande: <strong>@TempData["PaymentErrorMessage"]</strong><br />
-        Parameter: <strong>@TempData["PaymentErrorParameter"]</strong></div>
+        <div class="alert alert-danger col-md-5" role="alert">Betalningen misslyckades. Felmeddelande: <strong>@ViewBag.PaymentErrorMessage</strong><br />
+        Parameter: <strong>@ViewBag.PaymentErrorParameter</strong></div>
     </div>
-}
+}*@
 
 @using (Html.BeginForm())
 {

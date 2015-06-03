@@ -187,7 +187,6 @@ namespace SignMeUp2.Services
             }
             catch (Exception exc)
             {
-                //Trace.TraceError("Fel vid uppdatering av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
                 log.Error("Error updating registration", exc);
                 throw new Exception("Error while updating a registration", exc);
             }
@@ -199,16 +198,31 @@ namespace SignMeUp2.Services
             {
                 Db.Registreringar.Remove(reg);
                 Db.SaveChanges();
-                //Trace.TraceInformation("Removed registration with id: " + reg.Id + " and Lagnamn: " + reg.Lagnamn);
+
                 log.Debug("Removed registration with id: " + reg.Id + " and Lagnamn: " + reg.Lagnamn);
             }
             catch (Exception exc)
             {
-                //Trace.TraceError("Fel vid borttagning av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
                 log.Error("Error while deleting a registration", exc);
                 throw new Exception("Error while deleting a registration", exc);
             }
         }
+
+        //public Registreringar StrippaReg(Registreringar reg)
+        //{
+        //    // Rensa kopplingar så att man kan spara registreringen igen
+        //    reg.Id = 0;
+        //    reg.Registreringstid = null;
+        //    reg.PaysonToken = null;
+
+        //    foreach (var deltagare in reg.Deltagare)
+        //    {
+        //        deltagare.Registreringar = null;
+        //        deltagare.RegistreringarID = 0;
+        //    }
+
+        //    return reg;
+        //}
 
         public void HarBetalt(Registreringar reg)
         {

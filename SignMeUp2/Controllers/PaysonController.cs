@@ -36,7 +36,7 @@ namespace SignMeUp2.Controllers
             var reg = (Registreringar)TempData["reg"];
             smuService.FillRegistrering(reg);
 
-            log.Debug("Paysonbetalning påbörjad för lag " + reg.Lagnamn);
+            LogDebug(log, "Paysonbetalning påbörjad för lag " + reg.Lagnamn);
 
             if (reg == null)
             {   
@@ -77,12 +77,12 @@ namespace SignMeUp2.Controllers
 
                     if (paysonViewModel == null || reg == null)
                     {
-                        return ShowError("Oväntat fel. Var god försök senare", true, new Exception("Ingen paysonViewModel i TempData."));
+                        return ShowError(log, "Oväntat fel. Var god försök senare", true, new Exception("Ingen paysonViewModel i TempData."));
                     }
 
                     paysonViewModel.Kontaktinformation = kontaktInfo;
 
-                    log.Debug("Payment: Lagnamn: " + reg.Lagnamn);
+                    LogDebug(log, string.Format("Payment: Lagnamn: {0}", reg.Lagnamn));
 
                     // Spara temporärt i databasen
                     smuService.SparaNyRegistrering(reg);
@@ -96,9 +96,7 @@ namespace SignMeUp2.Controllers
                     PayData payData = SkapaPaysonPayData(paysonViewModel, org);
 
                     var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
-#if DEBUG
-                    api = new PaysonApi("4", "2acab30d-fe50-426f-90d7-8c60a7eb31d4", ApplicationId, true);
-#endif                    
+
                     var response = api.MakePayRequest(payData);
 
                     if (response.Success)
@@ -121,8 +119,9 @@ namespace SignMeUp2.Controllers
                 }
                 catch (Exception exception)
                 {
-                    log.Error("Exception in Index.", exception);
-                    return ShowError("Oväntat fel vid betalning. Var god försök igen.", true, exception);
+                    var exc = new Exception("Ett felinträffade i PaysonController Index metod.", exception);
+                    LogError(log, "Exception in Index.", exception);
+                    return ShowError(log, "Oväntat fel vid betalning. Var god försök igen.", true, exc);
                 }
             }
 
@@ -189,21 +188,23 @@ namespace SignMeUp2.Controllers
         /// <returns></returns>
         public ActionResult Returned(int? id)
         {
-            log.Debug("Returned");
+            LogDebug(log, string.Format("Returned id: {0}", id));
 
             if (!id.HasValue)
             {
-                ShowError("Ett fel inträffade när betalningen slutfördes. Kontrollera i startlistan om er registrering genomförts", true, new Exception("Felaktigt angivet regId: " + id));
+                LogError(log, string.Format("Felaktigt angivet regId: {0}", id));
+                return ShowError(log, "Ett fel inträffade när betalningen slutfördes. Kontrollera i startlistan om er registrering genomförts", true, new Exception("Felaktigt angivet regId: " + id));
             }
 
             var registration = smuService.Db.Registreringar.Find(id);
 
             if (registration == null)
             {
-                ShowError("Ett fel inträffade när betalningen slutfördes. Kontrollera i startlistan om er registrering genomförts", true, new Exception("Ingen registration hittad med  id: " + id + " i Returned."));
+                LogError(log, string.Format("Ingen registration hittad med id: {0} i Returned.", id));
+                return ShowError(log, "Ett fel inträffade när betalningen slutfördes. Kontrollera i startlistan om er registrering genomförts", true, new Exception("Ingen registration hittad med  id: " + id + " i Returned."));
             }
 
-            log.Debug("Returned. Lagnamn: " + registration.Lagnamn);
+            LogDebug(log, string.Format("Returned. Lagnamn: {0}", registration.Lagnamn));
 
             // If no payment message has been sent (IPN)
             if (!registration.HarBetalt)
@@ -211,9 +212,7 @@ namespace SignMeUp2.Controllers
                 var org = smuService.Db.Organisationer.Include("Betalningsmetoder").Single(o => o.Id == registration.Evenemang.OrganisationsId);
 
                 var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
-#if DEBUG
-                api = new PaysonApi("4", "2acab30d-fe50-426f-90d7-8c60a7eb31d4", ApplicationId, true);
-#endif
+
                 var response = api.MakePaymentDetailsRequest(new PaymentDetailsData(registration.PaysonToken));
 
                 if (response.Success && (response.PaymentDetails.PaymentStatus == PaymentStatus.Completed ||
@@ -228,7 +227,7 @@ namespace SignMeUp2.Controllers
                 }
                 else
                 {
-                    log.Warn("Deleting temp-registration with id: " + id);
+                    LogDebug(log, string.Format("Deleting temp-registration with id: {0}", id));
 
                     // Remove the temporary registration
                     smuService.TabortRegistrering(registration);
@@ -245,48 +244,44 @@ namespace SignMeUp2.Controllers
         {
             if (!id.HasValue)
             {
-                return ShowError("Kunde inte återskapa dina uppgifter.", true, new Exception("Felaktigt regId: " + id + " vid cancel."));
+                LogError(log, string.Format("Felaktigt regId: {0} i cancel.", id));
+                return ShowError(log, "Kunde inte återskapa dina uppgifter.", true, new Exception("Felaktigt regId: " + id + " vid cancel."));
             }
 
             var registrering = smuService.Db.Registreringar.Find(id);
 
             if (registrering == null)
             {
-                return ShowError("Betalningen avbröts av okänd anledning", true, new Exception("Payson betalning avbruten och ingen registrering i TempData hittades."));
+                LogError(log, "Payson betalning avbruten och ingen registrering i TempData hittades.");
+                return ShowError(log, "Betalningen avbröts av okänd anledning", true, new Exception("Payson betalning avbruten och ingen registrering i TempData hittades."));
             }
 
-            var org = smuService.Db.Organisationer.Include("Betalningsmetoder").Single(o => o.Id == registrering.Evenemang.OrganisationsId);
+            var org = smuService.HamtaOrganisation(registrering.Evenemang.OrganisationsId);
 
             var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
-#if DEBUG
-            api = new PaysonApi("4", "2acab30d-fe50-426f-90d7-8c60a7eb31d4", ApplicationId, true);
-#endif
+
             var response = api.MakePaymentDetailsRequest(new PaymentDetailsData(registrering.PaysonToken));
 
             // Ta bort temporär registrering
             smuService.TabortRegistrering(registrering);
-            registrering.PaysonToken = null;
 
-            var paysonVM = TempData[PaysonViewModel.PAYSON_VM] as PaysonViewModel;
-            if (paysonVM != null)
-            {
-                paysonVM.Registrering.PaysonToken = null;
-                TempData[PaysonViewModel.PAYSON_VM] = paysonVM;
-            }
+            TempData[PaysonViewModel.PAYSON_VM] = null;
 
             return ShowPaymentError("Betalningen avbruten.", response.NvpContent, registrering);
         }
 
         public ActionResult IPN(int? id)
         {
-            SendMail.SendErrorMessage("Vi fick en IPN!! reg id: " + id);
-            log.Debug("IPN regId: " + id);
+            var host = Request.Url.Host;
 
             if (!id.HasValue)
             {
-                log.Error("IPN, id har inget värde");
-                SendMail.SendErrorMessage("IPN, id har inget värde");
+                LogError(log, "IPN, id har inget värde");
+                SendMail.SendErrorMessage("IPN, id har inget värde", host);
+                return new EmptyResult();
             }
+
+            LogDebug(log, string.Format("IPN id: {0}", id));
 
             try
             {
@@ -308,9 +303,10 @@ namespace SignMeUp2.Controllers
                                         : "N/A";
                     var status = response.ProcessedIpnMessage.PaymentStatus;
 
-                    log.Debug("IPN message content: " + response.Content);
-                    log.Debug("IPN raw response: " + content);
-                    log.Debug("IPN message, status: " + statusText + ". regId: " + id + " success: " + response.Success);
+                    //log.Debug("IPN message content: " + response.Content);
+                    //log.Debug("IPN raw response: " + content);
+                    LogDebug(log, string.Format("IPN message, status: {0}. regId: {1} success: {2}",
+                        statusText, id, response.Success));
 
                     if (status == PaymentStatus.Completed)
                     {
@@ -322,25 +318,25 @@ namespace SignMeUp2.Controllers
                         }
                         else
                         {
-                            log.Debug("Registreringen var redan markerad som betald. Skickar inget meddelande.");
+                            LogDebug(log, "Registreringen var redan markerad som betald. Skickar inget meddelande.");
                         }
                     }
                     else
                     {
-                        SendMail.SendErrorMessage("IPN message for non complete transaction. regId: " + id + ". Status: " + statusText);
-                        log.Debug("IPN message for non complete transaction. regId: " + id + ". Status: " + statusText);
+                        SendMail.SendErrorMessage("IPN message for non complete transaction. regId: " + id + ". Status: " + statusText, host);
+                        LogDebug(log, string.Format("IPN message for non complete transaction. regId: {0}. Status: {1}", id, statusText));
                     }
                 }
                 else
                 {
-                    log.Error("Got IPN with wrong regId as query parameter: " + id);
-                    SendMail.SendErrorMessage("Got IPN with wrong regId as query parameter: " + id);
+                    LogError(log, string.Format("Got IPN with wrong regId as query parameter: {0}", id));
+                    SendMail.SendErrorMessage("Got IPN with wrong regId as query parameter: " + id, host);
                 }
             }
             catch (Exception exc)
             {
-                log.Error("Ett fel inträffade i IPN metoden.", exc);
-                SendMail.SendErrorMessage(string.Format("Ett fel inträffade i IPN metoden. Exception: {0}", exc.ToString()));
+                LogError(log, "Ett fel inträffade i IPN metoden.", exc);
+                SendMail.SendErrorMessage(string.Format("Ett fel inträffade i IPN metoden. Exception: {0}", exc.ToString()), host);
             }
 
             return new EmptyResult();
@@ -357,16 +353,7 @@ namespace SignMeUp2.Controllers
                 str.Append(error.Key + ": " + error.Value);
                 str.Append("\n");
             }
-            log.Error(str.ToString());
-
-            try
-            {
-                SendMail.SendErrorMessage(str.ToString());
-            }
-            catch (Exception exception)
-            {
-                log.Error("Erro when sending error message.", exception);
-            }
+            LogError(log, str.ToString());
 
             if (response.ContainsKey("errorList.error(0).message"))
             {
@@ -383,14 +370,7 @@ namespace SignMeUp2.Controllers
                 TempData["PaymentErrorParameter"] = "Okänd";
             }
 
-            //if (registration != null)
-            //{
-            //    TempData["reg"] = registration;
-            //    smuService.FillRegistrering(registration);
-            //    ViewBag.ev = registration.Evenemang.Namn;
-            //}
-
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "SignMeUp", null);
         }
     }
 }

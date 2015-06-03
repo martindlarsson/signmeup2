@@ -57,23 +57,39 @@ namespace SignMeUp2.Controllers
             }
         }
 
-        protected ActionResult ShowError(string logMessage, bool sendMial, Exception exception = null)
+        protected void LogDebug(ILog logger, string message)
         {
-            log.Error(logMessage, exception);
+            logger.Debug(string.Format("Session: {0}. {1}", HttpContext.Session.SessionID, message));
+        }
+
+        protected void LogError(ILog logger, string message, Exception exc = null)
+        {
+            if (exc != null)
+                logger.Error(string.Format("Session: {0}. {1}", HttpContext.Session.SessionID, message), exc);
+            else
+                logger.Error(string.Format("Session: {0}. {1}", HttpContext.Session.SessionID, message));
+        }
+
+        protected ActionResult ShowError(ILog logger, string logMessage, bool sendMial, Exception exception = null)
+        {
             try
             {
+                var host = Request.Url.Host;
+
+                LogError(logger, logMessage, exception);
+
                 if (sendMial && exception != null)
-                {   
-                    SendMail.SendErrorMessage(logMessage + "<br/><br/>Felmeddelande: " + exception.Message + "<br/><br/>StackTrace: " + exception.ToString());
+                {
+                    SendMail.SendErrorMessage(logMessage + "<br/><br/>Felmeddelande: " + exception.Message + "<br/><br/>StackTrace: " + exception.ToString(), host);
                 }
                 else if (sendMial)
                 {
-                    SendMail.SendErrorMessage(logMessage);
+                    SendMail.SendErrorMessage(logMessage, host);
                 }
             }
             catch (Exception exc)
             {
-                log.Error("Error sending error mail.", exc);
+                logger.Error(string.Format("Session: {0}. Error sending error mail", HttpContext.Session.SessionID), exc);
             }
 
             TempData["error"] = logMessage;

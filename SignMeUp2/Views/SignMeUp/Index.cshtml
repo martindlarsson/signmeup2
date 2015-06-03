@@ -18,6 +18,14 @@ $(document).keypress(function (e) {
 });
 </script>
 
+@if (ViewBag.PaymentErrorMessage != null)
+{
+    <div class="row top-buffer">
+        <div class="alert alert-danger col-md-5" role="alert">Betalningen misslyckades. Felmeddelande: <strong>@ViewBag.PaymentErrorMessage</strong><br />
+        Parameter: <strong>@ViewBag.PaymentErrorParameter</strong></div>
+    </div>
+}
+
 <span class="badge alert-info top-buffer">Steg @(Model.CurrentStepIndex + 1) av @Model.Steps.Count</span>
 
 @using (Html.BeginForm())

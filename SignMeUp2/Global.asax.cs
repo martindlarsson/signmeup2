@@ -38,23 +38,25 @@ namespace SignMeUp2
             // Run migrations at startup
             System.Data.Entity.Database.SetInitializer<SignMeUpDataModel>(new System.Data.Entity.MigrateDatabaseToLatestVersion<SignMeUpDataModel, Migrations.Configuration>());
 
-            log.Debug("Application startad.");
+            log.Info("Application startad.");
             //Trace.TraceInformation("Applikationen startad");
         }
 
-        protected virtual void Application_BeginRequest()
+        void Session_Start(object sender, EventArgs e)
         {
-            log.Info("Application_BeginRequest");
+            HttpContext.Current.Session.Add("__MyAppSession", string.Empty);
         }
+
+        //protected virtual void Application_BeginRequest()
+        //{
+        //    //log.Info("Application_BeginRequest");
+        //}
 
         protected virtual void Application_EndRequest()
         {
-            log.Info("Application_EndRequest");
+            //log.Info("Application_EndRequest");
             var service = SignMeUpService.Instance;
             service.Dispose();
-            //var entityContext = HttpContext.Current.Items["_EntityContext"] as SignMeUpDataModel;
-            //if (entityContext != null)
-            //    entityContext.Dispose();
         }
     }
 }
