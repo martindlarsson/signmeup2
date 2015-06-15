@@ -19,6 +19,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
             return View(HamtaEvenemangForAnv());
         }
 
+        public ActionResult Oversikt(int? id)
+        {
+            ViewBag.EvValjareModel = HamtaEvValjare(id);
+            return View(db.Evenemang.Include("Banor").Include("Klasser").Include("Kanoter").Include("Rabatter").Include("Forseningsavgifter").Include("Registreringar").FirstOrDefault(e => e.Id == id.Value));
+        }
+
         // GET: Evenemang/Details/5
         public ActionResult Details(int? id)
         {
@@ -113,10 +119,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         {
             Evenemang evenemang = db.Evenemang.Find(id);
             evenemang.Registreringar.Clear();
-            //foreach (Registreringar reg in evenemang.Registreringar)
-            //{
-            //    evenemang.Registreringar.Remove(reg);
-            //}
+
             db.SaveChanges();
             db.Evenemang.Remove(evenemang);
             db.SaveChanges();

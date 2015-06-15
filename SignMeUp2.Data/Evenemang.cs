@@ -33,8 +33,6 @@ namespace SignMeUp2.Data
         [DataType(DataType.DateTime)]
         public DateTime RegStop { get; set; }
 
-        //[InverseProperty("Evenemang")]
-        //[ForeignKey("OrganisationsId")]
         public Organisation Organisation { get; set; }
         public int OrganisationsId { get; set; }
 
@@ -51,23 +49,23 @@ namespace SignMeUp2.Data
         public virtual ICollection<Forseningsavgift> Forseningsavgifter { get; set; }
     }
 
-    public class EvenemangMap : EntityTypeConfiguration<Evenemang>
-    {
-        public EvenemangMap()
-        {
-            // Key
-            HasKey(e => e.Id);
+    //public class EvenemangMap : EntityTypeConfiguration<Evenemang>
+    //{
+    //    public EvenemangMap()
+    //    {
+    //        // Key
+    //        HasKey(e => e.Id);
 
-            // Properties
-            Property(e => e.Namn).IsRequired();
-            Property(e => e.RegStart).IsRequired();
-            Property(e => e.RegStop).IsRequired();
+    //        // Properties
+    //        Property(e => e.Namn).IsRequired();
+    //        Property(e => e.RegStart).IsRequired();
+    //        Property(e => e.RegStop).IsRequired();
 
-            // Relatiionship
-            HasRequired(e => e.Organisation)
-                .WithMany(o => o.Evenemang)
-                .HasForeignKey(e => e.OrganisationsId)
-                .WillCascadeOnDelete(true);
-        }
-    }
+    //        // Relatiionship
+    //        HasRequired(e => e.Organisation)
+    //            .WithMany(o => o.Evenemang)
+    //            .HasForeignKey(e => e.OrganisationsId)
+    //            .WillCascadeOnDelete(true);
+    //    }
+    //}
 }

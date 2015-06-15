@@ -20,20 +20,19 @@ namespace SignMeUp2
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                        //"~/Scripts/bootstrap-datepicker.js",
-                      //"~/Scripts/DatePickerReady.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/bootstrap.min.js",
+                      "~/Scripts/respond.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      //"~/Content/bootstrap-datepicker3.css",
+                      "~/Content/bootstrap.min.css",
+                      "~/Content/bootstrap-datetimepicker.min.css",
                       "~/Content/site.css"));
 
             // För datetimepicker
-            //bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
-            //        "~/Scripts/moment*",
-            //        "~/Scripts/bootstrap-datetimepicker*"));
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-datetimepicker").Include(
+                      "~/Scripts/moment.min.js",
+                      "~/Scripts/moment-with-locales.min.js",
+                    "~/Scripts/bootstrap-datetimepicker.min.js"));
 
             // applicationInsights.js
             bundles.Add(new ScriptBundle("~/bundles/ai").Include(

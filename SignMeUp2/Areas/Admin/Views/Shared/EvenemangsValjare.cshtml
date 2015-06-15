@@ -1,0 +1,11 @@
+﻿@using SignMeUp2.Areas.Admin.Models;
+
+@model EvenemangsValjare
+
+<div class="row">
+    <h3>Valt evenemang: @Model.SelectedEvenemangsNamn</h3>
+</div>
+
+<div class="row">
+    @Html.DropDownList("Evenemang", null, htmlAttributes: new { @class = "selectpicker" })
+</div>

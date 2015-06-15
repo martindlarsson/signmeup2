@@ -15,6 +15,11 @@ namespace SignMeUp2.Areas.Admin.Controllers
     {
         public ActionResult CreateOrUpdate()
         {
+            if (IsUserAdmin)
+            {
+                RedirectToAction("Index");
+            }
+
             var org = HamtaOrganisation();
 
             if (org.Betalningsmetoder == null)
@@ -68,7 +73,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 var org = db.Organisationer.Find(orgId);
                 org.Betalningsmetoder = betalningsmetoder;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
             }
 
             return View(betalningsmetoder);
@@ -100,7 +105,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 db.Entry(betalningsmetoder).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
             }
             return View(betalningsmetoder);
         }

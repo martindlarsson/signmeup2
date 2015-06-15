@@ -1,20 +1,8 @@
 ﻿@model Nullable<DateTime>
 
-
 <div class="input-group date datetimepicker">
     <span class="input-group-addon">
         <span class="glyphicon glyphicon-calendar"></span>
     </span>
-    @Html.TextBoxFor(model => model, new { @class = "form-control datetimepicker" })
+    @Html.TextBoxFor(model => model, new { @class = "form-control" })
 </div>
-    
-@section scripts
-{
-    <script>
-        $(function () {
-            $('.datetimepicker').datetimepicker();
-            $('#datetimepicker').datetimepicker();
-            $('.datetimepicker').datetimepicker();
-        });
-    </script>
-}

@@ -9,21 +9,25 @@
 
 <p>Här kan du administrera dina evenemang och anmälningar mm.</p>
 
-<p>Plats för organisationsnamn och knappar för att redigera organisationen.</p>
-
 <p>
     @Html.ActionLink("Skapa nytt evenemang", "Create", "Evenemang", null, null)
 </p>
 <table class="table">
     <tr>
+        @if (ViewBag.IsAdmin)
+        {
         <th>
-            @Html.DisplayNameFor(model => model.Namn)
+            Arrangör
+        </th>
+        }
+        <th>
+            Evenemang
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RegStart)
+            Anmälan öppnar
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RegStop)
+            Anmälan stänger
         </th>
         <th></th>
     </tr>
@@ -31,19 +35,24 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Namn)
+            @if (ViewBag.IsAdmin)
+            {
+            <td class="vert-align">
+                @Html.ActionLink(item.Organisation.Namn, "Edit", "Organisation", new { id = item.OrganisationsId }, null)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegStart)
+            }
+            <td class="vert-align">
+                @item.Namn
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegStop)
+            <td class="vert-align">
+                @item.RegStart.ToString("yyyy-MM-dd HH:mm")
             </td>
-            <td>
-                @Html.ActionLink("Editera", "Edit", "Evenemang", new { id = item.Id }, null) |
-                @Html.ActionLink("Detaljer", "Details", "Evenemang", new { id = item.Id }, null) |
-                @Html.ActionLink("Radera", "Delete", "Evenemang", new { id = item.Id }, null)
+            <td class="vert-align">
+                @item.RegStop.ToString("yyyy-MM-dd HH:mm")
+            </td>
+            <td class="vert-align">
+                @Html.ActionLink("Redigera", "Oversikt", "Evenemang", new { id = item.Id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Radera", "Delete", "Evenemang", new { id = item.Id }, new { @class = "btn btn-danger" })
             </td>
         </tr>
     }

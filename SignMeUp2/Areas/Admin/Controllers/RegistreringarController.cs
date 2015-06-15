@@ -14,10 +14,21 @@ namespace SignMeUp2.Areas.Admin.Controllers
     public class RegistreringarController : AdminBaseController
     {
         // GET: Registreringar
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var registreringar = db.Registreringar.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass);
-            return View(registreringar.ToList());
+            if (id == null && IsUserAdmin)
+            {
+                var registreringar = db.Registreringar.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass);
+                return View(registreringar.ToList());
+            }
+            else if (id == null)
+            {
+                ViewBag.Evenemang = HamtaEvenemangForAnv();
+                return View();
+            }
+
+            var reggs = db.Registreringar.Where(r => r.EvenemangsId == id.Value);
+            return View(reggs.ToList());
         }
 
         // GET: Registreringar/Details/5

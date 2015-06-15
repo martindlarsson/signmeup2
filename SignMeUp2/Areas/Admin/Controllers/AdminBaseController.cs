@@ -21,10 +21,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
         protected readonly ILog log;
 
+        protected bool IsUserAdmin
+        {
+            get { return User.IsInRole("admin"); }
+        }
+
         public AdminBaseController()
         {
             log = LogManager.GetLogger(GetType());
-            db = SignMeUpService.Instance.Db; //System.Web.HttpContext.Current.Items["_EntityContext"] as SignMeUpDataModel;
+            db = SignMeUpService.Instance.Db;
         }
 
         protected ApplicationUser HamtaUser()
@@ -41,20 +46,34 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
         protected IList<Evenemang> HamtaEvenemangForAnv()
         {
+            if (User.IsInRole("admin"))
+            {
+                return db.Evenemang.Include("Organisation").ToList();
+            }
+
             var user = HamtaUser();
-
-            //var isAdmin = false;
-            //foreach (var role in user.Roles)
-            //{
-            //    isAdmin = role.RoleId == 1;
-            //}
-
             var events = from e in db.Evenemang
                          where e.OrganisationsId == user.OrganisationsId
                          select e;
-
-            // if role admin then show all
             return events.ToList();
+        }
+
+        protected Models.EvenemangsValjare HamtaEvValjare(int? valtEvenemangsId)
+        {
+            var ev = HamtaEvenemangForAnv();
+            var valjare = new Models.EvenemangsValjare
+            {
+                Evenemang = new SelectList(ev, "Id", "Namn")
+            };
+            if (valtEvenemangsId != null)
+            {
+                valjare.SelectedEvenemangsId = valtEvenemangsId.Value;
+                var valtEvenemang = ev.FirstOrDefault(e => e.Id == valtEvenemangsId.Value);
+                if (valtEvenemang == null)
+                    throw new Exception("Felaktigt evenemangsid använt. Detta evenemang finns inte med bland användarens valbara evenemang.");
+                valjare.SelectedEvenemangsNamn = valtEvenemang.Namn;
+            }
+            return valjare;
         }
     }
 }

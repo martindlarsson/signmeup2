@@ -208,22 +208,6 @@ namespace SignMeUp2.Services
             }
         }
 
-        //public Registreringar StrippaReg(Registreringar reg)
-        //{
-        //    // Rensa kopplingar så att man kan spara registreringen igen
-        //    reg.Id = 0;
-        //    reg.Registreringstid = null;
-        //    reg.PaysonToken = null;
-
-        //    foreach (var deltagare in reg.Deltagare)
-        //    {
-        //        deltagare.Registreringar = null;
-        //        deltagare.RegistreringarID = 0;
-        //    }
-
-        //    return reg;
-        //}
-
         public void HarBetalt(Registreringar reg)
         {
             var registrering = GetRegistrering(reg.Id, false);

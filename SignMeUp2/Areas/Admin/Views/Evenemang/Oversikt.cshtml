@@ -1,0 +1,125 @@
+﻿@using SignMeUp2.Data;
+@using SignMeUp2.Areas.Admin.Models;
+
+@model SignMeUp2.Data.Evenemang
+
+@{
+    ViewBag.Title = "Evenemangsöversikt";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    EvenemangsValjare evValjare = ViewBag.EvValjareModel as EvenemangsValjare;
+}
+
+<h2>@Model.Namn</h2>
+
+<div class="row col-md-12">
+    <div class="col-md-4">Anmälan öppnar: @Model.RegStart.ToString("yyyy-MM-dd kl HH:mm")</div>
+    <div class="col-md-4">Anmälan stänger: @Model.RegStop.ToString("yyyy-MM-dd kl HH:mm")</div>
+    <div class="col-md-4">@Html.ActionLink("Editera evenemang", "Edit", "Evenemang", new { id = Model.Id }, new { @class = "btn btn-primary" })</div>
+</div>
+
+<div class="row col-md-12">
+    <h3>@Model.Registreringar.Count() anmälda lag</h3> @Html.ActionLink("Visa listan", "Index", "Registreringar", new { id = Model.Id }, new { @class = "btn btn-primary" })
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Banor</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>Namn</th>
+                <th>Antal deltagare</th>
+                <th>Avgift</th>
+            </tr>
+            @foreach (var bana in Model.Banor)
+            {
+                <tr>
+                    <td>@bana.Namn</td>
+                    <td>@bana.AntalDeltagare</td>
+                    <td>@bana.Avgift</td>
+                </tr>
+            }
+        </table>
+        @Html.ActionLink("Redigera banor", "Index", "Banor", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    </div>
+    <div class="col-md-6">
+        <h3>Klasser</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>Namn</th>
+            </tr>
+            @foreach (var klass in Model.Klasser)
+            {
+                <tr>
+                    <td>@klass.Namn</td>
+                </tr>
+            }
+        </table>
+        @Html.ActionLink("Redigera klasser", "Index", "Klasser", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Kanoter</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>Namn</th>
+                <th>Avgift</th>
+            </tr>
+            @foreach (var kanot in Model.Kanoter)
+            {
+                <tr>
+                    <td>@kanot.Namn</td>
+                    <td>@kanot.Avgift</td>
+                </tr>
+            }
+        </table>
+        @Html.ActionLink("Redigera kanoter", "Index", "Kanoter", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    </div>
+    <div class="col-md-6">
+        <h3>Rabatter</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>Kod</th>
+                <th>Beskrivning</th>
+                <th>Summa</th>
+            </tr>
+            @foreach (var rabatt in Model.Rabatter)
+            {
+                <tr>
+                    <td>@rabatt.Kod</td>
+                    <td>@rabatt.Beskrivning</td>
+                    <td>@rabatt.Summa</td>
+                </tr>
+            }
+        </table>
+        @Html.ActionLink("Redigera rabatter", "Index", "Rabatter", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Förseningsavgifter/ kanpanjer</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>Namn</th>
+                <th>Valör</th>
+                <th>Från</th>
+                <th>Till</th>
+                <th>Summa</th>
+            </tr>
+            @foreach (var fa in Model.Forseningsavgifter)
+            {
+                <tr>
+                    <td>@fa.Namn</td>
+                    <td>@fa.PlusEllerMinus</td>
+                    <td>@fa.FranDatum.ToString("yyyy-MM-dd kl HH:mm")</td>
+                    <td>@fa.TillDatum.ToString("yyyy-MM-dd kl HH:mm")</td>
+                    <td>@fa.Summa</td>
+                </tr>
+            }
+        </table>
+        @Html.ActionLink("Redigera förseningsavgifter", "Index", "Forseningsavgift", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    </div>
+</div>

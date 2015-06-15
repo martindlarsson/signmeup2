@@ -18,8 +18,14 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Admin/Admin
         public ActionResult Index()
         {
+            var ev = HamtaEvenemangForAnv();
+
+            ViewBag.Evenemang = new SelectList(ev, "Id", "Namn");
+            // Lägg till ngt i ViewBag som fyller dropdown för val av evenemang
+
+            ViewBag.IsAdmin = User.IsInRole("admin");
             // if role admin then show all
-            return View(HamtaEvenemangForAnv());
+            return View(ev);
         }
     }
 }
