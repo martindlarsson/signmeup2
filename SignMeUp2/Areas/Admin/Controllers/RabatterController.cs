@@ -14,9 +14,24 @@ namespace SignMeUp2.Areas.Admin.Controllers
     public class RabatterController : AdminBaseController
     {
         // GET: Rabatter
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var rabatter = db.Rabatter.Include(r => r.Evenemang);
+            IQueryable<Rabatter> rabatter;
+
+            if (id != null)
+            {
+                rabatter = db.Rabatter.Where(r => r.EvenemangsId == id.Value);
+                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
+            }
+            else if (IsUserAdmin)
+            {
+                rabatter = db.Rabatter.Include(r => r.Evenemang);
+            }
+            else
+            {
+                return new HttpNotFoundResult();
+            }
+
             return View(rabatter.ToList());
         }
 

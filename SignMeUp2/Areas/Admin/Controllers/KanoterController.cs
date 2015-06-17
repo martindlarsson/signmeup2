@@ -14,9 +14,24 @@ namespace SignMeUp2.Areas.Admin.Controllers
     public class KanoterController : AdminBaseController
     {
         // GET: Kanoter
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var kanoter = db.Kanoter.Include(k => k.Evenemang);
+            IQueryable<Kanoter> kanoter;
+
+            if (id != null)
+            {
+                kanoter = db.Kanoter.Where(k => k.EvenemangsId == id.Value);
+                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
+            }
+            else if (IsUserAdmin)
+            {
+                kanoter = db.Kanoter.Include(k => k.Evenemang);
+            }
+            else
+            {
+                return new HttpNotFoundResult();
+            }
+
             return View(kanoter.ToList());
         }
 

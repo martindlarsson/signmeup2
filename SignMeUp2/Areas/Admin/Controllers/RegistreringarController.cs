@@ -16,18 +16,21 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Registreringar
         public ActionResult Index(int? id)
         {
-            if (id == null && IsUserAdmin)
+            IQueryable<Registreringar> reggs;
+            if (id != null)
             {
-                var registreringar = db.Registreringar.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass);
-                return View(registreringar.ToList());
+                reggs = db.Registreringar.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass).Where(r => r.EvenemangsId == id.Value);
+                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
             }
-            else if (id == null)
+            else if (IsUserAdmin)
             {
-                ViewBag.Evenemang = HamtaEvenemangForAnv();
-                return View();
+                reggs = db.Registreringar.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass);
+            }
+            else
+            {
+                return new HttpNotFoundResult();
             }
 
-            var reggs = db.Registreringar.Where(r => r.EvenemangsId == id.Value);
             return View(reggs.ToList());
         }
 

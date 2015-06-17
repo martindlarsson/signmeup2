@@ -14,9 +14,24 @@ namespace SignMeUp2.Areas.Admin.Controllers
     public class KlasserController : AdminBaseController
     {
         // GET: Klasser
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var klasser = db.Klasser.Include(k => k.Evenemang);
+            IQueryable<Klasser> klasser;
+
+            if (id != null)
+            {
+                klasser = db.Klasser.Where(k => k.EvenemangsId == id.Value);
+                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
+            }
+            else if (IsUserAdmin)
+            {
+                klasser = db.Klasser.Include(k => k.Evenemang);
+            }
+            else
+            {
+                return new HttpNotFoundResult();
+            }
+
             return View(klasser.ToList());
         }
 

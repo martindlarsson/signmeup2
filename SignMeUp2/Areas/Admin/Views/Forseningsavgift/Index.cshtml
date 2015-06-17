@@ -3,9 +3,10 @@
 @{
     ViewBag.Title = "Förseningsavgifter";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var evNamn = ViewBag.Evenemang != null ? "- " + ViewBag.Evenemang.Namn : "";
 }
 
-<h2>Förseningsavgifter</h2>
+<h2>Förseningsavgifter @evNamn</h2>
 
 <p>
     @Html.ActionLink("Skapa ny", "Create")

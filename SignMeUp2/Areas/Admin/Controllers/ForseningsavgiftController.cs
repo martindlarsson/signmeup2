@@ -15,11 +15,25 @@ namespace SignMeUp2.Areas.Admin.Controllers
     {
 
         // GET: Admin/Forseningsavgift
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            // TODO visa enbart för valt evenemang
-            //var banor = db.Forseningsavgift.ToList();
-            return View(db.Forseningsavgift.ToList());
+            IQueryable<Forseningsavgift> forseningsavgifter;
+
+            if (id != null)
+            {
+                forseningsavgifter = db.Forseningsavgift.Where(f => f.EvenemangsId == id.Value);
+                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
+            }
+            else if (IsUserAdmin)
+            {
+                forseningsavgifter = db.Forseningsavgift.Include(f => f.Evenemang);
+            }
+            else
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return View(forseningsavgifter.ToList());
         }
 
         // GET: Admin/Forseningsavgift/Details/5

@@ -14,9 +14,24 @@ namespace SignMeUp2.Areas.Admin.Controllers
     public class BanorController : AdminBaseController
     {
         // GET: Admin/Banor
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var banor = db.Banor.Include(b => b.Evenemang);
+            IQueryable<Banor> banor;
+
+            if (id != null)
+            {
+                banor = db.Banor.Include(b => b.Evenemang).Where(b => b.EvenemangsId == id.Value);
+                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
+            }
+            else if (IsUserAdmin)
+            {
+                banor = db.Banor.Include(b => b.Evenemang);
+            }
+            else
+            {
+                return new HttpNotFoundResult();
+            }
+
             return View(banor.ToList());
         }
 
