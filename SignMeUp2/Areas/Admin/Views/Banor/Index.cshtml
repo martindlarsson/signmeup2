@@ -1,53 +1,43 @@
 ﻿@model IEnumerable<SignMeUp2.Data.Banor>
 
 @{
-    ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    var evNamn = ViewBag.Evenemang != null ? "- " + ViewBag.Evenemang.Namn : "";
 }
 
-<h2>Banor @evNamn</h2>
+@{Html.RenderPartial("_headerIndex");}
 
-<p>
-    @Html.ActionLink("Skapa ny", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Evenemang.Namn)
+            Namn
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Namn)
+            Avgift
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Avgift)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AntalDeltagare)
+            Antal deltagare
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Evenemang.Namn)
-        </td>
-        <td>
+        <td class="vert-align">
             @Html.DisplayFor(modelItem => item.Namn)
         </td>
-        <td>
+        <td class="vert-align">
             @Html.DisplayFor(modelItem => item.Avgift)
         </td>
-        <td>
+        <td class="vert-align">
             @Html.DisplayFor(modelItem => item.AntalDeltagare)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        <td class="vert-align">
+            @Html.ActionLink("Redigera", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Ta bort", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
         </td>
     </tr>
 }
 
 </table>
+
+@{Html.RenderPartial("_footerIndex", Model);}

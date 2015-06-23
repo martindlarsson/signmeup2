@@ -4,5 +4,5 @@
         @Html.ActionLink("Evenemangsöversikt", "Oversikt", "Evenemang", new { id = ViewBag.Evenemang.Id }, new { @class = "btn btn-primary" })
     }
 
-    @Html.ActionLink("Skapa ny", "Create", new { id = 1 }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Skapa ny", "Create", new { id = ViewBag.Evenemang.Id }, new { @class = "btn btn-primary" })
 </div>

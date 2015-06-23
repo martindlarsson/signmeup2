@@ -13,6 +13,11 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class ForseningsavgiftController : AdminBaseController
     {
+        private static string _entity = "Förseningsavgift";
+        protected override string GetEntitetsNamn()
+        {
+            return _entity;
+        }
 
         // GET: Admin/Forseningsavgift
         public ActionResult Index(int? id)

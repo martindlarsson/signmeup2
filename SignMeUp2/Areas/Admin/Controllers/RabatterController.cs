@@ -13,6 +13,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class RabatterController : AdminBaseController
     {
+        private static string _entity = "Rabatt";
+        protected override string GetEntitetsNamn()
+        {
+            return _entity;
+        }
+
         // GET: Rabatter
         public ActionResult Index(int? id)
         {

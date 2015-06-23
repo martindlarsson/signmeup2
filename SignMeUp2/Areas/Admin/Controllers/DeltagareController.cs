@@ -13,6 +13,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class DeltagareController : AdminBaseController
     {
+        private static string _entity = "Deltagare";
+        protected override string GetEntitetsNamn()
+        {
+            return _entity;
+        }
+
         // GET: Deltagare
         public ActionResult Index()
         {

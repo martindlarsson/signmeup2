@@ -1,6 +1,6 @@
 ﻿@{
-    var evNamn = ViewBag.Evenemang != null ? "- " + ViewBag.Evenemang.Namn : "";
-    ViewBag.Title = ViewBag.Entitet + " " + evNamn;
+    var evNamn = ViewBag.Evenemang != null ? ViewBag.Evenemang.Namn + " - ": "";
+    ViewBag.Title = evNamn + ViewBag.Entitet;
 }
 
 <h2>@ViewBag.Title</h2>

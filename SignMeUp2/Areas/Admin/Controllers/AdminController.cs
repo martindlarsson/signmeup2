@@ -15,6 +15,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class AdminController : AdminBaseController
     {
+        private static string _entity = "Admin";
+        protected override string GetEntitetsNamn()
+        {
+            return _entity;
+        }
+
         // GET: Admin/Admin
         public ActionResult Index()
         {

@@ -12,6 +12,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
 {
     public class InvoiceController : AdminBaseController
     {
+        private static string _entity = "Faktura";
+        protected override string GetEntitetsNamn()
+        {
+            return _entity;
+        }
+
         // GET: Invoice
         public ActionResult Index()
         {

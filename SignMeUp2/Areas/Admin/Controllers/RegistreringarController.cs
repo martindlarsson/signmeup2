@@ -13,6 +13,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class RegistreringarController : AdminBaseController
     {
+        private static string _entity = "Registrering";
+        protected override string GetEntitetsNamn()
+        {
+            return _entity;
+        }
+
         // GET: Registreringar
         public ActionResult Index(int? id)
         {

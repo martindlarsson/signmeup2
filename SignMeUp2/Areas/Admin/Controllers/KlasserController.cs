@@ -13,6 +13,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class KlasserController : AdminBaseController
     {
+        private static string _entity = "Klasser";
+        protected override string GetEntitetsNamn()
+        {
+            return _entity;
+        }
+
         // GET: Klasser
         public ActionResult Index(int? id)
         {

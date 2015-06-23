@@ -13,6 +13,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class EvenemangController : AdminBaseController
     {
+        private static string _entity = "Evenemang";
+        protected override string GetEntitetsNamn()
+        {
+            return _entity;
+        }
+
         // GET: Evenemang
         public ActionResult Index()
         {

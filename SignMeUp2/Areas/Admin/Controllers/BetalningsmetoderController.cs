@@ -13,6 +13,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class BetalningsmetoderController : AdminBaseController
     {
+        private static string _entity = "Betalningsmetoder";
+        protected override string GetEntitetsNamn()
+        {
+            return _entity;
+        }
+
         public ActionResult CreateOrUpdate()
         {
             if (IsUserAdmin)

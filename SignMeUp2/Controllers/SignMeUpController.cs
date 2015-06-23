@@ -32,8 +32,6 @@ namespace SignMeUp2.Controllers
                 var evenemang = smuService.Db.Evenemang.Find(id);
 
                 LogDebug(log, "Användare går in på anmälan för: " + evenemang.Namn);
-                //log.Info(string.Format("Session: {0}. {2}", HttpContext.Session.SessionID, str.ToString()));
-                //log.Info("Användare går in på anmälan för: " + evenemang.Namn);
 
                 var evenemangResult = EvenemangHelper.EvaluateEvenemang(evenemang);
 

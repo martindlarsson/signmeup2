@@ -22,6 +22,19 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
         protected readonly ILog log;
 
+        protected abstract string GetEntitetsNamn();
+
+        protected void SetViewBag(int? evenemangsId)
+        {
+            ViewBag.Entitet = GetEntitetsNamn();
+
+            if (evenemangsId != null)
+            {
+                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == evenemangsId.Value);
+                ViewBag.EvenemangsId = evenemangsId;
+            }
+        } 
+
         protected bool IsUserAdmin
         {
             get { return User.IsInRole("admin"); }

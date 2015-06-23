@@ -13,15 +13,23 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class BanorController : AdminBaseController
     {
+        private static string _entity = "Banor";
+        protected override string GetEntitetsNamn()
+        {
+            return _entity;
+        }
+
+
         // GET: Admin/Banor
         public ActionResult Index(int? id)
         {
+            SetViewBag(id);
+
             IQueryable<Banor> banor;
 
             if (id != null)
             {
                 banor = db.Banor.Include(b => b.Evenemang).Where(b => b.EvenemangsId == id.Value);
-                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
             }
             else if (IsUserAdmin)
             {
@@ -47,13 +55,24 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
+            SetViewBag(banor.EvenemangsId);
+
             return View(banor);
         }
 
         // GET: Admin/Banor/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn");
+            SetViewBag(id);
+
+            if (id != null)
+            {
+                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
+                var bana = new Banor { EvenemangsId = id.Value };
+                return View(bana);
+            }
+
             return View();
         }
 
@@ -64,6 +83,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Namn,Avgift,AntalDeltagare,EvenemangsId")] Banor banor)
         {
+            SetViewBag(banor.EvenemangsId);
+
             if (ModelState.IsValid)
             {
                 db.Banor.Add(banor);
@@ -71,7 +92,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
             return View(banor);
         }
 
@@ -87,7 +107,9 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
+
+            SetViewBag(banor.EvenemangsId);
+
             return View(banor);
         }
 
@@ -98,13 +120,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,AntalDeltagare,EvenemangsId")] Banor banor)
         {
+            SetViewBag(banor.EvenemangsId);
+
             if (ModelState.IsValid)
             {
                 db.Entry(banor).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", banor.EvenemangsId);
+
             return View(banor);
         }
 
@@ -120,6 +144,9 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
+            SetViewBag(banor.EvenemangsId);
+
             return View(banor);
         }
 
@@ -128,7 +155,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            SetViewBag(id);
+
             Banor banor = db.Banor.Find(id);
+            SetViewBag(banor.EvenemangsId);
             db.Banor.Remove(banor);
             db.SaveChanges();
             return RedirectToAction("Index");

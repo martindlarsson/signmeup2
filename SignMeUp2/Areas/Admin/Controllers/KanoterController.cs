@@ -13,33 +13,18 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class KanoterController : AdminBaseController
     {
-        private static string _entitet = "Kanoter";
-
-        private void SetEntitet()
+        private static string _entity = "Kanot";
+        protected override string GetEntitetsNamn()
         {
-            ViewBag.Entitet = _entitet;
-        } 
+            return _entity;
+        }
 
         // GET: Kanoter
-        public ActionResult Index(int? id)
+        public ActionResult Index(int id)
         {
-            SetEntitet();
+            SetViewBag(id);
 
-            IQueryable<Kanoter> kanoter;
-
-            if (id != null)
-            {
-                kanoter = db.Kanoter.Where(k => k.EvenemangsId == id.Value);
-                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
-            }
-            else if (IsUserAdmin)
-            {
-                kanoter = db.Kanoter.Include(k => k.Evenemang);
-            }
-            else
-            {
-                return new HttpNotFoundResult();
-            }
+            var kanoter = db.Kanoter.Where(k => k.EvenemangsId == id);
 
             return View(kanoter.ToList());
         }
@@ -47,8 +32,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Kanoter/Details/5
         public ActionResult Details(int? id)
         {
-            SetEntitet();
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -58,22 +41,16 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
+            SetViewBag(kanoter.EvenemangsId);
+
             return View(kanoter);
         }
 
         // GET: Kanoter/Create
-        public ActionResult Create(int? id)
+        public ActionResult Create(int id)
         {
-            SetEntitet();
-
-            if (id != null)
-            {
-                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
-                var kanot = new Kanoter { EvenemangsId = id.Value };
-                return View(kanot);
-            }
-
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn");
+            SetViewBag(id);
 
             return View();
         }
@@ -83,26 +60,23 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Namn,Avgift,EvenemangsId")] Kanoter kanoter)
+        public ActionResult Create([Bind(Include = "ID,Namn,Avgift")] Kanoter kanot, int id)
         {
-            SetEntitet();
-
             if (ModelState.IsValid)
             {
-                db.Kanoter.Add(kanoter);
+                kanot.EvenemangsId = id;
+                db.Kanoter.Add(kanot);
                 db.SaveChanges();
-                return RedirectToAction("Index", kanoter.EvenemangsId);
+                return RedirectToAction("Index", new { id = id });
             }
 
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", kanoter.EvenemangsId);
-            return View(kanoter);
+            SetViewBag(kanot.EvenemangsId);
+            return View(kanot);
         }
 
         // GET: Kanoter/Edit/5
         public ActionResult Edit(int? id)
         {
-            SetEntitet();
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -112,7 +86,9 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", kanoter.EvenemangsId);
+
+            SetViewBag(kanoter.EvenemangsId);
+
             return View(kanoter);
         }
 
@@ -123,23 +99,21 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,EvenemangsId")] Kanoter kanoter)
         {
-            SetEntitet();
+            SetViewBag(kanoter.EvenemangsId);
 
             if (ModelState.IsValid)
             {
                 db.Entry(kanoter).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = kanoter.EvenemangsId });
             }
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", kanoter.EvenemangsId);
+
             return View(kanoter);
         }
 
         // GET: Kanoter/Delete/5
         public ActionResult Delete(int? id)
         {
-            SetEntitet();
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -149,6 +123,9 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
+            SetViewBag(kanoter.EvenemangsId);
+
             return View(kanoter);
         }
 
@@ -157,12 +134,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SetEntitet();
-
             Kanoter kanoter = db.Kanoter.Find(id);
+            var evId = kanoter.EvenemangsId;
+            SetViewBag(kanoter.EvenemangsId);
             db.Kanoter.Remove(kanoter);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = evId });
         }
 
         protected override void Dispose(bool disposing)
