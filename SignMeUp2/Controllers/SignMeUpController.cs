@@ -18,6 +18,12 @@ namespace SignMeUp2.Controllers
         {   
             WizardViewModel wizard = (WizardViewModel)TempData["wizard"];
 
+            // Om wizard innehåller ett evenemangsid som inte stämmer med inkommande id, nolla wizard
+            if (wizard != null && id != null && wizard.Evenemang_Id != id.Value)
+            {
+                wizard = null;
+            }
+
             if (wizard == null)
             {
                 if (id == null)

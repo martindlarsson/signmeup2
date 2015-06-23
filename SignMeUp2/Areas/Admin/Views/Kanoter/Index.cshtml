@@ -1,12 +1,9 @@
 ﻿@model IEnumerable<SignMeUp2.Data.Kanoter>
-
-@{
-    ViewBag.Title = "Index";
+@{   
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    var evNamn = ViewBag.Evenemang != null ? "- " + ViewBag.Evenemang.Namn : "";
 }
 
-<h2>Kanoter @evNamn</h2>
+@{Html.RenderPartial("_headerIndex");}
 
 <table class="table">
     <tr>
@@ -24,16 +21,16 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
+        <td class="vert-align">
             @Html.DisplayFor(modelItem => item.Evenemang.Namn)
         </td>
-        <td>
+        <td class="vert-align">
             @Html.DisplayFor(modelItem => item.Namn)
         </td>
-        <td>
+        <td class="vert-align">
             @Html.DisplayFor(modelItem => item.Avgift)
         </td>
-        <td>
+        <td class="vert-align">
             @Html.ActionLink("Redigera", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
             @Html.ActionLink("Ta bort", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
         </td>
@@ -42,11 +39,4 @@
 
 </table>
 
-<div class="row">
-    @if (ViewBag.Evenemang != null)
-    {
-        @Html.ActionLink("Evenemangsöversikt", "Oversikt", "Evenemang", new { id = ViewBag.Evenemang.Id }, new { @class = "btn btn-primary" })
-    }
-
-        @Html.ActionLink("Skapa ny", "Create", new { id = 1 }, new { @class = "btn btn-primary" })
-</div>
+@{Html.RenderPartial("_footerIndex", Model);}

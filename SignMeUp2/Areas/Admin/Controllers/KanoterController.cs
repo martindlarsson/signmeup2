@@ -13,9 +13,18 @@ namespace SignMeUp2.Areas.Admin.Controllers
     [Authorize]
     public class KanoterController : AdminBaseController
     {
+        private static string _entitet = "Kanoter";
+
+        private void SetEntitet()
+        {
+            ViewBag.Entitet = _entitet;
+        } 
+
         // GET: Kanoter
         public ActionResult Index(int? id)
         {
+            SetEntitet();
+
             IQueryable<Kanoter> kanoter;
 
             if (id != null)
@@ -38,6 +47,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Kanoter/Details/5
         public ActionResult Details(int? id)
         {
+            SetEntitet();
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -51,9 +62,19 @@ namespace SignMeUp2.Areas.Admin.Controllers
         }
 
         // GET: Kanoter/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
+            SetEntitet();
+
+            if (id != null)
+            {
+                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
+                var kanot = new Kanoter { EvenemangsId = id.Value };
+                return View(kanot);
+            }
+
             ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn");
+
             return View();
         }
 
@@ -64,11 +85,13 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Namn,Avgift,EvenemangsId")] Kanoter kanoter)
         {
+            SetEntitet();
+
             if (ModelState.IsValid)
             {
                 db.Kanoter.Add(kanoter);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", kanoter.EvenemangsId);
             }
 
             ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", kanoter.EvenemangsId);
@@ -78,6 +101,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Kanoter/Edit/5
         public ActionResult Edit(int? id)
         {
+            SetEntitet();
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -98,6 +123,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,EvenemangsId")] Kanoter kanoter)
         {
+            SetEntitet();
+
             if (ModelState.IsValid)
             {
                 db.Entry(kanoter).State = EntityState.Modified;
@@ -111,6 +138,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Kanoter/Delete/5
         public ActionResult Delete(int? id)
         {
+            SetEntitet();
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -128,6 +157,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            SetEntitet();
+
             Kanoter kanoter = db.Kanoter.Find(id);
             db.Kanoter.Remove(kanoter);
             db.SaveChanges();

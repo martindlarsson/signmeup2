@@ -420,6 +420,9 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\less\bootstrap-datetimepicker-build.less" />
     <Content Include="Content\less\_bootstrap-datetimepicker.less" />
+    <Content Include="Areas\Admin\Views\Shared\_footerCreate.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_footerIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_headerIndex.cshtml" />
     <None Include="Properties\PublishProfiles\SignMeUp2.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />

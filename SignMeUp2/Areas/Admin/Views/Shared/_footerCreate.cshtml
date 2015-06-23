@@ -1,0 +1,12 @@
+﻿@if (ViewBag.Evenemang != null)
+{
+    <div class="row">
+        @Html.ActionLink("Tillbaka till listan", "Index", new { id = ViewBag.Evenemang.Id }, new { @class = "btn btn-primary" })
+    </div>
+}
+else
+{
+    <div>
+        @Html.ActionLink("Tillbaka till listan", "Index")
+    </div>
+}

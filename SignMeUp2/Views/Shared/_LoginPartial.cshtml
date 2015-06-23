@@ -9,7 +9,7 @@
         <li>
             @Html.ActionLink("Hej " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: new { Area = "" }, htmlAttributes: new { title = "Administrera" })
         </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Logga ut</a></li>
     </ul>
     }
 }

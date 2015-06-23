@@ -7,13 +7,11 @@
 
 <h2>Lägg till kanot</h2>
 
-
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Kanoter</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -32,25 +30,31 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.EvenemangsId, "EvenemangsId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("EvenemangsId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.EvenemangsId, "", new { @class = "text-danger" })
+        @* Om evenemanget inte är satt ska vi visa en dropdown för alla evenemang *@
+        @if (Model.EvenemangsId == 0)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.EvenemangsId, "EvenemangsId", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("EvenemangsId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.EvenemangsId, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
+        }
+        else
+        {
+            @Html.HiddenFor(model => model.EvenemangsId)
+        }
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Skapa" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+@{Html.RenderPartial("_footerCreate", Model);}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
