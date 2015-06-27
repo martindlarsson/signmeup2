@@ -424,6 +424,9 @@
     <Content Include="Areas\Admin\Views\Shared\_footerIndex.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_headerIndex.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Kanoter.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_footerDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Banor.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Forseningsavgift.cshtml" />
     <None Include="Properties\PublishProfiles\SignMeUp2.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />

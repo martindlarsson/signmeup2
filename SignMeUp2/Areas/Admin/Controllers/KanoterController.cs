@@ -20,11 +20,16 @@ namespace SignMeUp2.Areas.Admin.Controllers
         }
 
         // GET: Kanoter
-        public ActionResult Index(int id)
+        public ActionResult Index(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             SetViewBag(id);
 
-            var kanoter = db.Kanoter.Where(k => k.EvenemangsId == id);
+            var kanoter = db.Kanoter.Where(k => k.EvenemangsId == id.Value);
 
             return View(kanoter.ToList());
         }
@@ -48,8 +53,13 @@ namespace SignMeUp2.Areas.Admin.Controllers
         }
 
         // GET: Kanoter/Create
-        public ActionResult Create(int id)
+        public ActionResult Create(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             SetViewBag(id);
 
             return View();
@@ -60,17 +70,22 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Namn,Avgift")] Kanoter kanot, int id)
+        public ActionResult Create([Bind(Include = "ID,Namn,Avgift")] Kanoter kanot, int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             if (ModelState.IsValid)
             {
-                kanot.EvenemangsId = id;
+                kanot.EvenemangsId = id.Value;
                 db.Kanoter.Add(kanot);
                 db.SaveChanges();
                 return RedirectToAction("Index", new { id = id });
             }
 
-            SetViewBag(kanot.EvenemangsId);
+            SetViewBag(id);
             return View(kanot);
         }
 
@@ -87,7 +102,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-            SetViewBag(kanoter.EvenemangsId);
+            SetViewBag(id);
 
             return View(kanoter);
         }
@@ -97,18 +112,18 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,EvenemangsId")] Kanoter kanoter)
+        public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,EvenemangsId")] Kanoter kanot)
         {
-            SetViewBag(kanoter.EvenemangsId);
+            SetViewBag(kanot.EvenemangsId);
 
             if (ModelState.IsValid)
             {
-                db.Entry(kanoter).State = EntityState.Modified;
+                db.Entry(kanot).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = kanoter.EvenemangsId });
+                return RedirectToAction("Index", new { id = kanot.EvenemangsId });
             }
 
-            return View(kanoter);
+            return View(kanot);
         }
 
         // GET: Kanoter/Delete/5
@@ -134,12 +149,20 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Kanoter kanoter = db.Kanoter.Find(id);
-            var evId = kanoter.EvenemangsId;
-            SetViewBag(kanoter.EvenemangsId);
-            db.Kanoter.Remove(kanoter);
-            db.SaveChanges();
-            return RedirectToAction("Index", new { id = evId });
+            Kanoter kanot = db.Kanoter.Find(id);
+            var evId = kanot.EvenemangsId;
+            try
+            {
+                db.Kanoter.Remove(kanot);
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = evId });
+            }
+            catch (Exception)
+            {
+                SetViewBag(evId);
+                ViewBag.Error = "Kunde inte ta bort denna kanot. Det kan vara så att den används i en registrering.";
+                return View(kanot);
+            }
         }
 
         protected override void Dispose(bool disposing)

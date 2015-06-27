@@ -5,23 +5,25 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Ta bort</h2>
+<h2>Ta bort förseningsavgift</h2>
 
 <h3>Är du säker på att du vill ta bort denna?</h3>
+
+@if (ViewBag.Error != null)
+{
+    <div class="row">
+        <div class="alert alert-danger col-md-5" role="alert">
+            @ViewBag.Error
+        </div>
+    </div>
+}
+
 <div>
-    <h4>Förseningsavgift</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Evenemang.Namn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Evenemang.Namn)
-        </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Namn)
+            Namn
         </dt>
 
         <dd>
@@ -29,7 +31,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Summa)
+            Summa
         </dt>
 
         <dd>
@@ -37,7 +39,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PlusEllerMinus)
+            Plus eller minus
         </dt>
 
         <dd>
@@ -45,7 +47,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.FranDatum)
+            Från
         </dt>
 
         <dd>
@@ -53,7 +55,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TillDatum)
+            Till
         </dt>
 
         <dd>
@@ -62,12 +64,10 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Ta bort" class="btn btn-default" /> |
-            @Html.ActionLink("Tillbaka till listan", "Index")
-        </div>
+        Html.RenderPartial("_footerDelete");
     }
 </div>

@@ -23,22 +23,14 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Admin/Banor
         public ActionResult Index(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             SetViewBag(id);
 
-            IQueryable<Banor> banor;
-
-            if (id != null)
-            {
-                banor = db.Banor.Include(b => b.Evenemang).Where(b => b.EvenemangsId == id.Value);
-            }
-            else if (IsUserAdmin)
-            {
-                banor = db.Banor.Include(b => b.Evenemang);
-            }
-            else
-            {
-                return new HttpNotFoundResult();
-            }
+            var banor = db.Banor.Include(b => b.Evenemang).Where(b => b.EvenemangsId == id.Value);
 
             return View(banor.ToList());
         }
@@ -64,14 +56,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Admin/Banor/Create
         public ActionResult Create(int? id)
         {
-            SetViewBag(id);
-
-            if (id != null)
+            if (id == null)
             {
-                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
-                var bana = new Banor { EvenemangsId = id.Value };
-                return View(bana);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            SetViewBag(id);
 
             return View();
         }
@@ -81,18 +71,25 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Namn,Avgift,AntalDeltagare,EvenemangsId")] Banor banor)
+        public ActionResult Create([Bind(Include = "ID,Namn,Avgift,AntalDeltagare")] Banor bana, int? id)
         {
-            SetViewBag(banor.EvenemangsId);
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            ValidateModel(bana);
 
             if (ModelState.IsValid)
             {
-                db.Banor.Add(banor);
+                bana.EvenemangsId = id.Value;
+                db.Banor.Add(bana);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = id });
             }
 
-            return View(banor);
+            SetViewBag(id);
+            return View(bana);
         }
 
         // GET: Admin/Banor/Edit/5
@@ -118,18 +115,18 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,AntalDeltagare,EvenemangsId")] Banor banor)
+        public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,AntalDeltagare,EvenemangsId")] Banor bana)
         {
-            SetViewBag(banor.EvenemangsId);
+            SetViewBag(bana.EvenemangsId);
 
             if (ModelState.IsValid)
             {
-                db.Entry(banor).State = EntityState.Modified;
+                db.Entry(bana).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = bana.EvenemangsId });
             }
 
-            return View(banor);
+            return View(bana);
         }
 
         // GET: Admin/Banor/Delete/5
@@ -155,13 +152,20 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SetViewBag(id);
-
-            Banor banor = db.Banor.Find(id);
-            SetViewBag(banor.EvenemangsId);
-            db.Banor.Remove(banor);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Banor bana = db.Banor.Find(id);
+            var evId = bana.EvenemangsId;
+            try
+            {
+                db.Banor.Remove(bana);
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = evId });
+            }
+            catch (Exception)
+            {
+                SetViewBag(evId);
+                ViewBag.Error = "Kunde inte ta bort denna bana. Det kan vara så att den används i en registrering.";
+                return View(bana);
+            }
         }
 
         protected override void Dispose(bool disposing)

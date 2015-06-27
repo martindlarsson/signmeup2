@@ -1,8 +1,4 @@
 ﻿<div class="row">
-    @if (ViewBag.Evenemang != null)
-    {
-        @Html.ActionLink("Evenemangsöversikt", "Oversikt", "Evenemang", new { id = ViewBag.Evenemang.Id }, new { @class = "btn btn-primary" })
-    }
-
-    @Html.ActionLink("Skapa ny", "Create", new { id = ViewBag.Evenemang.Id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Evenemangsöversikt", "Oversikt", "Evenemang", new { id = ViewBag.Evenemang.Id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Skapa ny", "Create", new { id = ViewBag.Evenemang.Id }, new { @class = "btn btn-success" })
 </div>

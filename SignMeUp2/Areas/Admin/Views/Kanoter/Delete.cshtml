@@ -8,19 +8,22 @@
 <h2>Ta bort kanot</h2>
 
 <h3>Är du säker på att du vill ta bort denna?</h3>
+
+@if (ViewBag.Error != null)
+{
+    <div class="row">
+        <div class="alert alert-danger col-md-5" role="alert">
+            @ViewBag.Error
+        </div>
+    </div>
+}
+
 <div>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Evenemang.Namn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Evenemang.Namn)
-        </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Namn)
+            Namn
         </dt>
 
         <dd>
@@ -28,7 +31,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Avgift)
+            Avgift
         </dt>
 
         <dd>
@@ -40,9 +43,6 @@
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Ta bort" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index", new { id = ViewBag.Evenemang.Id })
-        </div>
+        Html.RenderPartial("_footerDelete");
     }
 </div>
