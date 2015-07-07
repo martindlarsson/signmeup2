@@ -22,21 +22,14 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Klasser
         public ActionResult Index(int? id)
         {
-            IQueryable<Klasser> klasser;
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-            if (id != null)
-            {
-                klasser = db.Klasser.Where(k => k.EvenemangsId == id.Value);
-                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
-            }
-            else if (IsUserAdmin)
-            {
-                klasser = db.Klasser.Include(k => k.Evenemang);
-            }
-            else
-            {
-                return new HttpNotFoundResult();
-            }
+            SetViewBag(id);
+
+            var klasser = db.Klasser.Where(k => k.EvenemangsId == id.Value);
 
             return View(klasser.ToList());
         }
@@ -57,9 +50,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
         }
 
         // GET: Klasser/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn");
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            SetViewBag(id);
+
             return View();
         }
 
@@ -68,16 +67,22 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Namn,EvenemangsId")] Klasser klasser)
+        public ActionResult Create([Bind(Include = "ID,Namn")] Klasser klasser, int? id)
         {
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                db.Klasser.Add(klasser);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
+            if (ModelState.IsValid)
+            {
+                klasser.EvenemangsId = id.Value;
+                db.Klasser.Add(klasser);
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = id });
+            }
+
+            SetViewBag(id);
             return View(klasser);
         }
 
@@ -94,7 +99,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
+            SetViewBag(id);
+
             return View(klasser);
         }
 
@@ -103,17 +109,18 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Namn,EvenemangsId")] Klasser klasser)
+        public ActionResult Edit([Bind(Include = "ID,Namn,EvenemangsId")] Klasser klass)
         {
+            SetViewBag(klass.EvenemangsId);
+
             if (ModelState.IsValid)
             {
-                db.Entry(klasser).State = EntityState.Modified;
+                db.Entry(klass).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = klass.EvenemangsId });
             }
 
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", klasser.EvenemangsId);
-            return View(klasser);
+            return View(klass);
         }
 
         // GET: Klasser/Delete/5
@@ -128,6 +135,9 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
+            SetViewBag(klasser.EvenemangsId);
+
             return View(klasser);
         }
 
@@ -137,9 +147,19 @@ namespace SignMeUp2.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Klasser klasser = db.Klasser.Find(id);
-            db.Klasser.Remove(klasser);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            var evId = klasser.EvenemangsId;
+            try
+            {
+                db.Klasser.Remove(klasser);
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = evId });
+            }
+            catch (Exception)
+            {
+                SetViewBag(evId);
+                ViewBag.Error = "Kunde inte ta bort denna klass. Det kan vara så att den används i en registrering.";
+                return View(klasser);
+            }
         }
 
         protected override void Dispose(bool disposing)

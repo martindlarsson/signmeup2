@@ -1,27 +1,30 @@
 ﻿@model SignMeUp2.Data.Rabatter
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Ta bort";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Ta bort rabatt</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+
+<h3>Är du säker på att du vill ta bort denna?</h3>
+
+@if (ViewBag.Error != null)
+{
+    <div class="row">
+        <div class="alert alert-danger col-md-5" role="alert">
+            @ViewBag.Error
+        </div>
+    </div>
+}
+
 <div>
-    <h4>Rabatter</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Evenemang.Namn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Evenemang.Namn)
-        </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Kod)
+            Rabattkod
         </dt>
 
         <dd>
@@ -29,7 +32,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Summa)
+            Summa
         </dt>
 
         <dd>
@@ -37,7 +40,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Beskrivning)
+            Beskrivning
         </dt>
 
         <dd>
@@ -46,12 +49,10 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
+        Html.RenderPartial("_footerDelete");
     }
 </div>

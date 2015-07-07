@@ -39,7 +39,6 @@ namespace SignMeUp2
             System.Data.Entity.Database.SetInitializer<SignMeUpDataModel>(new System.Data.Entity.MigrateDatabaseToLatestVersion<SignMeUpDataModel, Migrations.Configuration>());
 
             log.Info("Application startad.");
-            //Trace.TraceInformation("Applikationen startad");
         }
 
         void Session_Start(object sender, EventArgs e)
@@ -54,7 +53,6 @@ namespace SignMeUp2
 
         protected virtual void Application_EndRequest()
         {
-            //log.Info("Application_EndRequest");
             var service = SignMeUpService.Instance;
             service.Dispose();
         }

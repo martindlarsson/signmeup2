@@ -114,8 +114,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Namn,Avgift,EvenemangsId")] Kanoter kanot)
         {
-            SetViewBag(kanot.EvenemangsId);
-
             if (ModelState.IsValid)
             {
                 db.Entry(kanot).State = EntityState.Modified;
@@ -123,6 +121,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index", new { id = kanot.EvenemangsId });
             }
 
+            SetViewBag(kanot.EvenemangsId);
             return View(kanot);
         }
 

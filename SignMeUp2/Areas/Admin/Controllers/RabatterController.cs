@@ -22,21 +22,14 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Rabatter
         public ActionResult Index(int? id)
         {
-            IQueryable<Rabatter> rabatter;
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-            if (id != null)
-            {
-                rabatter = db.Rabatter.Where(r => r.EvenemangsId == id.Value);
-                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
-            }
-            else if (IsUserAdmin)
-            {
-                rabatter = db.Rabatter.Include(r => r.Evenemang);
-            }
-            else
-            {
-                return new HttpNotFoundResult();
-            }
+            SetViewBag(id);
+
+            var rabatter = db.Rabatter.Where(r => r.EvenemangsId == id.Value);
 
             return View(rabatter.ToList());
         }
@@ -57,9 +50,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
         }
 
         // GET: Rabatter/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn");
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            SetViewBag(id);
+
             return View();
         }
 
@@ -68,16 +67,22 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Kod,Summa,Beskrivning,EvenemangsId")] Rabatter rabatter)
+        public ActionResult Create([Bind(Include = "Id,Kod,Summa,Beskrivning")] Rabatter rabatter, int? id)
         {
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                db.Rabatter.Add(rabatter);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            ViewBag.EvenemangsId = new SelectList(db.Evenemang, "Id", "Namn", rabatter.EvenemangsId);
+            if (ModelState.IsValid)
+            {
+                rabatter.EvenemangsId = id.Value;
+                db.Rabatter.Add(rabatter);
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = id });
+            }
+
+            SetViewBag(id);
             return View(rabatter);
         }
 
@@ -93,7 +98,9 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", rabatter.EvenemangsId);
+
+            SetViewBag(id);
+
             return View(rabatter);
         }
 
@@ -108,9 +115,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 db.Entry(rabatter).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = rabatter.EvenemangsId });
             }
-            ViewBag.Evenemang_ID = new SelectList(db.Evenemang, "Id", "Namn", rabatter.EvenemangsId);
+
+            SetViewBag(rabatter.EvenemangsId);
             return View(rabatter);
         }
 
@@ -126,6 +134,9 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
+            SetViewBag(rabatter.EvenemangsId);
+
             return View(rabatter);
         }
 
@@ -135,9 +146,19 @@ namespace SignMeUp2.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Rabatter rabatter = db.Rabatter.Find(id);
-            db.Rabatter.Remove(rabatter);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            var evId = rabatter.EvenemangsId;
+            try
+            {
+                db.Rabatter.Remove(rabatter);
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = evId });
+            }
+            catch (Exception)
+            {
+                SetViewBag(evId);
+                ViewBag.Error = "Kunde inte ta bort denna rabatt. Det kan vara så att den används i en registrering.";
+                return View(rabatter);
+            }
         }
 
         protected override void Dispose(bool disposing)

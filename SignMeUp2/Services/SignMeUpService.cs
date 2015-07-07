@@ -40,8 +40,13 @@ namespace SignMeUp2.Services
         {
             get
             {
-                if (_context == null || _context.IsDisposed)
+                if (_context == null)
                 {
+                    _context = new SignMeUpDataModel();
+                }
+                else if (_context.IsDisposed)
+                {
+                    log.Warn("DbContext var disposed, skapar en ny instans.");
                     _context = new SignMeUpDataModel();
                 }
                 return _context;
@@ -155,14 +160,12 @@ namespace SignMeUp2.Services
         {
             try
             {
-                //Trace.TraceInformation("Sparar ny registrering");
                 log.Debug("Sparar ny registrering");
                 var reg = Helpers.ClassMapper.MapToRegistreringar(wizard);
                 log.Debug("Konverterat wizard till registrering för lag " + reg.Lagnamn);
 
                 SparaNyRegistrering(reg);
 
-                Trace.TraceInformation("Sparat registrering för lag " + reg.Lagnamn);
                 log.Debug("Sparat registrering för lag " + reg.Lagnamn);
 
                 Db.Entry(reg).GetDatabaseValues();
@@ -170,7 +173,6 @@ namespace SignMeUp2.Services
             }
             catch (Exception exc)
             {
-                //Trace.TraceError("Fel vid sparande av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
                 log.Error("Error while saving new registration.", exc);
                 throw new Exception("Error while saving a new registration", exc);
             }
@@ -180,7 +182,7 @@ namespace SignMeUp2.Services
         {
             try
             {
-                Trace.TraceInformation("Uppdaterar registrering");
+                log.Debug("Uppdaterar registrering. Lagnamn: " + updatedReg.Lagnamn);
                 var origReg = GetRegistrering(updatedReg.Id, false);
                 Db.Entry(updatedReg).CurrentValues.SetValues(origReg);
                 Db.SaveChanges();
