@@ -286,8 +286,16 @@
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BekraftaRegistreringViewModel.cs" />
     <Compile Include="ViewModels\BetalningViewModel.cs" />
+    <Compile Include="ViewModels\FaltViewModel.cs" />
+    <Compile Include="ViewModels\KontaktuppgifterVM.cs" />
+    <Compile Include="ViewModels\RabattVM.cs" />
+    <Compile Include="ViewModels\DeltagareVM.cs" />
+    <Compile Include="ViewModels\ForseningsavgiftVM.cs" />
+    <Compile Include="ViewModels\InvoiceVM.cs" />
     <Compile Include="ViewModels\PaysonViewModel.cs" />
-    <Compile Include="ViewModels\IWizardStep.cs" />
+    <Compile Include="ViewModels\WizardStep.cs" />
+    <Compile Include="ViewModels\RegistrationVM.cs" />
+    <Compile Include="ViewModels\SignMeUpVM.cs" />
     <Compile Include="ViewModels\StartlistaViewModel.cs" />
     <Compile Include="ViewModels\WizardModelBinder.cs" />
     <Compile Include="ViewModels\WizardSteps.cs" />
@@ -521,13 +529,7 @@
     <Content Include="Areas\Admin\Views\Deltagare\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutSimple.cshtml" />
     <Content Include="Views\SignMeUp\Index.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\ContactViewModel.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\RegistrationViewModel.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\DeltagareListViewModel.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\RegistrationViewModel.cshtml" />
     <Content Include="Views\SignMeUp\BekraftaRegistrering.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\ContactViewModel.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\DeltagareListViewModel.cshtml" />
     <Content Include="Views\SignMeUp\Fakturaadress.cshtml" />
     <Content Include="Views\SignMeUp\BekraftelseBetalning.cshtml" />
     <Content Include="Views\Home\Startlista.cshtml" />
@@ -542,6 +544,8 @@
     <Content Include="Views\SignMeUp\RegNotOpen.cshtml" />
     <Content Include="_EventRegisterUsersGuide.docx" />
     <Content Include="_EventSourceUsersGuide.docx" />
+    <Content Include="Views\Shared\DisplayTemplates\WizardStep.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\WizardStep.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

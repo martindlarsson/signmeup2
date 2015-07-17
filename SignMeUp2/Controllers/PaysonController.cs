@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using SignMeUp2.Models;
+using SignMeUp2.ViewModels;
 using SignMeUp2.Helpers;
 using SignMeUp2.Data;
 using PaysonIntegration;
@@ -119,7 +119,7 @@ namespace SignMeUp2.Controllers
                 }
                 catch (Exception exception)
                 {
-                    var exc = new Exception("Ett felinträffade i PaysonController Index metod.", exception);
+                    var exc = new Exception("Ett fel inträffade i PaysonController Index metod.", exception);
                     LogError(log, "Exception in Index.", exception);
                     return ShowError(log, "Oväntat fel vid betalning. Var god försök igen.", true, exc);
                 }
@@ -146,7 +146,8 @@ namespace SignMeUp2.Controllers
 
             var reg = paysonViewModel.Registrering;
             smuService.FillRegistrering(reg);
-            var betalningVM = new BetalningViewModel(reg.Bana, reg.Kanot, reg.Rabatt, reg.Forseningsavgift);
+            // TODO
+            BetalningViewModel betalningVM = null;//new BetalningViewModel(reg.Bana, reg.Kanot, reg.Rabatt, reg.Forseningsavgift);
 
             var receiver = new Receiver(org.Epost, betalningVM.SummaAttBetala);
             receiver.FirstName = org.Namn;

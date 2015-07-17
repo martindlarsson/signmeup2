@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using System.Web;
-using System.Diagnostics;
 using SignMeUp2.Data;
-using SignMeUp2.Models;
+using SignMeUp2.ViewModels;
 using log4net;
 using System.Data.Entity;
 
@@ -155,21 +155,21 @@ namespace SignMeUp2.Services
         /// <summary>
         /// Spara en ny registrering i form av en wizard i databasen
         /// </summary>
-        /// <param name="wizard"></param>
-        public Registreringar SparaNyRegistrering(WizardViewModel wizard)
+        /// <param name="SUPVM"></param>
+        public Registreringar SparaNyRegistrering(SignMeUpVM SUPVM)
         {
             try
             {
                 log.Debug("Sparar ny registrering");
-                var reg = Helpers.ClassMapper.MapToRegistreringar(wizard);
-                log.Debug("Konverterat wizard till registrering för lag " + reg.Lagnamn);
+                //var reg = Helpers.ClassMapper.MapToRegistreringar(SUPVM);
+                //log.Debug("Konverterat wizard till registrering för lag " + reg.Lagnamn);
 
-                SparaNyRegistrering(reg);
+                //SparaNyRegistrering(reg);
 
-                log.Debug("Sparat registrering för lag " + reg.Lagnamn);
+                //log.Debug("Sparat registrering för lag " + reg.Lagnamn);
 
-                Db.Entry(reg).GetDatabaseValues();
-                return reg;
+                //Db.Entry(reg).GetDatabaseValues();
+                return null;
             }
             catch (Exception exc)
             {
@@ -232,19 +232,127 @@ namespace SignMeUp2.Services
         /// </summary>
         /// <param name="evenemangsId"></param>
         /// <returns></returns>
-        public Forseningsavgift HamtaForseningsavfigt(int evenemangsId)
+        public ForseningsavgiftVM HamtaForseningsavfigt(int evenemangsId)
         {
             var forseningsavgifterQuery = from avgift in Db.Forseningsavgift
                                    where avgift.EvenemangsId == evenemangsId
                                    && avgift.FranDatum <= DateTime.Now
                                    && avgift.TillDatum > DateTime.Now
                                    select avgift;
-            return forseningsavgifterQuery.FirstOrDefault();
+            var f = forseningsavgifterQuery.FirstOrDefault();
+
+            if (f == null)
+            {
+                return null;
+            }
+
+            return new ForseningsavgiftVM
+            {
+                FranDatum = f.FranDatum,
+                Id = f.Id,
+                Namn = f.Namn,
+                PlusEllerMinus = f.PlusEllerMinus,
+                Summa = f.Summa,
+                TillDatum = f.TillDatum
+            };
         }
 
         public Organisation HamtaOrganisation(int organisationsId)
         {
             return Db.Organisationer.Include("Betalningsmetoder").Single(o => o.Id == organisationsId);
+        }
+
+        public SelectList HamtaBanor(int evenemangsId)
+        {
+            return new SelectList(Db.Banor.Where(b => b.EvenemangsId == evenemangsId).ToList(), "ID", "Namn");
+        }
+
+        public SelectList HamtaKanter(int evenemangsId)
+        {
+            return new SelectList(Db.Kanoter.Where(b => b.EvenemangsId == evenemangsId).ToList(), "ID", "Namn");
+        }
+
+        public SelectList HamtaKlasser(int evenemangsId)
+        {
+            return new SelectList(Db.Klasser.Where(b => b.EvenemangsId == evenemangsId).ToList(), "ID", "Namn");
+        }
+
+        public IList<WizardStep> HamtaWizardSteps(int evenemangsId)
+        {
+            var list = new List<WizardStep> {
+                // Registrering
+                new WizardStep
+                {
+                    Namn = "Registrering",
+                    StepIndex = 0,
+                    StepCount = 3,
+                    FaltLista = new List<FaltViewModel>
+                    {
+                        new FaltViewModel {
+                            Namn = "Lagnamn",
+                            Kravs = true,
+                            Typ = FaltTyp.text_falt
+                        },
+                        new FaltViewModel {
+                            Namn = "Bana",
+                            Kravs = true,
+                            Alternativ = HamtaBanor(evenemangsId),
+                            Typ = FaltTyp.val_falt
+                        },
+                        new FaltViewModel {
+                            Namn = "Klass",
+                            Kravs = true,
+                            Alternativ = HamtaKlasser(evenemangsId),
+                            Typ = FaltTyp.val_falt
+                        },
+                        new FaltViewModel {
+                            Namn = "Kanot",
+                            Kravs = true,
+                            Alternativ = HamtaKanter(evenemangsId),
+                            Typ = FaltTyp.val_falt
+                        }
+                    }
+                },
+                // Deltagare
+                new WizardStep
+                {
+                    Namn = "Deltagare",
+                    StepIndex = 1,
+                    StepCount = 3
+                },
+                // Kontaktinformation
+                new WizardStep
+                {
+                    Namn = "Kontaktinformation",
+                    StepIndex = 2,
+                    StepCount = 3,
+                    FaltLista = new List<FaltViewModel>
+                    {
+                        new FaltViewModel {
+                            Namn = "Adress",
+                            Kravs = true,
+                            Typ = FaltTyp.text_falt
+                        },
+                        new FaltViewModel {
+                            Namn = "Telefon",
+                            Kravs = true,
+                            Typ = FaltTyp.text_falt
+                        },
+                        new FaltViewModel {
+                            Namn = "Epost",
+                            Kravs = true,
+                            Typ = FaltTyp.text_falt
+                        },
+                        new FaltViewModel {
+                            Namn = "Klubb",
+                            Kravs = false,
+                            Typ = FaltTyp.text_falt
+                        }
+                    }
+                },
+            };
+
+            return list;
         }
 
         /// <summary>

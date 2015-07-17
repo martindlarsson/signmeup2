@@ -34,13 +34,6 @@ namespace SignMeUp2.Controllers
             }
         }
 
-        protected void FillViewBag(int evenemangsId)
-        {
-            ViewBag.Bana = new SelectList(smuService.Db.Banor.Where(b => b.EvenemangsId == evenemangsId).ToList(), "ID", "Namn");
-            ViewBag.Kanot = new SelectList(smuService.Db.Kanoter.Where(b => b.EvenemangsId == evenemangsId).ToList(), "ID", "Namn");
-            ViewBag.Klass = new SelectList(smuService.Db.Klasser.Where(b => b.EvenemangsId == evenemangsId).ToList(), "ID", "Namn");
-        }
-
         protected void SkickaRegMail(Registreringar reg)
         {
             try

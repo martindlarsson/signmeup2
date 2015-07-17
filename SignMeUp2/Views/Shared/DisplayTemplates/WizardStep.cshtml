@@ -1,0 +1,19 @@
+﻿@model SignMeUp2.ViewModels.WizardStep
+
+<div>
+    <h4>@Model.Namn</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        @foreach (var falt in Model.FaltLista)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => falt.Namn)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => falt.Varde)
+            </dd>
+        }
+    </dl>
+</div>

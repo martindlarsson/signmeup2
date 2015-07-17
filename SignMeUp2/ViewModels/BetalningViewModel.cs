@@ -4,13 +4,13 @@ using System.Linq;
 using System.Web;
 using SignMeUp2.Data;
 
-namespace SignMeUp2.Models
+namespace SignMeUp2.ViewModels
 {
     public class BetalningViewModel
     {
         public IList<TripletViewModel> Poster { get; set; }
 
-        public BetalningViewModel(Banor bana, Kanoter kanot, Rabatter rabatt, Forseningsavgift forseningsavgift)
+        public BetalningViewModel(Banor bana, Kanoter kanot, RabattVM rabatt, ForseningsavgiftVM forseningsavgift)
         {
             Poster = new List<TripletViewModel>();
             Poster.Add(new TripletViewModel { TypNamn = "Bana", Namn = bana.Namn, Avgift = bana.Avgift });

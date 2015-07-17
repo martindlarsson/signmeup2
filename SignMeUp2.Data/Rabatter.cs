@@ -22,27 +22,5 @@ namespace SignMeUp2.Data
 
         public virtual Evenemang Evenemang { get; set; }
         public int EvenemangsId { get; set; }
-
-        //public virtual ICollection<Registreringar> Registreringar { get; set; }
-    }
-
-    public class RabattMap : EntityTypeConfiguration<Rabatter>
-    {
-        public RabattMap()
-        {
-            // Key
-            HasKey(r => r.Id);
-
-            // Properties
-            Property(r => r.Kod).IsRequired();
-            Property(r => r.Summa).IsRequired();
-            Property(r => r.Beskrivning).IsOptional();
-
-            // Relatiionship
-            HasRequired(r => r.Evenemang)
-                .WithMany(e => e.Rabatter)
-                .HasForeignKey(r => r.EvenemangsId)
-                .WillCascadeOnDelete(true);
-        }
     }
 }

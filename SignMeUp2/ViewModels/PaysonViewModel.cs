@@ -2,7 +2,7 @@
 using System.Configuration;
 using SignMeUp2.Data;
 
-namespace SignMeUp2.Models
+namespace SignMeUp2.ViewModels
 {
     public class PaysonViewModel
     {

@@ -7,7 +7,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using SignMeUp2.Models;
+using SignMeUp2.ViewModels;
 using SignMeUp2.Data;
 using SignMeUp2.Services;
 using log4net;
@@ -33,7 +33,7 @@ namespace SignMeUp2
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            ModelBinders.Binders.Add(typeof(IWizardStep), new WizardModelBinder());
+            //ModelBinders.Binders.Add(typeof(WizardStep), new WizardModelBinder());
 
             // Run migrations at startup
             System.Data.Entity.Database.SetInitializer<SignMeUpDataModel>(new System.Data.Entity.MigrateDatabaseToLatestVersion<SignMeUpDataModel, Migrations.Configuration>());

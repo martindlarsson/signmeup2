@@ -32,26 +32,4 @@ namespace SignMeUp2.Data
         [Required]
         public int Summa { get; set; }
     }
-
-    //public class ForseningsavgiftMap : EntityTypeConfiguration<Forseningsavgift>
-    //{
-    //    public ForseningsavgiftMap()
-    //    {
-    //        // Key
-    //        HasKey(f => f.Id);
-
-    //        // Properties
-    //        Property(f => f.Namn).IsRequired();
-    //        Property(f => f.FranDatum).IsRequired();
-    //        Property(f => f.TillDatum).IsRequired();
-    //        Property(f => f.PlusEllerMinus).IsRequired();
-    //        Property(f => f.Summa).IsRequired();
-
-    //        // Relatiionship
-    //        HasRequired(f => f.Evenemang)
-    //            .WithMany(e => e.Forseningsavgifter)
-    //            .HasForeignKey(f => f.EvenemangsId)
-    //            .WillCascadeOnDelete(true);
-    //    }
-    //}
 }
