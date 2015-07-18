@@ -14,8 +14,7 @@
         <div class="form-group">
             @Html.LabelFor(model => falt.Varde, falt.Namn, htmlAttributes: new { @class = "control-label col-md-1" })
             <div class="col-md-11">
-                @Html.DropDownListFor(model => falt.Varde, falt.Alternativ, htmlAttributes: new { @class = "form-control", @Name = falt.Namn })
-                @Html.ValidationMessageFor(model => falt.Varde, falt.Valideringsmeddelande, new { @class = "text-danger" })
+                @Html.DropDownListFor(model => falt.Varde, falt.Alternativ, "Välj " + falt.Namn, htmlAttributes: new { @class = "form-control", @Name = falt.Namn })
             </div>
         </div>
     }
@@ -26,8 +25,21 @@
             @Html.LabelFor(model => falt.Varde, falt.Namn, htmlAttributes: new { @class = "control-label col-md-1" })
             <div class="col-md-10">
                 @Html.EditorFor(model => falt.Varde, new { htmlAttributes = new { @autofocus = "autofocus", @class = "form-control", @Name = falt.Namn } })
-                @Html.ValidationMessageFor(model => falt.Varde, falt.Valideringsmeddelande, new { @class = "text-danger" })
             </div>
         </div>
     }
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#signMeUpForm').validate({ // initialize the plugin
+            rules: {
+                @foreach(var falt in Model.FaltLista) {
+                    @:'@falt.Namn': {required: @Json.Encode(falt.Kravs)},
+                }
+            }
+        });
+
+    });
+</script>

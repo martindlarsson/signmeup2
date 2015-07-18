@@ -7,6 +7,7 @@
     Layout = "~/Views/Shared/_LayoutSimple.cshtml";
 }
 @Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
 
 <script>     
 $(document).keypress(function (e) {
@@ -27,7 +28,7 @@ $(document).keypress(function (e) {
 
 <span class="badge alert-info top-buffer">Steg @(Model.StepIndex + 1) av @Model.StepCount</span>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "signMeUpForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -36,7 +37,7 @@ $(document).keypress(function (e) {
         @Html.EditorFor(x => Model, null)
 
         <div class="row form-group">
-            @if (Model.StepIndex == 1)
+            @if (Model.StepIndex == 0)
             {   
                 <div class="col-md-2 col-md-offset-3 col-xs-4">
                     <input type="submit" value="Nästa" name="ok" data="send" class="btn btn-default" />

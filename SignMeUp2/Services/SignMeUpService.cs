@@ -267,7 +267,7 @@ namespace SignMeUp2.Services
             return new SelectList(Db.Banor.Where(b => b.EvenemangsId == evenemangsId).ToList(), "ID", "Namn");
         }
 
-        public SelectList HamtaKanter(int evenemangsId)
+        public SelectList HamtaKanoter(int evenemangsId)
         {
             return new SelectList(Db.Kanoter.Where(b => b.EvenemangsId == evenemangsId).ToList(), "ID", "Namn");
         }
@@ -308,7 +308,7 @@ namespace SignMeUp2.Services
                         new FaltViewModel {
                             Namn = "Kanot",
                             Kravs = true,
-                            Alternativ = HamtaKanter(evenemangsId),
+                            Alternativ = HamtaKanoter(evenemangsId),
                             Typ = FaltTyp.val_falt
                         }
                     }

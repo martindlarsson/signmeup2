@@ -297,7 +297,6 @@
     <Compile Include="ViewModels\RegistrationVM.cs" />
     <Compile Include="ViewModels\SignMeUpVM.cs" />
     <Compile Include="ViewModels\StartlistaViewModel.cs" />
-    <Compile Include="ViewModels\WizardModelBinder.cs" />
     <Compile Include="ViewModels\WizardSteps.cs" />
     <Compile Include="ViewModels\WizardViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -458,6 +457,7 @@
     <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\SignMeUpValidering.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
