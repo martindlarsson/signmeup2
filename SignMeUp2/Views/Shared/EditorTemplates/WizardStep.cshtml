@@ -19,11 +19,11 @@
         </div>
     }
     // Om det är ett textfält
-    else if (falt.Typ == FaltTyp.text_falt)
+    else if (falt.Typ == FaltTyp.text_falt || falt.Typ == FaltTyp.epost_falt)
     {
         <div class="form-group">
             @Html.LabelFor(model => falt.Varde, falt.Namn, htmlAttributes: new { @class = "control-label col-md-1" })
-            <div class="col-md-10">
+            <div class="col-md-11">
                 @Html.EditorFor(model => falt.Varde, new { htmlAttributes = new { @autofocus = "autofocus", @class = "form-control", @Name = falt.Namn } })
             </div>
         </div>
@@ -34,9 +34,10 @@
     $(document).ready(function () {
 
         $('#signMeUpForm').validate({ // initialize the plugin
+            errorClass: "text-danger",
             rules: {
                 @foreach(var falt in Model.FaltLista) {
-                    @:'@falt.Namn': {required: @Json.Encode(falt.Kravs)},
+                    @:'@falt.Namn': {required: @Json.Encode(falt.Kravs), email: @Json.Encode(falt.Typ == FaltTyp.epost_falt)},
                 }
             }
         });

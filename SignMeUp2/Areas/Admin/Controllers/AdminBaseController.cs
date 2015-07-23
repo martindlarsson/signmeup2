@@ -20,6 +20,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
     {
         protected SignMeUpDataModel db;
 
+        protected SignMeUpService SMU;
+
         protected readonly ILog log;
 
         protected abstract string GetEntitetsNamn();
@@ -43,7 +45,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
         public AdminBaseController()
         {
             log = LogManager.GetLogger(GetType());
-            db = SignMeUpService.Instance.Db;
+            SMU = new SignMeUpService();
+            db = SMU.Db;
         }
 
         protected ApplicationUser HamtaUser()

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SignMeUp2.Data;
+using System.Web.Mvc.Html;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -93,7 +94,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Registreringar registreringar = db.Registreringar.Find(id);
+            Registreringar registreringar = SMU.GetRegistrering(id.Value, true);
             if (registreringar == null)
             {
                 return HttpNotFound();
@@ -102,6 +103,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.EvenemangsId);
             ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.Kanot.Id);
             ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.Klass.Id);
+            ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(SignMeUp2.Data.TypAvgift));
             return View(registreringar);
         }
 

@@ -18,7 +18,7 @@ namespace SignMeUp2.Controllers
         public RegBaseController()
         {   
             log = LogManager.GetLogger(GetType());
-            smuService = SignMeUpService.Instance;
+            smuService = new SignMeUpService();
         }
 
         protected string RenderRazorViewToString(string viewName, object model)

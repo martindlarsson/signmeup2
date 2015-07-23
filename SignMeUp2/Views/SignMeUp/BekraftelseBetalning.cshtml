@@ -13,8 +13,3 @@
 <h4>Arrangör är @Model.Evenemang.Organisation.Namn</h4>
 
 @Html.Partial("_RegDetailsView", Model)
-
-<p>
-    @Html.ActionLink("Visa startlista", "startlista", "home", new { id = Model.EvenemangsId }, null) |
-    @Html.ActionLink("Anmäl ett lag till", "index", "signmeup", new { id = Model.EvenemangsId }, null)
-</p>

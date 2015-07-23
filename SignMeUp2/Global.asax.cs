@@ -51,10 +51,10 @@ namespace SignMeUp2
         //    //log.Info("Application_BeginRequest");
         //}
 
-        protected virtual void Application_EndRequest()
-        {
-            var service = SignMeUpService.Instance;
-            service.Dispose();
-        }
+        //protected virtual void Application_EndRequest()
+        //{
+        //    var service = SignMeUpService.Instance;
+        //    service.Dispose();
+        //}
     }
 }

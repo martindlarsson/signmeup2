@@ -101,6 +101,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(SignMeUp2.Data.TypAvgift));
             SetViewBag(id);
 
             return View(forseningsavgift);

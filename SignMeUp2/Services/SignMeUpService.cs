@@ -7,6 +7,7 @@ using SignMeUp2.Data;
 using SignMeUp2.ViewModels;
 using log4net;
 using System.Data.Entity;
+using SignMeUp2.Helpers;
 
 namespace SignMeUp2.Services
 {
@@ -18,20 +19,20 @@ namespace SignMeUp2.Services
         private Evenemang CurrentEvenemang { get; set; }
 
         // Singleton
-        private static SignMeUpService instance;
-        public static SignMeUpService Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new SignMeUpService();
-                }
-                return instance;
-            }
-        }
+        //private static SignMeUpService instance;
+        //public static SignMeUpService Instance
+        //{
+        //    get
+        //    {
+        //        if (instance == null)
+        //        {
+        //            instance = new SignMeUpService();
+        //        }
+        //        return instance;
+        //    }
+        //}
 
-        private SignMeUpService()
+        public SignMeUpService()
         {
             log = LogManager.GetLogger(GetType());
         }
@@ -146,35 +147,27 @@ namespace SignMeUp2.Services
             }
             catch (Exception exc)
             {
-                //Trace.TraceError("Fel vid sparande av registrering. Exc: " + exc.Message + " ST: " + exc.StackTrace);
                 log.Error("Error while saving a new registration.", exc);
                 throw new Exception("Error while saving a new registration", exc);
             }
         }
 
-        /// <summary>
-        /// Spara en ny registrering i form av en wizard i databasen
-        /// </summary>
-        /// <param name="SUPVM"></param>
-        public Registreringar SparaNyRegistrering(SignMeUpVM SUPVM)
+        internal Registreringar Spara(SignMeUpVM SUPVM)
         {
+            log.Debug("Sparar registrering");
+
             try
             {
-                log.Debug("Sparar ny registrering");
-                //var reg = Helpers.ClassMapper.MapToRegistreringar(SUPVM);
-                //log.Debug("Konverterat wizard till registrering för lag " + reg.Lagnamn);
-
-                //SparaNyRegistrering(reg);
-
-                //log.Debug("Sparat registrering för lag " + reg.Lagnamn);
-
-                //Db.Entry(reg).GetDatabaseValues();
-                return null;
+                var reg = ClassMapper.MappaTillRegistrering(SUPVM, this);
+                Db.Registreringar.Add(reg);
+                Db.SaveChanges();
+                Db.Entry(reg).GetDatabaseValues();
+                return reg;
             }
             catch (Exception exc)
             {
-                log.Error("Error while saving new registration.", exc);
-                throw new Exception("Error while saving a new registration", exc);
+                log.Error("Ett fel inträffade vid sparande av en registrering.", exc);
+                throw new Exception("Ett fel inträffade vid sparande av en registrering.", exc);
             }
         }
 
@@ -221,7 +214,7 @@ namespace SignMeUp2.Services
         {
             if (CurrentEvenemang == null || CurrentEvenemang.Id != id)
             {
-                CurrentEvenemang = Db.Evenemang.Find(id);
+                CurrentEvenemang = Db.Evenemang.Include("Organisation").Include("Organisation.Betalningsmetoder").FirstOrDefault(e => e.Id == id);
             }
             return CurrentEvenemang;
         }
@@ -262,19 +255,25 @@ namespace SignMeUp2.Services
             return Db.Organisationer.Include("Betalningsmetoder").Single(o => o.Id == organisationsId);
         }
 
-        public SelectList HamtaBanor(int evenemangsId)
+        public IList<ValViewModel> HamtaBanor(int evenemangsId)
         {
-            return new SelectList(Db.Banor.Where(b => b.EvenemangsId == evenemangsId).ToList(), "ID", "Namn");
+            var banor = from bana in Db.Banor.Where(b => b.EvenemangsId == evenemangsId)
+                    select new ValViewModel { Id = bana.Id, Namn = bana.Namn, Avgift = bana.Avgift, TypNamn = "Bana" };
+            return banor.ToList();
         }
 
-        public SelectList HamtaKanoter(int evenemangsId)
+        public IList<ValViewModel> HamtaKanoter(int evenemangsId)
         {
-            return new SelectList(Db.Kanoter.Where(b => b.EvenemangsId == evenemangsId).ToList(), "ID", "Namn");
+            var kanoter = from kanot in Db.Kanoter.Where(b => b.EvenemangsId == evenemangsId)
+                        select new ValViewModel { Id = kanot.Id, Namn = kanot.Namn, Avgift = kanot.Avgift, TypNamn = "Kanot" };
+            return kanoter.ToList();
         }
 
-        public SelectList HamtaKlasser(int evenemangsId)
+        public IList<ValViewModel> HamtaKlasser(int evenemangsId)
         {
-            return new SelectList(Db.Klasser.Where(b => b.EvenemangsId == evenemangsId).ToList(), "ID", "Namn");
+            var klasser = from klass in Db.Klasser.Where(k => k.EvenemangsId == evenemangsId)
+                        select new ValViewModel { Id = klass.Id, Namn = klass.Namn, TypNamn = "Klass" };
+            return klasser.ToList();
         }
 
         public IList<WizardStep> HamtaWizardSteps(int evenemangsId)
@@ -296,20 +295,23 @@ namespace SignMeUp2.Services
                         new FaltViewModel {
                             Namn = "Bana",
                             Kravs = true,
-                            Alternativ = HamtaBanor(evenemangsId),
-                            Typ = FaltTyp.val_falt
+                            Val = HamtaBanor(evenemangsId),
+                            Typ = FaltTyp.val_falt,
+                            Avgiftsbelagd = true
                         },
                         new FaltViewModel {
                             Namn = "Klass",
                             Kravs = true,
-                            Alternativ = HamtaKlasser(evenemangsId),
-                            Typ = FaltTyp.val_falt
+                            Val = HamtaKlasser(evenemangsId),
+                            Typ = FaltTyp.val_falt,
+                            Avgiftsbelagd = false
                         },
                         new FaltViewModel {
                             Namn = "Kanot",
                             Kravs = true,
-                            Alternativ = HamtaKanoter(evenemangsId),
-                            Typ = FaltTyp.val_falt
+                            Val = HamtaKanoter(evenemangsId),
+                            Typ = FaltTyp.val_falt,
+                            Avgiftsbelagd = false
                         }
                     }
                 },
@@ -341,7 +343,7 @@ namespace SignMeUp2.Services
                         new FaltViewModel {
                             Namn = "Epost",
                             Kravs = true,
-                            Typ = FaltTyp.text_falt
+                            Typ = FaltTyp.epost_falt
                         },
                         new FaltViewModel {
                             Namn = "Klubb",

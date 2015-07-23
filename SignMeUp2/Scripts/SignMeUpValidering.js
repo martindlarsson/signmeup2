@@ -1,7 +1,7 @@
 ﻿jQuery.extend(jQuery.validator.messages, {
     required: "Detta fält måste fyllas i",
     //remote: "Please fix this field.",
-    email: "Ange en epostadress.",
+    email: "Ange en giltig epostadress.",
     //url: "Please enter a valid URL.",
     date: "Ange ett datum.",
     //dateISO: "Please enter a valid date (ISO).",

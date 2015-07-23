@@ -1,4 +1,4 @@
-﻿@model SignMeUp2.Models.PaysonKontaktViewModel
+﻿@model SignMeUp2.ViewModels.PaysonKontaktViewModel
 
 @{
     ViewBag.Title = "Kontaktinformation för betalning";
@@ -15,14 +15,6 @@
 </script>
 
 <h2>Kontaktinformation för betalning</h2>
-
-@*@if (ViewBag.PaymentErrorMessage != null)
-{
-    <div class="row">
-        <div class="alert alert-danger col-md-5" role="alert">Betalningen misslyckades. Felmeddelande: <strong>@ViewBag.PaymentErrorMessage</strong><br />
-        Parameter: <strong>@ViewBag.PaymentErrorParameter</strong></div>
-    </div>
-}*@
 
 @using (Html.BeginForm())
 {

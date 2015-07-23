@@ -8,11 +8,20 @@
         @foreach (var falt in Model.FaltLista)
         {
             <dt>
-                @Html.DisplayNameFor(model => falt.Namn)
+                @falt.Namn
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => falt.Varde)
+                @if (falt.Typ == SignMeUp2.ViewModels.FaltTyp.val_falt)
+                {
+                    var id = int.Parse(falt.Varde);
+                    var val = falt.Val.FirstOrDefault(f => f.Id == id);
+                    @val.Namn
+                }
+                else
+                {
+                    @falt.Varde
+                }
             </dd>
         }
     </dl>

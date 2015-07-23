@@ -41,7 +41,7 @@
                             Avgift
                         </th>
                     </tr>
-                    @foreach (TripletViewModel post in Model.Betalnignsposter.Poster)
+                    @foreach (ValViewModel post in Model.Betalnignsposter)
                 {
                         <tr>
                             <td>
@@ -61,7 +61,7 @@
                             <strong>Summa</strong>
                         </td>
                         <td>
-                            <strong>@Model.Betalnignsposter.SummaAttBetala</strong>
+                            <strong>@Model.AttBetala</strong>
                         </td>
                     </tr>
 
@@ -90,7 +90,6 @@
                 </div>
                 <div class="col-md-2 col-xs-6">
                     @Html.EditorFor(model => model.Rabattkod, new { htmlAttributes = new { @class = "form-control", @placeholder = "Rabattkod" } })
-                    @Html.ValidationMessageFor(model => model.Rabattkod, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-md-1 col-xs-6">
                     <input type="submit" value="Använd rabattkod" name="rabatt" class="btn btn-default cancel" />

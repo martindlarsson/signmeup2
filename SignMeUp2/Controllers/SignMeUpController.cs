@@ -16,7 +16,7 @@ namespace SignMeUp2.Controllers
     {
         public ActionResult Index(int? id)
         {
-            SignMeUpVM SUPVM = (SignMeUpVM)TempData["VM"];
+            SignMeUpVM SUPVM = (SignMeUpVM)Session["VM"];
 
             // Om view model innehåller ett evenemangsid som inte stämmer med inkommande id, nolla wizard
             if (SUPVM != null && id != null && SUPVM.EvenemangsId != id.Value)
@@ -73,9 +73,7 @@ namespace SignMeUp2.Controllers
                 id = SUPVM.EvenemangsId;
             }
 
-            //FillViewBag(SUPVM);
-
-            TempData["VM"] = SUPVM;
+            Session["VM"] = SUPVM;
 
             return View(SUPVM.CurrentStep);
         }
@@ -88,10 +86,10 @@ namespace SignMeUp2.Controllers
         [HttpPost]
         public ActionResult Index(FormCollection form, string prev, string ok)
         {
-            var SUPVM = (SignMeUpVM)TempData["VM"];
+            var SUPVM = (SignMeUpVM)Session["VM"];
 
             if (SUPVM == null)
-                return ShowError(log, "Ett oväntat fel inträffade, var god försök igen.", true, new Exception("Ingen wizard i TempData"));
+                return ShowError(log, "Ett oväntat fel inträffade, var god försök igen.", true, new Exception("Ingen wizard i Session"));
 
             ViewBag.ev = SUPVM.EvenemangsNamn;
 
@@ -138,19 +136,6 @@ namespace SignMeUp2.Controllers
                 SUPVM.CurrentStepIndex--;
             }
 
-            // Om registreringssteget, populera drop down listor
-            //if (SUPVM.Steps[SUPVM.CurrentStepIndex] is RegistrationViewModel)
-            //{
-            //    FillViewBag(SUPVM);
-            //}
-
-            // Om vi just fyllt i registreringssteget, fyll på bana, klass och kanot
-            // OBS, förutsätter att RegStep är på position 0
-            //if (SUPVM.Wizard.CurrentStepIndex > 0 && SUPVM.Wizard.Steps[SUPVM.Wizard.CurrentStepIndex - 1] is RegistrationViewModel)
-            //{
-            //    SUPVM.Wizard = FillRegStep(SUPVM.Wizard);
-            //}
-
             // Om deltagarsteget, hämta antal deltagare och
             // krav på personnummer från steget innan
             if (SUPVM.Steps[SUPVM.CurrentStepIndex].Namn == "Deltagare")
@@ -159,49 +144,27 @@ namespace SignMeUp2.Controllers
                 if (registrationStep != null)
                 {
                     var valBana = registrationStep.FaltLista.FirstOrDefault(val => val.Namn == "Bana");
-                    var banaId = int.Parse(valBana.Varde);
-                    var bana = smuService.Db.Banor.FirstOrDefault(b => b.Id == banaId);
+                    var banId = int.Parse(valBana.Varde);
+                    var bana = smuService.Db.Banor.FirstOrDefault(b => b.Id == banId);
                     // Om listan av deltagarfält är tom eller om antalet deltagare inte stämmer skapar vi en ny lista
                     if (SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista == null ||
-                        SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista.Count != bana.AntalDeltagare)
+                        SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista.Count != (bana.AntalDeltagare * 2))
                     {
                         var lista = new List<FaltViewModel>();
                         for (int i = 0; i < bana.AntalDeltagare; i++)
                         {
-                            lista.Add(new FaltViewModel { Namn = "Deltagare " + i + 1, Kravs = true });
+                            lista.Add(new FaltViewModel { Namn = "Förnamn " + (i + 1), Kravs = true });
+                            lista.Add(new FaltViewModel { Namn = "Efternamn " + (i + 1), Kravs = true });
                         }
                         SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista = lista;
                     }
                 }
             }
 
-            TempData["VM"] = SUPVM;
+            Session["VM"] = SUPVM;
 
             return View(SUPVM.CurrentStep);
         }
-
-        //private WizardViewModel FillRegStep(WizardViewModel wizard)
-        //{
-        //    RegistrationViewModel regStep = wizard.Steps.Where(s => s is RegistrationViewModel).FirstOrDefault() as RegistrationViewModel;
-
-        //    if (regStep == null)
-        //        throw new ArgumentException("No RegistrationViewModel found in WizardViewModel.Steps.");
-
-        //    if (regStep.Banor == null)
-        //    {
-        //        regStep.Banor = smuService.Db.Banor.Find(regStep.Bana);
-        //    }
-        //    if (regStep.Klasser == null)
-        //    {
-        //        regStep.Klasser = smuService.Db.Klasser.Find(regStep.Klass);
-        //    }
-        //    if (regStep.Kanoter == null)
-        //    {
-        //        regStep.Kanoter = smuService.Db.Kanoter.Find(regStep.Kanot);
-        //    }
-
-        //    return wizard;
-        //}
 
         /// <summary>
         /// Berkäfta registrering Get
@@ -209,25 +172,18 @@ namespace SignMeUp2.Controllers
         /// <returns></returns>
         public ActionResult BekraftaRegistrering()
         {
-            var SUPVM = (SignMeUpVM)TempData["VM"];
+            var SUPVM = (SignMeUpVM)Session["VM"];
 
             if (SUPVM == null)
             {
-                return ShowError(log, "Ett oväntat fel uppstod. Var god försök senare.", true, new Exception("View model var null i TempData. (BekraftaRegistrering POST)"));
+                return ShowError(log, "Ett oväntat fel uppstod. Var god försök senare.", true, new Exception("View model var null i Session. (BekraftaRegistrering POST)"));
             }
 
             ViewBag.ev = SUPVM.EvenemangsNamn;
-
-            //var regStep = SUPVM.GetRegStep();
-
-            //var banor = smuService.Db.Banor.Find(regStep.Bana);
-            //var kanoter = smuService.Db.Kanoter.Find(regStep.Kanot);
-            //var klasser = smuService.Db.Klasser.Find(regStep.Klass);
-            //SUPVM.Betalnignsposter = new BetalningViewModel(banor, kanoter, SUPVM.Rabatt, SUPVM.FAVM);
             
             LogDebug(log, "Användare bekräfta registrering (GET) för " + SUPVM.EvenemangsNamn);
 
-            TempData["VM"] = SUPVM;
+            Session["VM"] = SUPVM;
             return View(SUPVM);
         }
 
@@ -236,23 +192,20 @@ namespace SignMeUp2.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult BekraftaRegistrering(SignMeUpVM tempSUPVM)
+        public ActionResult BekraftaRegistrering(FormCollection form)
         {
-            var SUPVM = (SignMeUpVM)TempData["VM"];
-            //var tempWizard = (WizardViewModel)TempData["wizard"];
+            var SUPVM = (SignMeUpVM)Session["VM"];
 
             if (SUPVM == null)
             {
-                return ShowError(log, "Ett oväntat fel uppstod. Var god försök senare.", true, new Exception("Vymodellen är null i TempData. (BekraftaRegistrering POST)"));
+                return ShowError(log, "Ett oväntat fel uppstod. Var god försök senare.", true, new Exception("Vymodellen är null i Session. (BekraftaRegistrering POST)"));
             }
 
             ViewBag.ev = SUPVM.EvenemangsNamn;
 
-            //var regStep = SUPVM.GetRegStep();
-
             LogDebug(log, "Användare bekräfta registrering (POST) för " + SUPVM.EvenemangsNamn);
 
-            TempData["VM"] = SUPVM;
+            Session["VM"] = SUPVM;
 
             // Korrigera
             if (!string.IsNullOrEmpty(Request["korrigera"]))
@@ -272,9 +225,10 @@ namespace SignMeUp2.Controllers
             // Rabatt
             else if (!string.IsNullOrEmpty(Request["rabatt"]))
             {
-                if (!string.IsNullOrEmpty(SUPVM.Rabattkod))
+                var rabattkod = form.Get("Rabattkod");
+                if (!string.IsNullOrEmpty(rabattkod))
                 {
-                    var rabatt = smuService.Db.Rabatter.FirstOrDefault(r => r.Kod == SUPVM.Rabattkod && r.EvenemangsId == SUPVM.EvenemangsId);
+                    var rabatt = smuService.Db.Rabatter.FirstOrDefault(r => r.Kod == rabattkod && r.EvenemangsId == SUPVM.EvenemangsId);
                     if (rabatt != null)
                     {
                         SUPVM.Rabatt = new RabattVM
@@ -283,7 +237,6 @@ namespace SignMeUp2.Controllers
                             Kod = rabatt.Kod,
                             Summa = rabatt.Summa
                         };
-                        SUPVM.Rabattkod = rabatt.Kod;
                     }
                     else
                     {
@@ -296,12 +249,7 @@ namespace SignMeUp2.Controllers
                 }
             }
 
-            // TODO bättre lösning på betalningslistan!!
-            //var bana = smuService.Db.Banor.FirstOrDefault(b => b.Id == SUPVM.GetRegStep().Bana);
-            //var kanot = smuService.Db.Kanoter.FirstOrDefault(k => k.Id == SUPVM.GetRegStep().Kanot);
-            //SUPVM.Betalnignsposter = new BetalningViewModel(bana, kanot, SUPVM.Rabatt, SUPVM.FAVM);
-
-            TempData["VM"] = SUPVM;
+            Session["VM"] = SUPVM;
             return View(SUPVM);
         }
 
@@ -311,7 +259,7 @@ namespace SignMeUp2.Controllers
         /// <returns></returns>
         public ActionResult Fakturaadress()
         {
-            var SUPVM = (SignMeUpVM)TempData["VM"];
+            var SUPVM = (SignMeUpVM)Session["VM"];
 
             if (SUPVM == null)
             {
@@ -325,7 +273,7 @@ namespace SignMeUp2.Controllers
 
             LogDebug(log, "Användare valt faktura (GET) för " + SUPVM.EvenemangsNamn);
 
-            TempData["VM"] = SUPVM;
+            Session["VM"] = SUPVM;
             return View(SUPVM.Fakturaadress);
         }
 
@@ -337,15 +285,13 @@ namespace SignMeUp2.Controllers
         [HttpPost]
         public ActionResult Fakturaadress(InvoiceViewModel fakturaadress)
         {
-            //var tempWizard = (WizardViewModel)TempData["wizard"];
-            var SUPVM = (SignMeUpVM)TempData["VM"];
+            var SUPVM = (SignMeUpVM)Session["VM"];
 
             if (SUPVM == null)
             {
                 return RedirectToAction("Index");
             }
 
-            //var ev = smuService.HamtaEvenemang(tempWizard.Evenemang_Id);
             ViewBag.ev = SUPVM.EvenemangsNamn;
 
             LogDebug(log, "Användare valt faktura (POST) för " + SUPVM.EvenemangsNamn);
@@ -353,7 +299,7 @@ namespace SignMeUp2.Controllers
             if (!string.IsNullOrEmpty(Request["cancel"]))
             {
                 // Användaren tryckte på korrigera
-                TempData["VM"] = SUPVM;
+                Session["VM"] = SUPVM;
                 return RedirectToAction("BekraftaRegistrering");
             }
 
@@ -361,17 +307,19 @@ namespace SignMeUp2.Controllers
             {
                 SUPVM.Fakturaadress = fakturaadress;
                 // Spara i databasen
-                //FillRegStep(tempWizard);
-                //var reg = smuService.SparaNyRegistrering(tempWizard);
-                throw new NotImplementedException();
-                TempData["VM"] = null;
-                // TODO hämta registreringsid!!
-                return RedirectToAction("BekraftelseBetalning", new { id = 1 });
+                var reg = smuService.Spara(SUPVM);
+
+                // TODO skicka mail med faktura
+                SkickaRegMail(reg);
+
+                Session["VM"] = null;
+
+                return RedirectToAction("BekraftelseBetalning", new { id = reg.Id });
             }
             else
             {
                 // Något är fel, vi visar formuläret igen
-                TempData["VM"] = SUPVM;
+                Session["VM"] = SUPVM;
                 return View(fakturaadress);
             }
         }
@@ -394,13 +342,6 @@ namespace SignMeUp2.Controllers
 
             return View(smuService.FillRegistrering(reg));
         }
-
-        //private void FillViewBag(SignMeUpVM SUPVM)
-        //{
-        //    ViewBag.Bana = new SelectList(smuService.Db.Banor.Where(b => b.EvenemangsId == SUPVM.EvenemangsId).ToList(), "ID", "Namn");
-        //    ViewBag.Kanot = new SelectList(smuService.Db.Kanoter.Where(b => b.EvenemangsId == SUPVM.EvenemangsId).ToList(), "ID", "Namn");
-        //    ViewBag.Klass = new SelectList(smuService.Db.Klasser.Where(b => b.EvenemangsId == SUPVM.EvenemangsId).ToList(), "ID", "Namn");
-        //}
 
         /// <summary>
         /// Skicka mail till den som registrerat sig igen
