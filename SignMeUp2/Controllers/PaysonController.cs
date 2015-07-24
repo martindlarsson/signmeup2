@@ -101,7 +101,7 @@ namespace SignMeUp2.Controllers
 
                     Session["VM"] = SUPVM;
 
-                    return ShowPaymentError("Error when sending payment to payson.", response.NvpContent);
+                    return ShowPaymentError("Error when sending payment to payson.", response.NvpContent, SUPVM.EvenemangsId);
                 }
                 catch (Exception exception)
                 {
@@ -177,7 +177,7 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Ett fel inträffade när betalningen slutfördes. Kontrollera i startlistan om er registrering genomförts", true, new Exception("Felaktigt angivet regId: " + id));
             }
 
-            var registration = smuService.Db.Registreringar.Find(id);
+            var registration = smuService.GetRegistrering(id.Value, true);
 
             if (registration == null)
             {
@@ -190,7 +190,7 @@ namespace SignMeUp2.Controllers
             // If no payment message has been sent (IPN)
             if (!registration.HarBetalt)
             {
-                var org = smuService.Db.Organisationer.Include("Betalningsmetoder").Single(o => o.Id == registration.Evenemang.OrganisationsId);
+                var org = smuService.HamtaOrganisation(registration.Evenemang.OrganisationsId);
 
                 var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
 
@@ -210,10 +210,12 @@ namespace SignMeUp2.Controllers
                 {
                     LogDebug(log, string.Format("Deleting temp-registration with id: {0}", id));
 
+                    var evenemangsId = registration.EvenemangsId;
+
                     // Remove the temporary registration
                     smuService.TabortRegistrering(registration);
 
-                    return ShowPaymentError("Error when payment returned.", response.NvpContent);
+                    return ShowPaymentError("Error when payment returned.", response.NvpContent, evenemangsId.Value);
                 }
             }
 
@@ -229,7 +231,7 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Kunde inte återskapa dina uppgifter.", true, new Exception("Felaktigt regId: " + id + " vid cancel."));
             }
 
-            var registrering = smuService.Db.Registreringar.Find(id);
+            var registrering = smuService.GetRegistrering(id.Value, false);
 
             if (registrering == null)
             {
@@ -243,12 +245,14 @@ namespace SignMeUp2.Controllers
 
             var response = api.MakePaymentDetailsRequest(new PaymentDetailsData(registrering.PaysonToken));
 
+            var evenemangsId = registrering.EvenemangsId;
+
             // Ta bort temporär registrering
             smuService.TabortRegistrering(registrering);
 
             Session["VM"] = null;
 
-            return ShowPaymentError("Betalningen avbruten.", response.NvpContent);
+            return ShowPaymentError("Betalningen avbruten.", response.NvpContent, evenemangsId.Value);
         }
 
         public ActionResult IPN(int? id)
@@ -266,15 +270,13 @@ namespace SignMeUp2.Controllers
 
             try
             {
-                var registrering = smuService.Db.Registreringar.Find(id);
+                var registrering = smuService.GetRegistrering(id.Value, true);
 
                 if (registrering != null)
                 {
                     Request.InputStream.Position = 0;
                     var content = new StreamReader(Request.InputStream).ReadToEnd();
 
-                    // Hämta betalningsmetoder
-                    smuService.FillRegistrering(registrering);
                     var org = smuService.HamtaOrganisation(registrering.Evenemang.OrganisationsId);
                     var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
 
@@ -321,7 +323,7 @@ namespace SignMeUp2.Controllers
             return new EmptyResult();
         }
 
-        public ActionResult ShowPaymentError(string logMessage, IDictionary<string, string> response)
+        public ActionResult ShowPaymentError(string logMessage, IDictionary<string, string> response, int evenemangsId)
         {
             var str = new StringBuilder();
             str.Append(logMessage);
@@ -349,7 +351,7 @@ namespace SignMeUp2.Controllers
                 TempData["PaymentErrorParameter"] = "Okänd";
             }
 
-            return RedirectToAction("Index", "SignMeUp", null);
+            return RedirectToAction("Index", "SignMeUp", new { id = evenemangsId });
         }
     }
 }

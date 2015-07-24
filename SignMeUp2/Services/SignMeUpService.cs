@@ -18,20 +18,6 @@ namespace SignMeUp2.Services
 
         private Evenemang CurrentEvenemang { get; set; }
 
-        // Singleton
-        //private static SignMeUpService instance;
-        //public static SignMeUpService Instance
-        //{
-        //    get
-        //    {
-        //        if (instance == null)
-        //        {
-        //            instance = new SignMeUpService();
-        //        }
-        //        return instance;
-        //    }
-        //}
-
         public SignMeUpService()
         {
             log = LogManager.GetLogger(GetType());
@@ -58,11 +44,6 @@ namespace SignMeUp2.Services
         public IList<Registreringar> GetRegistreringar(int evenemangsId)
         {
             return Db.Registreringar.Where(reg => reg.EvenemangsId == evenemangsId).ToList();
-        }
-
-        public IList<Registreringar> GetRegistreringar()
-        {
-            return Db.Registreringar.ToList();
         }
 
         public Registreringar GetRegistrering(int id, bool fill)
