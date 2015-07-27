@@ -286,6 +286,7 @@
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BekraftaRegistreringViewModel.cs" />
     <Compile Include="ViewModels\BetalningViewModel.cs" />
+    <Compile Include="ViewModels\FakturaVM.cs" />
     <Compile Include="ViewModels\FaltViewModel.cs" />
     <Compile Include="ViewModels\KontaktuppgifterVM.cs" />
     <Compile Include="ViewModels\RabattVM.cs" />
@@ -297,7 +298,6 @@
     <Compile Include="ViewModels\RegistrationVM.cs" />
     <Compile Include="ViewModels\SignMeUpVM.cs" />
     <Compile Include="ViewModels\StartlistaViewModel.cs" />
-    <Compile Include="ViewModels\WizardSteps.cs" />
     <Compile Include="ViewModels\WizardViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SignMeUpService.cs" />
@@ -487,7 +487,6 @@
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\_FakturaLayout.cshtml" />
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
     <Content Include="Views\Shared\_SimpleLayoutRedirect.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -546,6 +545,7 @@
     <Content Include="_EventSourceUsersGuide.docx" />
     <Content Include="Views\Shared\DisplayTemplates\WizardStep.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\WizardStep.cshtml" />
+    <Content Include="Views\SignMeUp\Faktura.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
