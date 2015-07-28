@@ -5,7 +5,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Skapa nytt evenemang</h2>
 
 
 @using (Html.BeginForm()) 
@@ -13,7 +13,6 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Evenemang</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -40,13 +39,9 @@
             </div>
         </div>
 
-        <div class="row col-md-12">
-            <div class="alert alert-warning col-md-5" role="alert">OBS! Anmälan kommer att öppna kl 00:00 vid angivet öppningsdatum och stänga kl 00:00 vid angivet stängninsdatum.</div>
-        </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Skapa" class="btn btn-default" />
             </div>
         </div>
     </div>

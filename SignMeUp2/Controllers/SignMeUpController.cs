@@ -324,6 +324,45 @@ namespace SignMeUp2.Controllers
             }
         }
 
+        public ActionResult Faktura(int? id)
+        {
+            if (id == null)
+                return ShowError(log, "Fel vid hämtning av registreringsinformation för faktura. Administratör är kontaktad. Var god försök senare", true);
+            
+            var reg = smuService.GetRegistrering(id.Value, true);
+            var evenemang = smuService.HamtaEvenemang(reg.EvenemangsId.Value);
+            var arrangor = smuService.HamtaOrganisation(evenemang.OrganisationsId);
+
+            if (reg.Invoice == null)
+                return ShowError(log, "Registreringen har ingen faktureringsadress. Administratör är kontaktad.", true);
+
+            var fakturaAdress = new InvoiceViewModel
+            {
+                Organisationsnummer = reg.Invoice.Organisationsnummer,
+                Namn = reg.Invoice.Namn,
+                Att = reg.Invoice.Att,
+                Box = reg.Invoice.Box,
+                Id = reg.Invoice.Id,
+                Postadress = reg.Invoice.Postadress,
+                Postnummer = reg.Invoice.Postnummer,
+                Postort = reg.Invoice.Postort
+            };
+
+            var fakturaVm = new FakturaVM
+            {
+                Registrering = reg,
+                Arrangor = arrangor,
+                Evenemangsnamn = evenemang.Namn,
+                Fakturaadress = fakturaAdress
+            };
+
+            ViewBag.ev = reg.Evenemang.Namn;
+
+            LogDebug(log, "Användare hämtar faktura för betalning (GET) för " + reg.Evenemang.Namn + " och laget heter " + reg.Lagnamn);
+
+            return View(fakturaVm);
+        }
+
         /// <summary>
         /// Visa en registrering efter genomförd betalning
         /// </summary>

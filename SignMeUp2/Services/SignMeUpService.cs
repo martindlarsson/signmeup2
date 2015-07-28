@@ -53,6 +53,7 @@ namespace SignMeUp2.Services
                 .Include("Klass")
                 .Include("Kanot")
                 .Include("Deltagare")
+                .Include("Invoice")
                 .Where(r => r.Id == id)
                 .FirstOrDefault();
 
