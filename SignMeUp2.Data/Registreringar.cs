@@ -4,8 +4,6 @@ namespace SignMeUp2.Data
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-    using System.Data.Entity.ModelConfiguration;
 
     [Table("Registreringar")]
     public partial class Registreringar
@@ -23,10 +21,7 @@ namespace SignMeUp2.Data
         // Allmänt
         [Required]
         public string Lagnamn { get; set; }
-
-        [Required]
-        public bool Ranking { get; set; }
-
+        
         public int Startnummer { get; set; }
 
         [Required]
@@ -70,44 +65,4 @@ namespace SignMeUp2.Data
 
         public ICollection<Deltagare> Deltagare { get; set; }
     }
-
-    //public class RegistreringarMap : EntityTypeConfiguration<Registreringar>
-    //{
-    //    public RegistreringarMap()
-    //    {
-    //        // Key
-    //        HasKey(e => e.Id);
-
-    //        // Properties
-    //        Property(r => r.Lagnamn).IsRequired();
-    //        Property(r => r.Adress).IsRequired();
-    //        Property(r => r.Epost).IsRequired();
-    //        Property(r => r.HarBetalt);
-    //        Property(r => r.Kommentar).IsOptional();
-    //        Property(r => r.PaysonToken).IsOptional();
-    //        Property(r => r.Ranking).IsOptional();
-    //        Property(r => r.Registreringstid).IsRequired();
-    //        Property(r => r.Startnummer).IsOptional();
-    //        Property(r => r.Telefon).IsRequired();
-
-    //        // Relatiionship
-    //        HasRequired(r => r.Bana)
-    //            .WithMany(b => b.Registreringar);
-
-    //        HasRequired(r => r.Kanot)
-    //            .WithMany(k => k.Registreringar);
-
-    //        HasRequired(e => e.Klass)
-    //            .WithMany(k => k.Registreringar);
-
-    //        HasRequired(r => r.Evenemang)
-    //            .WithMany(e => e.Registreringar)
-    //            .HasForeignKey(r => r.EvenemangsId)
-    //            .WillCascadeOnDelete(false);
-
-    //        HasOptional(r => r.Rabatt);
-
-    //        HasOptional(r => r.Forseningsavgift);
-    //    }
-    //}
 }

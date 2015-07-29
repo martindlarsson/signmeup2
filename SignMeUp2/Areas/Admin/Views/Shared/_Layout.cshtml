@@ -25,16 +25,11 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Mina evenemang", "Index", "Admin")</li>
-                    <li>@Html.ActionLink("Organisation", "Index", "Organisation")</li>
+                    <li>@Html.ActionLink("Min förening", "Edit", "Organisation")</li>
                     <li>@Html.ActionLink("Betalningsmetoder", "CreateOrUpdate", "Betalningsmetoder")</li>
-                    @*@if (ViewBag.IsAdmin) {
-                    <li>@Html.ActionLink("Evenemang", "Index", "Evenemang")</li>
-                    <li>@Html.ActionLink("Banor", "Index", "Banor")</li>
-                    <li>@Html.ActionLink("Klasser", "Index", "Klasser")</li>
-                    <li>@Html.ActionLink("Kanoter", "Index", "Kanoter")</li>
-                    <li>@Html.ActionLink("Förseningsavgifter", "Index", "Forseningsavgift")</li>
-                    <li>@Html.ActionLink("Rabatter", "Index", "Rabatter")</li>
-                    <li>@Html.ActionLink("Registreringar", "Index", "Registreringar")</li>
+                    @*@if (ViewBag.IsAdmin)
+                    {
+                        <li>@Html.ActionLink("Alla föreningar", "Index", "Organisation")</li>
                     }*@
                 </ul>
                 @Html.Partial("_LoginPartial")

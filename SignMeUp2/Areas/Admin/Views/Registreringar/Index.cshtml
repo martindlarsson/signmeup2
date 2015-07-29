@@ -8,64 +8,39 @@
 
 <h2>Registreringar @evNamn</h2>
 
+@{Html.RenderPartial("_meddelande");}
+
 <p>
     @Html.ActionLink("Skapa ny", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Bana.Namn)
+            Bana
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Evenemang.Namn)
+            Klass
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Kanot.Namn)
+            Lagnamn
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Klass.Namn)
+            Klubb
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Adress)
+            Kanot
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Telefon)
+            Betalt
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Epost)
+            Betalningssätt
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Ranking)
+            Reg.tid
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Startnummer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Lagnamn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Klubb)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HarBetalt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Forseningsavgift)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Registreringstid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Kommentar)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Rabatt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaysonToken)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Invoice)
+            Kommentar
         </th>
         <th></th>
     </tr>
@@ -76,28 +51,7 @@
             @Html.DisplayFor(modelItem => item.Bana.Namn)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Evenemang.Namn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Kanot.Namn)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.Klass.Namn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Adress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Telefon)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Epost)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ranking)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Startnummer)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Lagnamn)
@@ -106,30 +60,28 @@
             @Html.DisplayFor(modelItem => item.Klubb)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.HarBetalt)
+            @Html.DisplayFor(modelItem => item.Kanot.Namn)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Forseningsavgift)
+            @(item.HarBetalt ? "Ja" : "Nej")
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Registreringstid)
+            @(string.IsNullOrEmpty(item.PaysonToken) ? "Faktura" : "Payson")
+        </td>
+        <td>
+            @item.Registreringstid.Value.ToString("yyyy-MM-dd HH:mm")
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Kommentar)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Rabatt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaysonToken)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Invoice)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            @Html.ActionLink("Redigera", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Detaaljer", "Details", new { id = item.Id }) |
+            @if (item.Invoice != null)
+            {
+                <text>@Html.ActionLink("Skicka faktura", "SendInvoice", new { id = item.Id }) |</text>
+            }
+            @Html.ActionLink("Radera", "Delete", new { id = item.Id })
         </td>
     </tr>
 }

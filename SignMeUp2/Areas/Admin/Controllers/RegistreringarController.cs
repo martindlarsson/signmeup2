@@ -26,7 +26,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             IQueryable<Registreringar> reggs;
             if (id != null)
             {
-                reggs = db.Registreringar.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass).Where(r => r.EvenemangsId == id.Value);
+                reggs = db.Registreringar.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass).Include(r => r.Invoice).Where(r => r.EvenemangsId == id.Value);
                 ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
             }
             else if (IsUserAdmin)
@@ -39,6 +39,38 @@ namespace SignMeUp2.Areas.Admin.Controllers
             }
 
             return View(reggs.ToList());
+        }
+
+        public ActionResult SendInvoice(int? id)
+        {
+            if (id == null)
+            {
+                return ShowError(log, "Kan inte skicka faktura utan id", false);
+            }
+            Registreringar registreringar = db.Registreringar.Find(id);
+
+            if (registreringar == null)
+            {
+                return ShowError(log, "Kan inte hitta registrering med id " + id.Value, false);
+            }
+
+            var lyckatsSkicka = false;
+
+            try
+            {
+                lyckatsSkicka = SkickaFaktura(registreringar);
+            } catch (Exception exc)
+            {   
+                TempData["FelMeddelande"] = "Misslyckades med att skicka faktura. Anledning: " + exc.Message;
+                LogError(log, "Misslyckades med att skicka faktura. Anledning: " + exc.Message, exc);
+            }
+
+            if (lyckatsSkicka)
+            {
+                TempData["Meddelande"] = "Faktura skickad till " + registreringar.Epost;
+            }
+
+            return RedirectToAction("Index", new { id = registreringar.Evenemang.Id });
         }
 
         // GET: Registreringar/Details/5

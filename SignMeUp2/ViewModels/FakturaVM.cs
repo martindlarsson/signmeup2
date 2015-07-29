@@ -1,4 +1,5 @@
 ﻿using SignMeUp2.Data;
+using System;
 using System.Collections.Generic;
 
 namespace SignMeUp2.ViewModels
@@ -11,8 +12,12 @@ namespace SignMeUp2.ViewModels
 
         public InvoiceViewModel Fakturaadress { get; set; }
 
+        public DateTime? BetalaSenast { get; set; }
+
         public Organisation Arrangor { get; set; }
-        
+
+        public BetalningsmetoderVM Betalningsmetoder { get; set; }
+
         public IList<ValViewModel> Betalnignsposter
         {
             get
@@ -35,7 +40,7 @@ namespace SignMeUp2.ViewModels
                 // Förseningsavgift
                 if (Registrering.Forseningsavgift != null)
                 {
-                    var summa = Registrering.Forseningsavgift.PlusEllerMinus == Data.TypAvgift.Avgift ? Registrering.Forseningsavgift.Summa : -Registrering.Forseningsavgift.Summa;
+                    var summa = Registrering.Forseningsavgift.PlusEllerMinus == TypAvgift.Avgift ? Registrering.Forseningsavgift.Summa : -Registrering.Forseningsavgift.Summa;
                     list.Add(new ValViewModel { TypNamn = Registrering.Forseningsavgift.PlusEllerMinus.ToString(), Namn = Registrering.Forseningsavgift.Namn, Avgift = summa });
                 }
 

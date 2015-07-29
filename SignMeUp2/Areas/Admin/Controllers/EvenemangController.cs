@@ -61,15 +61,18 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Namn,RegStart,RegStop,AntalDeltagare")] Evenemang evenemang)
+        public ActionResult Create([Bind(Include = "Id,Namn,RegStart,RegStop,Fakturabetalning,FakturaBetaldSenast")] Evenemang evenemang)
         {
             if (ModelState.IsValid)
             {
                 evenemang.OrganisationsId = HamtaUser().OrganisationsId;
                 db.Evenemang.Add(evenemang);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                db.Entry(evenemang).GetDatabaseValues();
+                return RedirectToAction("Oversikt", new { id = evenemang.Id });
             }
+
+            ViewBag.FelMeddelande = "Det finns valideringsfel i formuläret. Korrigera och försök igen.";
 
             return View(evenemang);
         }
@@ -86,6 +89,9 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
+            SetViewBag(id);
+
             return View(evenemang);
         }
 
@@ -94,7 +100,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Namn,RegStart,RegStop,AntalDeltagare")] Evenemang evenemang)
+        public ActionResult Edit([Bind(Include = "Id,Namn,RegStart,RegStop,Fakturabetalning,FakturaBetaldSenast")] Evenemang evenemang)
         {
             if (ModelState.IsValid)
             {
@@ -102,8 +108,17 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 evenemang.OrganisationsId = user.OrganisationsId;
                 db.Entry(evenemang).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
+            else
+            {
+                ViewBag.FelMeddelande = "Det finns valideringsfel i formuläret. Korrigera och försök igen.";
+                SetViewBag(evenemang);
+                return View(evenemang);
+            }
+
+            ViewBag.Meddelande = "Ändringarna har sparats.";
+
+            SetViewBag(evenemang);
             return View(evenemang);
         }
 

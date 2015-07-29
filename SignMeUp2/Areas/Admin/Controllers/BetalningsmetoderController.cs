@@ -21,48 +21,9 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
         public ActionResult CreateOrUpdate()
         {
-            if (IsUserAdmin)
-            {
-                RedirectToAction("Index");
-            }
-
             var org = HamtaOrganisation();
 
-            if (org.Betalningsmetoder == null)
-            {
-                return RedirectToAction("create");
-            }
-            else
-            {
-                return RedirectToAction("edit", new { id = org.Betalningsmetoder.Id });
-            }
-        }
-
-        // GET: Admin/Betalningsmetoder
-        public ActionResult Index()
-        {
-            return View(db.Betalningsmetoders.ToList());
-        }
-
-        // GET: Admin/Betalningsmetoder/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Betalningsmetoder betalningsmetoder = db.Betalningsmetoders.Find(id);
-            if (betalningsmetoder == null)
-            {
-                return HttpNotFound();
-            }
-            return View(betalningsmetoder);
-        }
-
-        // GET: Admin/Betalningsmetoder/Create
-        public ActionResult Create()
-        {
-            return View();
+            return View(org.Betalningsmetoder);
         }
 
         // POST: Admin/Betalningsmetoder/Create
@@ -70,17 +31,27 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,GiroTyp,Gironummer,PaysonUserId,PaysonUserKey")] Betalningsmetoder betalningsmetoder)
+        public ActionResult CreateOrUpdate([Bind(Include = "ID,GiroTyp,Gironummer,PaysonUserId,PaysonUserKey,HarPayson,KanTaEmotIntBetalningar,IBAN,BIC")] Betalningsmetoder betalningsmetoder)
         {
             if (ModelState.IsValid)
             {
-                //db.Betalningsmetoders.Add(betalningsmetoder);
-                var orgId = HamtaUser().OrganisationsId;
-                var org = db.Organisationer.Find(orgId);
-                org.Betalningsmetoder = betalningsmetoder;
+                // Edit
+                if (betalningsmetoder.Id != 0)
+                {
+                    db.Entry(betalningsmetoder).State = EntityState.Modified;
+                }
+                // Create
+                else
+                {
+                    var orgId = HamtaUser().OrganisationsId;
+                    var org = db.Organisationer.Find(orgId);
+                    org.Betalningsmetoder = betalningsmetoder;
+                }
                 db.SaveChanges();
-                //return RedirectToAction("Index");
+
+                // TODO sätt en flagga i ViewBag att ändringarna är sparade
             }
+
 
             return View(betalningsmetoder);
         }

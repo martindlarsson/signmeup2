@@ -1,6 +1,4 @@
-﻿@using SignMeUp2.Data
-
-@model SignMeUp2.ViewModels.FakturaVM
+﻿@model SignMeUp2.ViewModels.FakturaVM
 
 @{
     ViewBag.Title = "Faktura " + Model.Evenemangsnamn;
@@ -12,7 +10,7 @@
 
     <p>Vi behöver din betalning senast ?.</p>
 
-    @* Bild ? *@
+    @* TODO Bild ? *@
 
     <h3>Om anmälan</h3>
     
@@ -25,7 +23,7 @@
         <p>@deltagare.Förnamn @deltagare.Efternamn</p>
     }
 
-    <div class="col-lg-12">
+    <div class="col-lg-12 top-buffer">
         <div class="col-lg-6">
             <table class="table">
                 <tr>
@@ -45,23 +43,35 @@
         </div>
     </div>
 
-    <div class="col-lg-12">
-        <div class="col-lg-3 col-md-2"><h4>Att betala: @Model.AttBetala SEK</h4></div>
+    <div class="col-lg-12 top-buffer">
         <div class="col-lg-3 col-md-2">
-            <p>Oss tillhanda: ?</p>
-            <p>@Model.Arrangor.Betalningsmetoder.GiroTyp: @Model.Arrangor.Betalningsmetoder.Gironummer</p>
+            <h4>Att betala: @Model.AttBetala SEK</h4>
+        </div>
+        <div class="col-lg-3 col-md-2">
+            <p>Oss tillhanda: @Model.BetalaSenast.Value.ToString("yyyy-MM-dd")</p>
+            <p>@Model.Betalningsmetoder.GiroTyp: @Model.Betalningsmetoder.Gironummer</p>
             <p>Mottagare: @Model.Arrangor.Namn</p>
             <p>Meddelande: @Model.Evenemangsnamn @Model.Registrering.Id</p>
         </div>
     </div>
 
-    <h3>Arrangör</h3>
+    @if (Model.Betalningsmetoder.KanTaEmotIntBetalningar)
+    {
+        <div class="col-lg-12">
+            <h3>Internationella betalningar</h3>
+            <div class="col-lg-3">
+                <p>IBAN: @Model.Betalningsmetoder.IBAN</p>
+                <p>BIC-code (Swift-address): @Model.Betalningsmetoder.BIC</p>
+            </div>
+        </div>
+    }
 
-    <p>@Model.Arrangor.Namn</p>
-    <p>@Model.Arrangor.Epost</p>
-    <p>@Model.Arrangor.Adress</p>
+    <div class="col-lg-12 top-buffer">
+        <h3>Kontakt</h3>
 
-    <h4>Internationella betalningar</h4>
-
+        <p>@Model.Arrangor.Namn</p>
+        <p>@Model.Arrangor.Epost</p>
+        <p>@Model.Arrangor.Adress</p>
+    </div>
 </div>
 

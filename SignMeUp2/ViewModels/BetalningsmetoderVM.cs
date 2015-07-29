@@ -1,11 +1,8 @@
-﻿namespace SignMeUp2.Data
+﻿using SignMeUp2.Data;
+
+namespace SignMeUp2.ViewModels
 {
-    using System.ComponentModel.DataAnnotations.Schema;
-
-    public enum GiroTyp { Inget = 0, Postgiro = 1, Bankgiro = 2 }
-
-    [Table("Betalningsmetoder")]
-    public class Betalningsmetoder
+    public class BetalningsmetoderVM
     {
         public int Id { get; set; }
 
@@ -26,6 +23,6 @@
 
         public string BIC { get; set; }
 
-        public Organisation Organisation { get; set; }
+        public int OrganisationsId { get; set; }
     }
 }

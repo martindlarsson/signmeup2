@@ -72,11 +72,16 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Admin/Organisation/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            Organisation organisation = null;
+            if (!id.HasValue)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                organisation = HamtaOrganisation();
             }
-            Organisation organisation = db.Organisationer.Find(id);
+            else
+            {
+                organisation = db.Organisationer.Find(id);
+            }
+
             if (organisation == null)
             {
                 return HttpNotFound();

@@ -13,6 +13,7 @@ using Owin;
 using log4net;
 using SignMeUp2.Services;
 using SignMeUp2.Helpers;
+using System.IO;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -26,6 +27,17 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
         protected abstract string GetEntitetsNamn();
 
+        protected void SetViewBag(Evenemang evenemang)
+        {
+            ViewBag.Entitet = GetEntitetsNamn();
+
+            if (evenemang != null)
+            {
+                ViewBag.Evenemang = evenemang;
+                ViewBag.EvenemangsId = evenemang.Id;
+            }
+        }
+
         protected void SetViewBag(int? evenemangsId)
         {
             ViewBag.Entitet = GetEntitetsNamn();
@@ -35,7 +47,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == evenemangsId.Value);
                 ViewBag.EvenemangsId = evenemangsId;
             }
-        } 
+        }
 
         protected bool IsUserAdmin
         {
@@ -115,22 +127,26 @@ namespace SignMeUp2.Areas.Admin.Controllers
             return RedirectToAction("Index", "Error", null);
         }
 
-        //protected Models.EvenemangsValjare HamtaEvValjare(int? valtEvenemangsId)
-        //{
-        //    var ev = HamtaEvenemangForAnv();
-        //    var valjare = new Models.EvenemangsValjare
-        //    {
-        //        Evenemang = new SelectList(ev, "Id", "Namn")
-        //    };
-        //    if (valtEvenemangsId != null)
-        //    {
-        //        valjare.SelectedEvenemangsId = valtEvenemangsId.Value;
-        //        var valtEvenemang = ev.FirstOrDefault(e => e.Id == valtEvenemangsId.Value);
-        //        if (valtEvenemang == null)
-        //            throw new Exception("Felaktigt evenemangsid använt. Detta evenemang finns inte med bland användarens valbara evenemang.");
-        //        valjare.SelectedEvenemangsNamn = valtEvenemang.Namn;
-        //    }
-        //    return valjare;
-        //}
+        protected bool SkickaFaktura(Registreringar reg)
+        {
+            var appUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
+            var link = appUrl + "signmeup/faktura/" + reg.Id;
+            SendMail.SendRegistration(RenderRazorViewToString("SignMeUp", "Faktura", reg), appUrl, link, reg);
+            log.Debug("Skickat epost med faktura till lagnamn: " + reg.Lagnamn);
+            return true;
+        }
+
+        protected string RenderRazorViewToString(string controllername, string viewName, object model)
+        {
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
+        }
     }
 }

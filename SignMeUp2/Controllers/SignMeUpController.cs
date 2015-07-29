@@ -61,6 +61,7 @@ namespace SignMeUp2.Controllers
                 {
                     EvenemangsId = evenemang.Id,
                     EvenemangsNamn = evenemang.Namn,
+                    KanBetalaMedFaktura = evenemang.Fakturabetalning.HasValue ? evenemang.Fakturabetalning.Value : false,
                     FAVM = f,
                     Steps = smuService.HamtaWizardSteps(evenemang.Id)
                 };
@@ -335,25 +336,15 @@ namespace SignMeUp2.Controllers
 
             if (reg.Invoice == null)
                 return ShowError(log, "Registreringen har ingen faktureringsadress. Administratör är kontaktad.", true);
-
-            var fakturaAdress = new InvoiceViewModel
-            {
-                Organisationsnummer = reg.Invoice.Organisationsnummer,
-                Namn = reg.Invoice.Namn,
-                Att = reg.Invoice.Att,
-                Box = reg.Invoice.Box,
-                Id = reg.Invoice.Id,
-                Postadress = reg.Invoice.Postadress,
-                Postnummer = reg.Invoice.Postnummer,
-                Postort = reg.Invoice.Postort
-            };
-
+            
             var fakturaVm = new FakturaVM
             {
                 Registrering = reg,
                 Arrangor = arrangor,
                 Evenemangsnamn = evenemang.Namn,
-                Fakturaadress = fakturaAdress
+                BetalaSenast = evenemang.FakturaBetaldSenast,
+                Fakturaadress = ClassMapper.MappTillInvoiceVM(reg.Invoice),
+                Betalningsmetoder = ClassMapper.MappaTillBetalningsmetoderVM(arrangor.Betalningsmetoder)
             };
 
             ViewBag.ev = reg.Evenemang.Namn;

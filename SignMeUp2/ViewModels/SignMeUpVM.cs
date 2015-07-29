@@ -38,6 +38,8 @@ namespace SignMeUp2.ViewModels
 
         public RabattVM Rabatt { get; set; }
 
+        public bool KanBetalaMedFaktura { get; set; }
+
         public IList<ValViewModel> Betalnignsposter
         {
             get

@@ -4,8 +4,6 @@ namespace SignMeUp2.Data
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-    using System.Data.Entity.ModelConfiguration;
 
     [Table("Evenemang")]
     public partial class Evenemang
@@ -32,6 +30,11 @@ namespace SignMeUp2.Data
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime RegStop { get; set; }
+        
+        public bool? Fakturabetalning { get; set; }
+                
+        [DataType(DataType.DateTime)]
+        public DateTime? FakturaBetaldSenast { get; set; }
 
         public Organisation Organisation { get; set; }
         public int OrganisationsId { get; set; }
@@ -48,24 +51,4 @@ namespace SignMeUp2.Data
 
         public virtual ICollection<Forseningsavgift> Forseningsavgifter { get; set; }
     }
-
-    //public class EvenemangMap : EntityTypeConfiguration<Evenemang>
-    //{
-    //    public EvenemangMap()
-    //    {
-    //        // Key
-    //        HasKey(e => e.Id);
-
-    //        // Properties
-    //        Property(e => e.Namn).IsRequired();
-    //        Property(e => e.RegStart).IsRequired();
-    //        Property(e => e.RegStop).IsRequired();
-
-    //        // Relatiionship
-    //        HasRequired(e => e.Organisation)
-    //            .WithMany(o => o.Evenemang)
-    //            .HasForeignKey(e => e.OrganisationsId)
-    //            .WillCascadeOnDelete(true);
-    //    }
-    //}
 }

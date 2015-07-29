@@ -68,13 +68,20 @@
         <td>@Html.DisplayFor(model => model.Epost)</td>
     </tr>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.Klubb)</th>
+        <th>Klubb</th>
         <td>@Html.DisplayFor(model => model.Klubb)</td>
     </tr>
 
     <!-- Fakturaadress -->
     @if (Model.Invoice != null)
     {
+    <tr>
+        <th colspan="2"><h3>Länk till faktura</h3></th>
+    </tr>
+    <tr>
+        <th>Länk</th>
+        <td>@Html.ActionLink("Visa faktura för anmälan", "Faktura", "SignMeUp", new { id = Model.Invoice.Id }, null)</td>
+    </tr>
     <tr>
         <th colspan="2"><h3>Fakturaadress</h3></th>
     </tr>

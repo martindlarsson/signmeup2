@@ -1,11 +1,10 @@
 ﻿@using SignMeUp2.ViewModels;
-@using SignMeUp2.Helpers;
 @{
     ViewBag.Title = "Bekräfta registrering";
     Layout = "~/Views/Shared/_LayoutSimple.cshtml";
 }
 
-@model SignMeUp2.ViewModels.SignMeUpVM
+@model SignMeUpVM
 
 <h2>Bekräfta registrering</h2>
 
@@ -99,26 +98,32 @@
 
         <div class="clearfix"></div>
 
+        @if (Model.KanBetalaMedFaktura)
+        {
         <div class="form-group row">
             <div class="col-md-5 col-xs-12">
                 <div class="alert alert-warning" role="alert">Vi tillåter enbart företag att betala mot faktura.</div>
             </div>
         </div>
+        }
 
         <div class="form-group row">
             <div class="col-md-1 col-xs-4">
                 <input type="submit" value="Korrigera" name="korrigera" class="btn btn-default cancel" />
             </div>
 
+            @if (Model.KanBetalaMedFaktura)
+            {
             <div class="col-md-offset-1 col-md-1 col-xs-4">
                 <input type="submit" value="Faktura" name="faktura" class="btn btn-default" />
             </div>
+            }
 
             <div class="col-md-1 col-xs-4">
                 <input type="submit" value="Betala" name="betala" class="btn btn-default" />
             </div>
         </div>
     </div>
-    }
+}
 
 

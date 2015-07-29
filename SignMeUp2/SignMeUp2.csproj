@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <NuGetPackageImportStamp>1aa2c7d1</NuGetPackageImportStamp>
     <ApplicationInsightsResourceId>/subscriptions/d92f40cf-38bb-4478-be38-b99c2259056e/resourcegroups/Default-Storage-NorthEurope/providers/microsoft.insights/components/signmeup2</ApplicationInsightsResourceId>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -137,6 +138,30 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -154,32 +179,8 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.2\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -282,9 +283,18 @@
     <Compile Include="Migrations\201505231907233_skapa.Designer.cs">
       <DependentUpon>201505231907233_skapa.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201507291934507_BetalningsmetoderMm.cs" />
+    <Compile Include="Migrations\201507291934507_BetalningsmetoderMm.Designer.cs">
+      <DependentUpon>201507291934507_BetalningsmetoderMm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507292158562_nullDate.cs" />
+    <Compile Include="Migrations\201507292158562_nullDate.Designer.cs">
+      <DependentUpon>201507292158562_nullDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BekraftaRegistreringViewModel.cs" />
+    <Compile Include="ViewModels\BetalningsmetoderVM.cs" />
     <Compile Include="ViewModels\BetalningViewModel.cs" />
     <Compile Include="ViewModels\FakturaVM.cs" />
     <Compile Include="ViewModels\FaltViewModel.cs" />
@@ -327,11 +337,7 @@
     <Content Include="Areas\Admin\Views\Organisation\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Organisation\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Betalningsmetoder\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Betalningsmetoder\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Betalningsmetoder\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Betalningsmetoder\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Betalningsmetoder\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Betalningsmetoder\CreateOrUpdate.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Areas\Admin\Views\Banor\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Banor\Delete.cshtml" />
@@ -436,6 +442,7 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Forseningsavgift.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Klasser.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Rabatter.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_footerEntity.cshtml" />
     <None Include="Properties\PublishProfiles\SignMeUp2.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
@@ -546,6 +553,7 @@
     <Content Include="Views\Shared\DisplayTemplates\WizardStep.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\WizardStep.cshtml" />
     <Content Include="Views\SignMeUp\Faktura.cshtml" />
+    <Content Include="Views\Shared\_meddelande.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -566,6 +574,12 @@
     <EmbeddedResource Include="Migrations\201505231907233_skapa.resx">
       <DependentUpon>201505231907233_skapa.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507291934507_BetalningsmetoderMm.resx">
+      <DependentUpon>201507291934507_BetalningsmetoderMm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507292158562_nullDate.resx">
+      <DependentUpon>201507292158562_nullDate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -581,7 +595,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51793</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

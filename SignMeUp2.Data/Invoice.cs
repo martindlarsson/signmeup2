@@ -1,11 +1,7 @@
 namespace SignMeUp2.Data
 {
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-    using System.Data.Entity.ModelConfiguration;
 
     [Table("Invoice")]
     public partial class Invoice
@@ -14,47 +10,23 @@ namespace SignMeUp2.Data
 
         public string Box { get; set; }
 
-        [Required(ErrorMessage = "Postnummer måste anges")]
+        [Required]
         public string Postnummer { get; set; }
 
-        [Required(ErrorMessage = "Organisationsnummer måste anges")]
+        [Required]
         public string Organisationsnummer { get; set; }
 
-        [Required(ErrorMessage = "Postort måste anges")]
+        [Required]
         public string Postort { get; set; }
 
-        [Required(ErrorMessage = "Postadress måste anges")]
+        [Required]
         public string Postadress { get; set; }
 
-        [Required(ErrorMessage = "Företagsnamn måste anges")]
-        [Display(Name = "Företagsnamn")]
+        [Required]
         public string Namn { get; set; }
 
         public string Att { get; set; }
 
         public Registreringar Registrering { get; set; }
-    }
-
-    public class InvoiceMap : EntityTypeConfiguration<Invoice>
-    {
-        public InvoiceMap()
-        {
-            // Key
-            HasKey(i => i.Id);
-
-            // Properties
-            Property(i => i.Box).IsOptional();
-            Property(i => i.Postnummer).IsRequired();
-            Property(i => i.Organisationsnummer).IsRequired();
-            Property(i => i.Postort).IsRequired();
-            Property(i => i.Postadress).IsRequired();
-            Property(i => i.Namn).IsRequired();
-            Property(i => i.Att).IsOptional();
-
-            // Relatiionship
-            HasRequired(i => i.Registrering)
-                .WithRequiredDependent(r => r.Invoice)
-                .WillCascadeOnDelete(true);
-        }
     }
 }

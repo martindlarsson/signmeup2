@@ -76,52 +76,36 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        //public static Registreringar MapToRegistreringar(WizardViewModel wizard)
-        //{
-        //    var reg = new Registreringar();
+        public static InvoiceViewModel MappTillInvoiceVM(Invoice invoice)
+        {
+            return new InvoiceViewModel
+            {
+                Organisationsnummer = invoice.Organisationsnummer,
+                Namn = invoice.Namn,
+                Att = invoice.Att,
+                Box = invoice.Box,
+                Id = invoice.Id,
+                Postadress = invoice.Postadress,
+                Postnummer = invoice.Postnummer,
+                Postort = invoice.Postort
+            };
+        }
 
-        //    reg.EvenemangsId = wizard.Evenemang_Id;
-
-        //    reg.Invoice = wizard.Fakturaadress;
-
-        //    reg.Rabatt = wizard.Rabatt;
-
-        //    reg.Forseningsavgift = wizard.Forseningsavgift;
-
-        //    foreach (IWizardStep step in wizard.Steps)
-        //    {
-        //        if (step is RegistrationViewModel)
-        //        {
-        //            var regStep = (RegistrationViewModel)step;
-        //            reg.Lagnamn = regStep.Lagnamn;
-        //            reg.Bana = regStep.Banor;
-        //            reg.Klass = regStep.Klasser;
-        //            reg.Kanot = regStep.Kanoter;
-        //            reg.Ranking = regStep.Ranking;
-        //        }
-        //        else if (step is ContactViewModel)
-        //        {
-        //            var contStep = (ContactViewModel)step;
-        //            reg.Adress = contStep.Adress;
-        //            reg.Epost = contStep.Epost;
-        //            reg.Telefon = contStep.Telefon;
-        //            reg.Klubb = contStep.Klubb;
-        //        }
-        //        else if (step is DeltagareListViewModel)
-        //        {
-        //            reg.Deltagare = new List<Deltagare>();
-        //            var deltagarlistaStep = (DeltagareListViewModel)step;
-        //            foreach (var deltagareNew in deltagarlistaStep.DeltagareLista)
-        //            {
-        //                var deltagare = new Deltagare();
-        //                deltagare.Förnamn = deltagareNew.Förnamn;
-        //                deltagare.Efternamn = deltagareNew.Efternamn;
-        //                reg.Deltagare.Add(deltagare);
-        //            }
-        //        }
-        //    }
-
-        //    return reg;
-        //}
+        internal static BetalningsmetoderVM MappaTillBetalningsmetoderVM(Betalningsmetoder bm)
+        {
+            return new BetalningsmetoderVM
+            {
+                BIC = bm.BIC,
+                Gironummer = bm.Gironummer,
+                GiroTyp = bm.GiroTyp,
+                HarPayson = bm.HarPayson,
+                IBAN = bm.IBAN,
+                Id = bm.Id,
+                KanTaEmotIntBetalningar = bm.KanTaEmotIntBetalningar,
+                OrganisationsId = bm.Organisation.Id,
+                PaysonUserId = bm.PaysonUserId,
+                PaysonUserKey = bm.PaysonUserKey
+            };
+        }
     }
 }

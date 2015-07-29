@@ -1,13 +1,10 @@
 namespace SignMeUp2.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using SignMeUp2.Data;
-    using SignMeUp2.Models;
+    using Data;
 
     internal sealed class Configuration : DbMigrationsConfiguration<SignMeUp2.Data.SignMeUpDataModel>
     {
@@ -17,7 +14,7 @@ namespace SignMeUp2.Migrations
             ContextKey = "SignMeUp2.Data.SignMeUpDataModel";
         }
 
-        protected override void Seed(SignMeUp2.Data.SignMeUpDataModel context)
+        protected override void Seed(SignMeUpDataModel context)
         {
             var adminOrg = context.Organisationer.SingleOrDefault(o => o.Namn == "SignMeUp");
 

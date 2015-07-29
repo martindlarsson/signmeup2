@@ -1,0 +1,19 @@
+﻿@if (!string.IsNullOrEmpty(ViewBag.Meddelande))
+{
+    <div class="alert alert-info" role="alert">@ViewBag.Meddelande</div>
+}
+
+@if (TempData["Meddelande"] != null)
+{
+    <div class="alert alert-info" role="alert">@TempData["Meddelande"].ToString()</div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.FelMeddelande))
+{
+    <div class="alert alert-danger" role="alert">@ViewBag.FelMeddelande</div>
+}
+
+@if (TempData["FelMeddelande"] != null)
+{
+    <div class="alert alert-danger" role="alert">@TempData["FelMeddelande"].ToString()</div>
+}

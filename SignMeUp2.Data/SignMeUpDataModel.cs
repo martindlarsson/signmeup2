@@ -1,15 +1,11 @@
 namespace SignMeUp2.Data
 {
-    using System;
     using System.Data.Entity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
 
     public partial class SignMeUpDataModel : IdentityDbContext<ApplicationUser>
     {
         public SignMeUpDataModel()
-            //: base("name=SignMeUpDataModel")
             : base("SignMeUpDataModel", throwIfV1Schema: false)
         {
         }
@@ -32,20 +28,6 @@ namespace SignMeUp2.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Configurations.Add(new EvenemangMap());
-            //modelBuilder.Configurations.Add(new ForseningsavgiftMap());
-            //modelBuilder.Configurations.Add(new BanorMap());
-            //modelBuilder.Configurations.Add(new KlasserMap());
-            //modelBuilder.Configurations.Add(new KanoterMap());
-            //modelBuilder.Configurations.Add(new RegistreringarMap());
-            //modelBuilder.Configurations.Add(new DeltagareMap());
-            //modelBuilder.Configurations.Add(new BetalningsmetoderMap());
-            //modelBuilder.Configurations.Add(new InvoiceMap());
-            //modelBuilder.Configurations.Add(new OrgMap());
-            //modelBuilder.Configurations.Add(new RabattMap());
-
-            // TODO orgBetalningar
-
             // Identity context model creation
             base.OnModelCreating(modelBuilder);
 
