@@ -250,7 +250,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
-    <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\ForseningsavgiftController.cs" />
     <Compile Include="Areas\Admin\Controllers\BanorController.cs" />
     <Compile Include="Areas\Admin\Controllers\BetalningsmetoderController.cs" />
@@ -265,7 +264,7 @@
     <Compile Include="Areas\Admin\Controllers\KlasserController.cs" />
     <Compile Include="Controllers\PaysonController.cs" />
     <Compile Include="Areas\Admin\Controllers\RabatterController.cs" />
-    <Compile Include="Controllers\RegBaseController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\RegistreringarController.cs" />
     <Compile Include="Controllers\SignMeUpController.cs" />
     <Compile Include="Areas\Admin\Controllers\InvoiceController.cs" />
@@ -554,6 +553,7 @@
     <Content Include="Views\Shared\EditorTemplates\WizardStep.cshtml" />
     <Content Include="Views\SignMeUp\Faktura.cshtml" />
     <Content Include="Views\Shared\_meddelande.cshtml" />
+    <Content Include="Views\Shared\_faktura.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

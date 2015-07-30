@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SignMeUp2.Data;
+using SignMeUp2.Controllers;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class KlasserController : AdminBaseController
+    public class KlasserController : BaseController
     {
         private static string _entity = "Klasser";
         protected override string GetEntitetsNamn()

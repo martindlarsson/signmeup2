@@ -7,11 +7,12 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SignMeUp2.Data;
+using SignMeUp2.Controllers;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class EvenemangController : AdminBaseController
+    public class EvenemangController : BaseController
     {
         private static string _entity = "Evenemang";
         protected override string GetEntitetsNamn()

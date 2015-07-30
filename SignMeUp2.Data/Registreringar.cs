@@ -53,12 +53,15 @@ namespace SignMeUp2.Data
         public int? RabattId { get; set; }
 
         [Required]
+        public int Bana_Id { get; set; }
         public Banor Bana { get; set; }
 
         [Required]
+        public int Klass_Id { get; set; }
         public Klasser Klass { get; set; }
 
         [Required]
+        public int Kanot_Id { get; set; }
         public Kanoter Kanot { get; set; }
 
         public Invoice Invoice { get; set; }

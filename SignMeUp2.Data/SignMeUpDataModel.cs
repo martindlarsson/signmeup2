@@ -81,16 +81,19 @@ namespace SignMeUp2.Data
             modelBuilder.Entity<Registreringar>()
                 .HasRequired(r => r.Bana)
                 .WithMany(b => b.Registreringar)
+                .HasForeignKey(r => r.Bana_Id)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Registreringar>()
                 .HasRequired(r => r.Kanot)
                 .WithMany(k => k.Registreringar)
+                .HasForeignKey(r => r.Kanot_Id)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Registreringar>()
                 .HasRequired(r => r.Klass)
                 .WithMany(k => k.Registreringar)
+                .HasForeignKey(r => r.Klass_Id)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Registreringar>()

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace SignMeUp2.Controllers
 {
-    public class ErrorController : RegBaseController
+    public class ErrorController : BaseController
     {
         public ViewResult Index()
         {
@@ -16,6 +16,11 @@ namespace SignMeUp2.Controllers
         {
             Response.StatusCode = 404;  //you may want to set this to 200
             return View("NotFound");
+        }
+
+        protected override string GetEntitetsNamn()
+        {
+            return string.Empty;
         }
     }
 }

@@ -16,7 +16,7 @@ using SignMeUp2.Data;
 namespace SignMeUp2.Controllers
 {
     [Authorize]
-    public class AccountController : RegBaseController
+    public class AccountController : BaseController
     {
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
@@ -569,6 +569,11 @@ namespace SignMeUp2.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        protected override string GetEntitetsNamn()
+        {
+            return string.Empty;
         }
 
         private class ChallengeResult : HttpUnauthorizedResult

@@ -12,8 +12,13 @@ using SignMeUp2.Helpers;
 
 namespace SignMeUp2.Controllers
 {
-    public class SignMeUpController : RegBaseController
+    public class SignMeUpController : BaseController
     {
+        protected override string GetEntitetsNamn()
+        {
+            return string.Empty;
+        }
+
         public ActionResult Index(int? id)
         {
             SignMeUpVM SUPVM = (SignMeUpVM)Session["VM"];
@@ -309,9 +314,9 @@ namespace SignMeUp2.Controllers
                 SUPVM.Fakturaadress = fakturaadress;
                 // Spara i databasen
                 var reg = smuService.Spara(SUPVM);
-
-                // TODO skicka mail med faktura
+                
                 SkickaRegMail(reg);
+                SkickaFaktura(reg);
 
                 Session["VM"] = null;
 
@@ -323,35 +328,6 @@ namespace SignMeUp2.Controllers
                 Session["VM"] = SUPVM;
                 return View(fakturaadress);
             }
-        }
-
-        public ActionResult Faktura(int? id)
-        {
-            if (id == null)
-                return ShowError(log, "Fel vid hämtning av registreringsinformation för faktura. Administratör är kontaktad. Var god försök senare", true);
-            
-            var reg = smuService.GetRegistrering(id.Value, true);
-            var evenemang = smuService.HamtaEvenemang(reg.EvenemangsId.Value);
-            var arrangor = smuService.HamtaOrganisation(evenemang.OrganisationsId);
-
-            if (reg.Invoice == null)
-                return ShowError(log, "Registreringen har ingen faktureringsadress. Administratör är kontaktad.", true);
-            
-            var fakturaVm = new FakturaVM
-            {
-                Registrering = reg,
-                Arrangor = arrangor,
-                Evenemangsnamn = evenemang.Namn,
-                BetalaSenast = evenemang.FakturaBetaldSenast,
-                Fakturaadress = ClassMapper.MappTillInvoiceVM(reg.Invoice),
-                Betalningsmetoder = ClassMapper.MappaTillBetalningsmetoderVM(arrangor.Betalningsmetoder)
-            };
-
-            ViewBag.ev = reg.Evenemang.Namn;
-
-            LogDebug(log, "Användare hämtar faktura för betalning (GET) för " + reg.Evenemang.Namn + " och laget heter " + reg.Lagnamn);
-
-            return View(fakturaVm);
         }
 
         /// <summary>

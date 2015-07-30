@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SignMeUp2.Data;
 using System.Web.Mvc.Html;
+using SignMeUp2.Controllers;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
-    public class RegistreringarController : AdminBaseController
+    public class RegistreringarController : BaseController
     {
         private static string _entity = "Registrering";
         protected override string GetEntitetsNamn()
@@ -47,7 +46,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return ShowError(log, "Kan inte skicka faktura utan id", false);
             }
-            Registreringar registreringar = db.Registreringar.Find(id);
+            Registreringar registreringar = smuService.GetRegistrering(id.Value, true);
 
             if (registreringar == null)
             {
@@ -91,10 +90,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Registreringar/Create
         public ActionResult Create()
         {
-            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn");
-            ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn");
-            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn");
-            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn");
+            SetViewBag(null);
             return View();
         }
 
@@ -112,10 +108,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.Bana.Id);
-            ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.EvenemangsId);
-            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.Kanot.Id);
-            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.Klass.Id);
+            SetViewBag(registreringar);
+            SetViewBag(registreringar.EvenemangsId);
             return View(registreringar);
         }
 
@@ -126,16 +120,14 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Registreringar registreringar = SMU.GetRegistrering(id.Value, true);
+            Registreringar registreringar = smuService.GetRegistrering(id.Value, true);
             if (registreringar == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.Bana.Id);
-            ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.EvenemangsId);
-            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.Kanot.Id);
-            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.Klass.Id);
-            ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(SignMeUp2.Data.TypAvgift));
+
+            SetViewBag(registreringar);
+            SetViewBag(registreringar.EvenemangsId);
             return View(registreringar);
         }
 
@@ -144,19 +136,52 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Adress,Telefon,Epost,Ranking,Startnummer,Lagnamn,Kanot,Klubb,Klass,HarBetalt,Forseningsavgift,Registreringstid,Kommentar,Bana,Rabatter,PaysonToken,Evenemang_Id,Invoice")] Registreringar registreringar)
+        public ActionResult Edit([Bind(Include = "ID,Adress,Telefon,Epost,Startnummer,Lagnamn,Kanot_Id,Klubb,Klass_Id,HarBetalt,ForseningsavgiftId,Registreringstid,Kommentar,Bana_Id,RabattId,PaysonToken,EvenemangsId,Invoice")] Registreringar registreringar)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(registreringar).State = EntityState.Modified;
+
+                var origReg = smuService.Db.Registreringar.Include(r => r.Deltagare).First(r => r.Id == registreringar.Id);
+                
+                foreach (var deltagare in origReg.Deltagare)
+                {
+                    var nyttFornamn = Request.Form["deltagare_f_" + deltagare.Id];
+                    var nyttEfternamn = Request.Form["deltagare_e_" + deltagare.Id];
+
+                    if (!deltagare.Förnamn.Equals(nyttFornamn) || !deltagare.Efternamn.Equals(nyttEfternamn))
+                    {
+                        deltagare.Förnamn = nyttFornamn;
+                        deltagare.Efternamn = nyttEfternamn;
+                        db.Entry(deltagare).State = EntityState.Modified;
+                    }
+                }
+
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = registreringar.EvenemangsId });
             }
-            ViewBag.Bana = new SelectList(db.Banor, "ID", "Namn", registreringar.Bana.Id);
-            ViewBag.Evenemang_Id = new SelectList(db.Evenemang, "Id", "Namn", registreringar.EvenemangsId);
-            ViewBag.Kanot = new SelectList(db.Kanoter, "ID", "Namn", registreringar.Kanot.Id);
-            ViewBag.Klass = new SelectList(db.Klasser, "ID", "Namn", registreringar.Klass.Id);
+
+            SetViewBag(registreringar);
+            SetViewBag(registreringar.EvenemangsId);
             return View(registreringar);
+        }
+
+        protected void SetViewBag(Registreringar reg)
+        {
+            if (reg != null)
+            {
+                ViewBag.Bana_Id = new SelectList(db.Banor, "ID", "Namn", reg.Bana.Id);
+                ViewBag.Kanot_Id = new SelectList(db.Kanoter, "ID", "Namn", reg.Kanot.Id);
+                ViewBag.Klass_Id = new SelectList(db.Klasser, "ID", "Namn", reg.Klass.Id);
+                ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(TypAvgift));
+            }
+            else
+            {
+                ViewBag.Bana_Id = new SelectList(db.Banor, "ID", "Namn");
+                ViewBag.Kanot_Id = new SelectList(db.Kanoter, "ID", "Namn");
+                ViewBag.Klass_Id = new SelectList(db.Klasser, "ID", "Namn");
+                ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(TypAvgift));
+            }
         }
 
         // GET: Registreringar/Delete/5

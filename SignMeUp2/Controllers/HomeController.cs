@@ -9,8 +9,13 @@ using SignMeUp2.Helpers;
 
 namespace SignMeUp2.Controllers
 {
-    public class HomeController : RegBaseController
+    public class HomeController : BaseController
     {
+        protected override string GetEntitetsNamn()
+        {
+            return string.Empty;
+        }
+
         // GET: Home
         public ActionResult Index()
         {

@@ -15,9 +15,14 @@ using PaysonIntegration.Utils;
 
 namespace SignMeUp2.Controllers
 {
-    public class PaysonController : RegBaseController
+    public class PaysonController : BaseController
     {
         private const string ApplicationId = "SignMeUp2";
+        
+        protected override string GetEntitetsNamn()
+        {
+            return string.Empty;
+        }
 
         // GET: Payson
         public ActionResult Index()
