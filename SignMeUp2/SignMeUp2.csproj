@@ -551,7 +551,6 @@
     <Content Include="_EventSourceUsersGuide.docx" />
     <Content Include="Views\Shared\DisplayTemplates\WizardStep.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\WizardStep.cshtml" />
-    <Content Include="Views\SignMeUp\Faktura.cshtml" />
     <Content Include="Views\Shared\_meddelande.cshtml" />
     <Content Include="Views\Shared\_faktura.cshtml" />
   </ItemGroup>

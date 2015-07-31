@@ -13,9 +13,6 @@ namespace SignMeUp2.Helpers
     {
         public static void SendRegistration(string message, string hostAddress, string link, Registreringar reg)
         {
-            ILog log = LogManager.GetLogger("SendMail");
-            log.Debug("Skickar registreringsmail med meddelande: " + message);
-
             try
             {
                 message = message.Replace("href=\"/", string.Format("href=\"{0}", hostAddress));
@@ -42,15 +39,13 @@ namespace SignMeUp2.Helpers
             }
             catch (Exception exc)
             {
+                ILog log = LogManager.GetLogger("SendMail");
                 log.Error("Fel vid skickande av mail.", exc);
             }
         }
 
         public static void SkickaFaktura(string message, string hostAddress, string link, FakturaVM fakturaVm)
         {
-            ILog log = LogManager.GetLogger("SendMail");
-            log.Debug("Skickar faktura för anmälan med meddelande: " + message);
-
             try
             {
                 message = message.Replace("href=\"/", string.Format("href=\"{0}", hostAddress));
@@ -79,6 +74,7 @@ namespace SignMeUp2.Helpers
             }
             catch (Exception exc)
             {
+                ILog log = LogManager.GetLogger("SendMail");
                 log.Error("Fel vid skickande av mail.", exc);
             }
         }
