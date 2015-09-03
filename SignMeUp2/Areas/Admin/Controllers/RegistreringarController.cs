@@ -88,9 +88,14 @@ namespace SignMeUp2.Areas.Admin.Controllers
         }
 
         // GET: Registreringar/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            SetViewBag(null);
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            SetViewBag(id.Value);
+            SetViewBag(null, id.Value);
             return View();
         }
 
@@ -108,7 +113,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            SetViewBag(registreringar);
+            SetViewBag(registreringar, registreringar.EvenemangsId.Value);
             SetViewBag(registreringar.EvenemangsId);
             return View(registreringar);
         }
@@ -126,7 +131,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-            SetViewBag(registreringar);
+            SetViewBag(registreringar, registreringar.EvenemangsId.Value);
             SetViewBag(registreringar.EvenemangsId);
             return View(registreringar);
         }
@@ -157,29 +162,34 @@ namespace SignMeUp2.Areas.Admin.Controllers
                     }
                 }
 
+                if (registreringar.Invoice != null)
+                {
+                    db.Entry(registreringar.Invoice).State = EntityState.Modified;
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index", new { id = registreringar.EvenemangsId });
             }
 
-            SetViewBag(registreringar);
+            SetViewBag(registreringar, registreringar.EvenemangsId.Value);
             SetViewBag(registreringar.EvenemangsId);
             return View(registreringar);
         }
 
-        protected void SetViewBag(Registreringar reg)
+        protected void SetViewBag(Registreringar reg, int evenemangsId)
         {
             if (reg != null)
             {
-                ViewBag.Bana_Id = new SelectList(db.Banor, "ID", "Namn", reg.Bana.Id);
-                ViewBag.Kanot_Id = new SelectList(db.Kanoter, "ID", "Namn", reg.Kanot.Id);
-                ViewBag.Klass_Id = new SelectList(db.Klasser, "ID", "Namn", reg.Klass.Id);
+                ViewBag.Bana_Id = new SelectList(smuService.HamtaBanor(reg.EvenemangsId.Value), "ID", "Namn", reg.Bana.Id);
+                ViewBag.Kanot_Id = new SelectList(smuService.HamtaKanoter(reg.EvenemangsId.Value), "ID", "Namn", reg.Kanot.Id);
+                ViewBag.Klass_Id = new SelectList(smuService.HamtaKlasser(reg.EvenemangsId.Value), "ID", "Namn", reg.Klass.Id);
                 ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(TypAvgift));
             }
             else
             {
-                ViewBag.Bana_Id = new SelectList(db.Banor, "ID", "Namn");
-                ViewBag.Kanot_Id = new SelectList(db.Kanoter, "ID", "Namn");
-                ViewBag.Klass_Id = new SelectList(db.Klasser, "ID", "Namn");
+                ViewBag.Bana_Id = new SelectList(smuService.HamtaBanor(evenemangsId), "ID", "Namn");
+                ViewBag.Kanot_Id = new SelectList(smuService.HamtaKanoter(evenemangsId), "ID", "Namn");
+                ViewBag.Klass_Id = new SelectList(smuService.HamtaKlasser(evenemangsId), "ID", "Namn");
                 ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(TypAvgift));
             }
         }

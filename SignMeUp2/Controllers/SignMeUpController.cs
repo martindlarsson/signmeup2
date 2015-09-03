@@ -221,7 +221,14 @@ namespace SignMeUp2.Controllers
             // Payson
             else if (!string.IsNullOrEmpty(Request["betala"]))
             {
+#if DEBUG
+                // Spara i databasen
+                var reg = smuService.Spara(SUPVM);
+                Session["VM"] = null;
+                return RedirectToAction("BekraftelseBetalning", new { id = reg.Id });
+#else
                 return RedirectToAction("Index", "Payson");
+#endif
             }
             // Faktura
             else if (!string.IsNullOrEmpty(Request["faktura"]))

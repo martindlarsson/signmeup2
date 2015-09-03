@@ -83,6 +83,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(organisation);
         }
 
@@ -97,8 +98,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 db.Entry(organisation).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
+            else
+            {
+                ViewBag.FelMeddelande = "Det finns valideringsfel i formuläret. Korrigera och försök igen.";
+                return View(organisation);
+            }
+
+            ViewBag.Meddelande = "Ändringarna har sparats.";
+            
             return View(organisation);
         }
 

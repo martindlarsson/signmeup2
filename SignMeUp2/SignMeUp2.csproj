@@ -442,6 +442,8 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Klasser.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Rabatter.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_footerEntity.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Invoice.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Boolean.cshtml" />
     <None Include="Properties\PublishProfiles\SignMeUp2.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />

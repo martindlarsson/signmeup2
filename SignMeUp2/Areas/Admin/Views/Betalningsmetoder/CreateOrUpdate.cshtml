@@ -19,7 +19,7 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.GiroTyp, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.GiroTyp, "Girotyp", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EnumDropDownListFor(model => model.GiroTyp, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.GiroTyp, "", new { @class = "text-danger" })
@@ -34,60 +34,117 @@
             </div>
         </div>
 
-        @* TODO, javascript för att disabla Paysonfält nedan när false  *@
+        <script type="text/javascript">
+
+            var harPayson = false;
+
+            var intBetalningar = false;
+
+            window.onload = function () {
+
+                // Payson
+
+                harPayson = $('#HarPayson').attr('checked');
+
+                if (harPayson) {
+                    $("#paysonDiv").show();
+                } else {
+                    $("#paysonDiv").hide();
+                }
+
+                $("#HarPayson").click(function () {
+                    if (harPayson) {
+                        $("#paysonDiv").hide();
+                        harPayson = false;
+                    } else {
+                        $("#paysonDiv").show();
+                        harPayson = true;
+                    }
+                });
+
+                // Internationella betalningar
+
+                intBetalningar = $('#KanTaEmotIntBetalningar').attr('checked');
+
+                if (intBetalningar) {
+                    $("#intBetalningar").show();
+                } else {
+                    $("#intBetalningar").hide();
+                }
+
+                $("#KanTaEmotIntBetalningar").click(function () {
+                    if (intBetalningar) {
+                        $("#intBetalningar").hide();
+                        intBetalningar = false;
+                    } else {
+                        $("#intBetalningar").show();
+                        intBetalningar = true;
+                    }
+                });
+            }
+        </script>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.HarPayson, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.HarPayson, "Har Paysonkonto", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.HarPayson, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.CheckBoxFor(model => model.HarPayson, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.HarPayson, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PaysonUserId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PaysonUserId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PaysonUserId, "", new { @class = "text-danger" })
+        <div id="paysonDiv">
+            <div class="form-group">
+                @Html.LabelFor(model => model.PaysonUserId, "Payson användar id", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PaysonUserId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PaysonUserId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PaysonUserKey, "Payson användarnyckel", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PaysonUserKey, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PaysonUserKey, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PaysonUserKey, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.KanTaEmotIntBetalningar, "Kan ta emot internationell betalningar", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PaysonUserKey, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PaysonUserKey, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.KanTaEmotIntBetalningar, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.KanTaEmotIntBetalningar, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.CheckBoxFor(model => model.KanTaEmotIntBetalningar, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.KanTaEmotIntBetalningar, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IBAN, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IBAN, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.IBAN, "", new { @class = "text-danger" })
+        <div id="intBetalningar">
+            <div class="form-group">
+                @Html.LabelFor(model => model.IBAN, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IBAN, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.IBAN, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.BIC, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BIC, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BIC, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.BIC, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.BIC, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BIC, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Spara" class="btn btn-default" />
+                <input type="submit" value="Spara" class="btn btn-success" />
             </div>
         </div>
     </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
 }

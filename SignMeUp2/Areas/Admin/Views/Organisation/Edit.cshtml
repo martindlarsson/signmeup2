@@ -7,6 +7,8 @@
 
 <h2>Redigera min förening</h2>
 
+@{Html.RenderPartial("_meddelande");}
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -45,7 +47,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Spara" class="btn btn-default" />
+                <input type="submit" value="Spara" class="btn btn-success" />
             </div>
         </div>
     </div>

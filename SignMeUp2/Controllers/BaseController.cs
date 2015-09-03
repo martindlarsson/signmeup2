@@ -46,7 +46,7 @@ namespace SignMeUp2.Controllers
 
             if (evenemangsId != null)
             {
-                ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == evenemangsId.Value);
+                ViewBag.Evenemang = smuService.HamtaEvenemang(evenemangsId.Value);
                 ViewBag.EvenemangsId = evenemangsId;
             }
         }
@@ -202,5 +202,6 @@ namespace SignMeUp2.Controllers
             var user = HamtaUser();
             return db.Organisationer.Find(user.OrganisationsId);
         }
+        
     }
 }
