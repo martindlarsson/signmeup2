@@ -23,8 +23,8 @@ namespace SignMeUp2.Controllers
         {
             SignMeUpVM SUPVM = (SignMeUpVM)Session["VM"];
 
-            // Om view model innehåller ett evenemangsid som inte stämmer med inkommande id, nolla wizard
-            if (SUPVM != null && id != null && SUPVM.EvenemangsId != id.Value)
+            // Om view model innehåller ett formulärsid som inte stämmer med inkommande id, nolla wizard
+            if (SUPVM != null && id != null && SUPVM.FormularsId != id.Value)
             {
                 SUPVM = null;
             }
@@ -32,43 +32,43 @@ namespace SignMeUp2.Controllers
             if (SUPVM == null)
             {
                 if (id == null)
-                    return ShowError(log, "Inget evenemang angivit. Klicka på länken nedan och välj ett evenemang.", false);
+                    return ShowError(log, "Inget formulär angivit. Klicka på länken nedan och välj ett formulär.", false);
 
-                var evenemang = smuService.Db.Evenemang.Find(id);
+                var formular = smuService.GetFormular(id.Value); //Db.Formular.Include("Evenemang").Single(f => f.Id == id);
 
-                LogDebug(log, "Användare går in på anmälan för: " + evenemang.Namn);
+                LogDebug(log, "Användare går in på anmälan för: " + formular.Namn);
 
-                var evenemangResult = EvenemangHelper.EvaluateEvenemang(evenemang);
+                var evenemangResult = EvenemangHelper.EvaluateEvenemang(formular.Evenemang);
 
                 if (evenemangResult == EvenemangHelper.EvenemangValidationResult.NotOpen)
                 {
                     ViewBag.Closed = false;
                     ViewBag.NotOpen = true;
-                    return View("RegNotOpen", evenemang);
+                    return View("RegNotOpen", formular);
                 }
                 else if (evenemangResult == EvenemangHelper.EvenemangValidationResult.Closed)
                 {
                     ViewBag.Closed = true;
                     ViewBag.NotOpen = false;
-                    return View("RegNotOpen", evenemang);
+                    return View("RegNotOpen", formular);
                 }
                 else if (evenemangResult == EvenemangHelper.EvenemangValidationResult.DoesNotExist)
                 {
                     return ShowError(log, "Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
                 }
 
-                ViewBag.ev = evenemang.Namn;
+                ViewBag.ev = formular.Evenemang.Namn;
 
                 // Förseningsavgift
-                var f = smuService.HamtaForseningsavfigt(evenemang.Id);
+                var f = smuService.HamtaForseningsavfigt(formular.EvenemangsId.Value);
 
                 SUPVM = new SignMeUpVM
                 {
-                    EvenemangsId = evenemang.Id,
-                    EvenemangsNamn = evenemang.Namn,
-                    KanBetalaMedFaktura = evenemang.Fakturabetalning.HasValue ? evenemang.Fakturabetalning.Value : false,
+                    EvenemangsId = formular.Id,
+                    EvenemangsNamn = formular.Namn,
+                    KanBetalaMedFaktura = formular.Evenemang.Fakturabetalning.HasValue ? formular.Evenemang.Fakturabetalning.Value : false,
                     FAVM = f,
-                    Steps = smuService.HamtaWizardSteps(evenemang.Id)
+                    Steps = formular.Steg// smuService.HamtaWizardSteps(formular.Id)
                 };
             }
 
@@ -144,28 +144,28 @@ namespace SignMeUp2.Controllers
 
             // Om deltagarsteget, hämta antal deltagare och
             // krav på personnummer från steget innan
-            if (SUPVM.Steps[SUPVM.CurrentStepIndex].Namn == "Deltagare")
-            {
-                var registrationStep = SUPVM.Steps.FirstOrDefault(stepps => stepps.Namn == "Registrering");
-                if (registrationStep != null)
-                {
-                    var valBana = registrationStep.FaltLista.FirstOrDefault(val => val.Namn == "Bana");
-                    var banId = int.Parse(valBana.Varde);
-                    var bana = smuService.Db.Banor.FirstOrDefault(b => b.Id == banId);
-                    // Om listan av deltagarfält är tom eller om antalet deltagare inte stämmer skapar vi en ny lista
-                    if (SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista == null ||
-                        SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista.Count != (bana.AntalDeltagare * 2))
-                    {
-                        var lista = new List<FaltViewModel>();
-                        for (int i = 0; i < bana.AntalDeltagare; i++)
-                        {
-                            lista.Add(new FaltViewModel { Namn = "Förnamn " + (i + 1), Kravs = true });
-                            lista.Add(new FaltViewModel { Namn = "Efternamn " + (i + 1), Kravs = true });
-                        }
-                        SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista = lista;
-                    }
-                }
-            }
+            //if (SUPVM.Steps[SUPVM.CurrentStepIndex].Namn == "Deltagare")
+            //{
+            //    var registrationStep = SUPVM.Steps.FirstOrDefault(stepps => stepps.Namn == "Registrering");
+            //    if (registrationStep != null)
+            //    {
+            //        var valBana = registrationStep.FaltLista.FirstOrDefault(val => val.Namn == "Bana");
+            //        var banId = int.Parse(valBana.Varde);
+            //        var bana = smuService.Db.Banor.FirstOrDefault(b => b.Id == banId);
+            //        // Om listan av deltagarfält är tom eller om antalet deltagare inte stämmer skapar vi en ny lista
+            //        if (SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista == null ||
+            //            SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista.Count != (bana.AntalDeltagare * 2))
+            //        {
+            //            var lista = new List<FaltViewModel>();
+            //            for (int i = 0; i < bana.AntalDeltagare; i++)
+            //            {
+            //                lista.Add(new FaltViewModel { Namn = "Förnamn " + (i + 1), Kravs = true });
+            //                lista.Add(new FaltViewModel { Namn = "Efternamn " + (i + 1), Kravs = true });
+            //            }
+            //            SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista = lista;
+            //        }
+            //    }
+            //}
 
             Session["VM"] = SUPVM;
 
@@ -349,9 +349,9 @@ namespace SignMeUp2.Controllers
 
             var reg = smuService.GetRegistrering(id.Value, true);
 
-            ViewBag.ev = reg.Evenemang.Namn;
+            ViewBag.ev = reg.Formular.Evenemang.Namn;
 
-            LogDebug(log, "Användare bekräftelse betalning (GET) för " + reg.Evenemang.Namn);
+            LogDebug(log, "Användare bekräftelse betalning (GET) för " + reg.Formular.Evenemang.Namn);
 
             return View(smuService.FillRegistrering(reg));
         }
@@ -368,9 +368,9 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Ingen anmälan med id " + id.Value + " hittades.", false);
             }
 
-            var reg = smuService.Db.Registreringar.Include("Evenemang.Organisation").SingleOrDefault(r => r.Id == id);
+            var reg = smuService.GetRegistrering(id.Value, true); // Db.Registreringar.Include("Evenemang.Organisation").SingleOrDefault(r => r.Id == id);
 
-            LogDebug(log, "Skicka mail igen för " + reg.Evenemang.Namn + " lagnamn: " + reg.Lagnamn);
+            LogDebug(log, "Skicka mail igen för " + reg.Formular.Evenemang.Namn + " regid: " + reg.Id);
 
             SkickaRegMail(reg);
 

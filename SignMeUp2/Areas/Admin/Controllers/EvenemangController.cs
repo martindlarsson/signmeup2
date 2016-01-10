@@ -144,7 +144,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Evenemang evenemang = db.Evenemang.Find(id);
-            evenemang.Registreringar.Clear();
+            evenemang.Formular.Clear();
 
             db.SaveChanges();
             db.Evenemang.Remove(evenemang);

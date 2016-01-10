@@ -21,6 +21,7 @@ namespace SignMeUp2.Controllers
         {
             return View(smuService.Db.Evenemang
                 .Include("Organisation")
+                .Include("Formular")
                 .Where(e => e.RegStart <= DateTime.Now && e.RegStop > DateTime.Now)
                 .ToList());
         }
@@ -44,11 +45,11 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
             }
 
-            var regs = smuService.Db.Registreringar.Include("Deltagare").Where(reg => reg.EvenemangsId == id.Value && reg.HarBetalt).ToList();
-            var banor = smuService.Db.Banor.ToList();
-            var klasser = smuService.Db.Klasser.ToList();
+            var regs = smuService.Db.Registreringar.Include("Deltagare").Where(reg => reg.FormularsId == id.Value && reg.HarBetalt).ToList();
+            //var banor = smuService.Db.Banor.ToList();
+            //var klasser = smuService.Db.Klasser.ToList();
 
-            var startlista = StartlistaViewModel.GetStartlist(regs, evenemang.Namn, banor, klasser);
+            var startlista = StartlistaViewModel.GetStartlist(regs, evenemang.Namn); //, banor, klasser);
 
             ViewBag.ev = evenemang.Namn;
             return View("Startlista", startlista);

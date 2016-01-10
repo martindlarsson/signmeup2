@@ -290,6 +290,14 @@
     <Compile Include="Migrations\201507292158562_nullDate.Designer.cs">
       <DependentUpon>201507292158562_nullDate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601092342083_DynamiskaFaltv1.cs" />
+    <Compile Include="Migrations\201601092342083_DynamiskaFaltv1.Designer.cs">
+      <DependentUpon>201601092342083_DynamiskaFaltv1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601092357176_tabellnamnbyte.cs" />
+    <Compile Include="Migrations\201601092357176_tabellnamnbyte.Designer.cs">
+      <DependentUpon>201601092357176_tabellnamnbyte.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BekraftaRegistreringViewModel.cs" />
@@ -297,17 +305,18 @@
     <Compile Include="ViewModels\BetalningViewModel.cs" />
     <Compile Include="ViewModels\FakturaVM.cs" />
     <Compile Include="ViewModels\FaltViewModel.cs" />
+    <Compile Include="ViewModels\FormularViewModel.cs" />
     <Compile Include="ViewModels\KontaktuppgifterVM.cs" />
     <Compile Include="ViewModels\RabattVM.cs" />
     <Compile Include="ViewModels\DeltagareVM.cs" />
     <Compile Include="ViewModels\ForseningsavgiftVM.cs" />
     <Compile Include="ViewModels\InvoiceVM.cs" />
     <Compile Include="ViewModels\PaysonViewModel.cs" />
+    <Compile Include="ViewModels\ValViewModel.cs" />
     <Compile Include="ViewModels\WizardStep.cs" />
     <Compile Include="ViewModels\RegistrationVM.cs" />
     <Compile Include="ViewModels\SignMeUpVM.cs" />
     <Compile Include="ViewModels\StartlistaViewModel.cs" />
-    <Compile Include="ViewModels\WizardViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SignMeUpService.cs" />
     <Compile Include="Startup.cs" />
@@ -580,6 +589,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507292158562_nullDate.resx">
       <DependentUpon>201507292158562_nullDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601092342083_DynamiskaFaltv1.resx">
+      <DependentUpon>201601092342083_DynamiskaFaltv1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601092357176_tabellnamnbyte.resx">
+      <DependentUpon>201601092357176_tabellnamnbyte.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

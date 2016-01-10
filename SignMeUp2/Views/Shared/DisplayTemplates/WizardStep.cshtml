@@ -12,7 +12,7 @@
             </dt>
 
             <dd>
-                @if (falt.Typ == SignMeUp2.ViewModels.FaltTyp.val_falt)
+                @if (falt.Typ == SignMeUp2.Data.FaltTyp.val_falt)
                 {
                     var id = int.Parse(falt.Varde);
                     var val = falt.Val.FirstOrDefault(f => f.Id == id);

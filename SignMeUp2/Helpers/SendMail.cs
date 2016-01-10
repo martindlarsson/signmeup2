@@ -22,8 +22,8 @@ namespace SignMeUp2.Helpers
                 // Create the email object first, then add the properties.
                 SendGridMessage myMessage = new SendGridMessage();
                 myMessage.AddTo(reg.Epost);
-                myMessage.From = new MailAddress(reg.Evenemang.Organisation.Epost, reg.Evenemang.Organisation.Namn);
-                myMessage.Subject = string.Format("Bekräftelse anmälan till " + reg.Evenemang.Namn);
+                myMessage.From = new MailAddress(reg.Formular.Evenemang.Organisation.Epost, reg.Formular.Evenemang.Organisation.Namn);
+                myMessage.Subject = string.Format("Bekräftelse anmälan till " + reg.Formular.Evenemang.Namn);
                 myMessage.Html = message;
                 myMessage.Text = "Följ länken för en bekräftelse på din anmälan: " + link;
 

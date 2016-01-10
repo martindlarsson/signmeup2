@@ -25,12 +25,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
             IQueryable<Registreringar> reggs;
             if (id != null)
             {
-                reggs = db.Registreringar.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass).Include(r => r.Invoice).Where(r => r.EvenemangsId == id.Value);
+                reggs = db.Registreringar.Where(r => r.FormularsId == id.Value); //Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass).Include(r => r.Invoice).Where(r => r.EvenemangsId == id.Value);
                 ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
             }
             else if (IsUserAdmin)
             {
-                reggs = db.Registreringar.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass);
+                reggs = db.Registreringar.Where(r => r.FormularsId == id.Value); //.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass);
             }
             else
             {
@@ -66,10 +66,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
             if (lyckatsSkicka)
             {
-                TempData["Meddelande"] = "Faktura skickad till " + registreringar.Epost;
+                TempData["Meddelande"] = "Faktura skickad till användaren."; // + registreringar.Epost;
             }
 
-            return RedirectToAction("Index", new { id = registreringar.Evenemang.Id });
+            return RedirectToAction("Index", new { id = registreringar.FormularsId });
         }
 
         // GET: Registreringar/Details/5
@@ -95,7 +95,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             SetViewBag(id.Value);
-            SetViewBag(null, id.Value);
+            //SetViewBag(null, id.Value);
             return View();
         }
 
@@ -113,8 +113,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            SetViewBag(registreringar, registreringar.EvenemangsId.Value);
-            SetViewBag(registreringar.EvenemangsId);
+            //SetViewBag(registreringar, registreringar.EvenemangsId.Value);
+            //SetViewBag(registreringar.EvenemangsId);
             return View(registreringar);
         }
 
@@ -131,8 +131,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-            SetViewBag(registreringar, registreringar.EvenemangsId.Value);
-            SetViewBag(registreringar.EvenemangsId);
+            //SetViewBag(registreringar, registreringar.EvenemangsId.Value);
+            //SetViewBag(registreringar.EvenemangsId);
             return View(registreringar);
         }
 
@@ -147,20 +147,20 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 db.Entry(registreringar).State = EntityState.Modified;
 
-                var origReg = smuService.Db.Registreringar.Include(r => r.Deltagare).First(r => r.Id == registreringar.Id);
+                //var origReg = smuService.Db.Registreringar.Include(r => r.Deltagare).First(r => r.Id == registreringar.Id);
                 
-                foreach (var deltagare in origReg.Deltagare)
-                {
-                    var nyttFornamn = Request.Form["deltagare_f_" + deltagare.Id];
-                    var nyttEfternamn = Request.Form["deltagare_e_" + deltagare.Id];
+                //foreach (var deltagare in origReg.Deltagare)
+                //{
+                //    var nyttFornamn = Request.Form["deltagare_f_" + deltagare.Id];
+                //    var nyttEfternamn = Request.Form["deltagare_e_" + deltagare.Id];
 
-                    if (!deltagare.Förnamn.Equals(nyttFornamn) || !deltagare.Efternamn.Equals(nyttEfternamn))
-                    {
-                        deltagare.Förnamn = nyttFornamn;
-                        deltagare.Efternamn = nyttEfternamn;
-                        db.Entry(deltagare).State = EntityState.Modified;
-                    }
-                }
+                //    if (!deltagare.Förnamn.Equals(nyttFornamn) || !deltagare.Efternamn.Equals(nyttEfternamn))
+                //    {
+                //        deltagare.Förnamn = nyttFornamn;
+                //        deltagare.Efternamn = nyttEfternamn;
+                //        db.Entry(deltagare).State = EntityState.Modified;
+                //    }
+                //}
 
                 if (registreringar.Invoice != null)
                 {
@@ -168,31 +168,31 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 }
 
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = registreringar.EvenemangsId });
+                return RedirectToAction("Index", new { id = registreringar.FormularsId });
             }
 
-            SetViewBag(registreringar, registreringar.EvenemangsId.Value);
-            SetViewBag(registreringar.EvenemangsId);
+            //SetViewBag(registreringar, registreringar.EvenemangsId.Value);
+            //SetViewBag(registreringar.EvenemangsId);
             return View(registreringar);
         }
 
-        protected void SetViewBag(Registreringar reg, int evenemangsId)
-        {
-            if (reg != null)
-            {
-                ViewBag.Bana_Id = new SelectList(smuService.HamtaBanor(reg.EvenemangsId.Value), "ID", "Namn", reg.Bana.Id);
-                ViewBag.Kanot_Id = new SelectList(smuService.HamtaKanoter(reg.EvenemangsId.Value), "ID", "Namn", reg.Kanot.Id);
-                ViewBag.Klass_Id = new SelectList(smuService.HamtaKlasser(reg.EvenemangsId.Value), "ID", "Namn", reg.Klass.Id);
-                ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(TypAvgift));
-            }
-            else
-            {
-                ViewBag.Bana_Id = new SelectList(smuService.HamtaBanor(evenemangsId), "ID", "Namn");
-                ViewBag.Kanot_Id = new SelectList(smuService.HamtaKanoter(evenemangsId), "ID", "Namn");
-                ViewBag.Klass_Id = new SelectList(smuService.HamtaKlasser(evenemangsId), "ID", "Namn");
-                ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(TypAvgift));
-            }
-        }
+        //protected void SetViewBag(Registreringar reg, int evenemangsId)
+        //{
+        //    if (reg != null)
+        //    {
+        //        ViewBag.Bana_Id = new SelectList(smuService.HamtaBanor(reg.EvenemangsId.Value), "ID", "Namn", reg.Bana.Id);
+        //        ViewBag.Kanot_Id = new SelectList(smuService.HamtaKanoter(reg.EvenemangsId.Value), "ID", "Namn", reg.Kanot.Id);
+        //        ViewBag.Klass_Id = new SelectList(smuService.HamtaKlasser(reg.EvenemangsId.Value), "ID", "Namn", reg.Klass.Id);
+        //        ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(TypAvgift));
+        //    }
+        //    else
+        //    {
+        //        ViewBag.Bana_Id = new SelectList(smuService.HamtaBanor(evenemangsId), "ID", "Namn");
+        //        ViewBag.Kanot_Id = new SelectList(smuService.HamtaKanoter(evenemangsId), "ID", "Namn");
+        //        ViewBag.Klass_Id = new SelectList(smuService.HamtaKlasser(evenemangsId), "ID", "Namn");
+        //        ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(TypAvgift));
+        //    }
+        //}
 
         // GET: Registreringar/Delete/5
         public ActionResult Delete(int? id)

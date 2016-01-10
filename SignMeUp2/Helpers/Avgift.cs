@@ -8,26 +8,16 @@ namespace SignMeUp2.Helpers
     {
         public static int Kalk(Registreringar registrering)
         {
-            return registrering.Bana.Avgift
-                + (registrering.Kanot != null ? registrering.Kanot.Avgift : 0)
+            int tot = 0;
+
+            foreach (var svar in registrering.Svar)
+            {
+                tot += svar.Avgift;
+            }
+
+            return tot
                 + registrering.Forseningsavgift.Summa
                 - registrering.Rabatt.Summa;
         }
-
-
-
-        //public static int Forseningsavgift(SignMeUpDataModel db)
-        //{
-        //    var avgift = 0;
-
-        //    foreach (Forseningsavgift forseningsavgift in db.Forseningsavgift)
-        //    {
-        //        if (DateTime.Now > forseningsavgift.FranDatum)
-        //        {
-        //            avgift = forseningsavgift.Summa;   
-        //        }
-        //    }
-        //    return avgift;
-        //}
     }
 }

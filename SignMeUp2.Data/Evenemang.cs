@@ -10,10 +10,10 @@ namespace SignMeUp2.Data
     {
         public Evenemang()
         {
-            Registreringar = new HashSet<Registreringar>();
-            Banor = new HashSet<Banor>();
-            Kanoter = new HashSet<Kanoter>();
-            Klasser = new HashSet<Klasser>();
+            //Registreringar = new HashSet<Registreringar>();
+            //Banor = new HashSet<Banor>();
+            //Kanoter = new HashSet<Kanoter>();
+            //Klasser = new HashSet<Klasser>();
             Rabatter = new HashSet<Rabatter>();
             Forseningsavgifter = new HashSet<Forseningsavgift>();
         }
@@ -39,13 +39,15 @@ namespace SignMeUp2.Data
         public Organisation Organisation { get; set; }
         public int OrganisationsId { get; set; }
 
-        public virtual ICollection<Registreringar> Registreringar { get; set; }
+        public virtual ICollection<Formular> Formular { get; set; }
 
-        public virtual ICollection<Banor> Banor { get; set; }
+        //public virtual ICollection<Registreringar> Registreringar { get; set; }
 
-        public virtual ICollection<Kanoter> Kanoter { get; set; }
+        //public virtual ICollection<Banor> Banor { get; set; }
 
-        public virtual ICollection<Klasser> Klasser { get; set; }
+        //public virtual ICollection<Kanoter> Kanoter { get; set; }
+
+        //public virtual ICollection<Klasser> Klasser { get; set; }
 
         public virtual ICollection<Rabatter> Rabatter { get; set; }
 

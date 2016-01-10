@@ -21,24 +21,28 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var evenemang in Model)
     {
-        item.RegStop = item.RegStop.AddDays(-1);
+        evenemang.RegStop = evenemang.RegStop.AddDays(-1);
+
+        foreach (var formular in evenemang.Formular)
+        {
         <tr>
             <td class="vert-align">
-                @Html.DisplayTextFor(model => item.Organisation.Namn)
+                @Html.DisplayTextFor(model => evenemang.Organisation.Namn)
             </td>
             <td class="vert-align">
-                @Html.DisplayTextFor(model => item.Namn)
+                @Html.DisplayTextFor(model => evenemang.Namn)  @Html.DisplayTextFor(model => formular.Namn)
             </td>
             <td class="vert-align">
-                @item.RegStop.ToString("yyyy-MM-dd")
+                @evenemang.RegStop.ToString("yyyy-MM-dd")
             </td>
             <td class="vert-align">
-                @Html.ActionLink("Jag vill anmäla mig!", "Index", "SignMeUp", new { id = item.Id }, new { @class = "btn btn-success" })
-                @Html.ActionLink("Lista på anmälda", "Startlista", "Home", new { id = item.Id }, new { @class = "btn btn-info" })
+                @Html.ActionLink("Jag vill anmäla mig!", "Index", "SignMeUp", new { id = formular.Id }, new { @class = "btn btn-success" })
+                @Html.ActionLink("Lista på anmälda", "Startlista", "Home", new { id = formular.Id }, new { @class = "btn btn-info" })
             </td>
         </tr>
+        }
     }
 
 </table>

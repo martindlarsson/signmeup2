@@ -70,22 +70,22 @@ namespace SignMeUp2.Models
     /// </summary>
     /// <param name="registreringar"></param>
     /// <returns></returns>
-    public static StartlistaViewModel GetStartlist(IList<Registreringar> registreringar, string Evenemang, IList<Banor> banor, IList<Klasser> klasser)
+    public static StartlistaViewModel GetStartlist(IList<Registreringar> registreringar, string Evenemang) //, IList<Banor> banor, IList<Klasser> klasser)
     {
         var regList = new StartlistaViewModel();
         regList.Evenemang = Evenemang;
 
         // Skapa lista på banor
-        foreach (var bana in banor)
-        {
-            var banReg = new RegBanorViewModel { Namn = bana.Namn };
-            regList.BanLista.Add(banReg);
+        //foreach (var bana in banor)
+        //{
+        //    var banReg = new RegBanorViewModel { Namn = bana.Namn };
+        //    regList.BanLista.Add(banReg);
 
-            foreach (var klass in klasser)
-            {
-                banReg.KlassLista.Add(new RegKlassViewModel { Namn = klass.Namn });
-            }
-        }
+        //    foreach (var klass in klasser)
+        //    {
+        //        banReg.KlassLista.Add(new RegKlassViewModel { Namn = klass.Namn });
+        //    }
+        //}
 
         // Iterera över alla registreringar och mappa objekten samt stoppa in dem i rätt lista
         foreach (var reg in registreringar)
@@ -93,26 +93,26 @@ namespace SignMeUp2.Models
             // Mappa registreringen
             var registrering = new RegistreringViewModel
             {
-                Lagnamn = reg.Lagnamn,
+                Lagnamn = reg.FormularsId.ToString(),
                 DeltagarLista = new List<DeltagareSimple>(),
-                Klubb = reg.Klubb
+                Klubb = "-"
             };
 
-            // Mappa deltagarna
-            foreach (var deltagare in reg.Deltagare)
-            {
-                var deltagareViewModel = new DeltagareSimple
-                {
-                    Namn = string.Format("{0} {1}", deltagare.Förnamn, deltagare.Efternamn)
-                };
-                registrering.DeltagarLista.Add(deltagareViewModel);
-            }
+                // Mappa deltagarna
+                //foreach (var deltagare in reg.Deltagare)
+                //{
+                //    var deltagareViewModel = new DeltagareSimple
+                //    {
+                //        Namn = string.Format("{0} {1}", deltagare.Förnamn, deltagare.Efternamn)
+                //    };
+                //    registrering.DeltagarLista.Add(deltagareViewModel);
+                //}
 
-            // Hitta rätt lista att stoppa in registreringen i
-            var banList = regList.BanLista.FirstOrDefault(banReg => banReg.Namn == reg.Bana.Namn);
-            var klassList = banList.KlassLista.FirstOrDefault(klassL => klassL.Namn == reg.Klass.Namn);
-            klassList.RegistreringarList.Add(registrering);
-        }
+                // Hitta rätt lista att stoppa in registreringen i
+                //var banList = regList.BanLista.FirstOrDefault(banReg => banReg.Namn == reg.Bana.Namn);
+                //var klassList = banList.KlassLista.FirstOrDefault(klassL => klassL.Namn == reg.Klass.Namn);
+                //klassList.RegistreringarList.Add(registrering);
+            }
 
         return regList;
     }

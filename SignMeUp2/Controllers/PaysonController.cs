@@ -190,12 +190,12 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Ett fel inträffade när betalningen slutfördes. Kontrollera i startlistan om er registrering genomförts", true, new Exception("Ingen registration hittad med  id: " + id + " i Returned."));
             }
 
-            LogDebug(log, string.Format("Returned. Lagnamn: {0}", registration.Lagnamn));
+            LogDebug(log, string.Format("Returned. Reg: {0}", registration.Id));
 
             // If no payment message has been sent (IPN)
             if (!registration.HarBetalt)
             {
-                var org = smuService.HamtaOrganisation(registration.Evenemang.OrganisationsId);
+                var org = smuService.HamtaOrganisation(registration.FormularsId.Value);
 
                 var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
 
@@ -215,7 +215,7 @@ namespace SignMeUp2.Controllers
                 {
                     LogDebug(log, string.Format("Deleting temp-registration with id: {0}", id));
 
-                    var evenemangsId = registration.EvenemangsId;
+                    var evenemangsId = registration.Formular.EvenemangsId;
 
                     // Remove the temporary registration
                     smuService.TabortRegistrering(registration);
@@ -224,7 +224,7 @@ namespace SignMeUp2.Controllers
                 }
             }
 
-            ViewBag.ev = registration.Evenemang.Namn;
+            ViewBag.ev = registration.Formular.Evenemang.Namn;
             return RedirectToAction("BekraftelseBetalning", "signmeup", new { id = id });
         }
 
@@ -244,13 +244,13 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Betalningen avbröts av okänd anledning", true, new Exception("Payson betalning avbruten och ingen registrering i Session hittades."));
             }
 
-            var org = smuService.HamtaOrganisation(registrering.Evenemang.OrganisationsId);
+            var org = smuService.HamtaOrganisation(registrering.FormularsId.Value);
 
             var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
 
             var response = api.MakePaymentDetailsRequest(new PaymentDetailsData(registrering.PaysonToken));
 
-            var evenemangsId = registrering.EvenemangsId;
+            var evenemangsId = registrering.Formular.EvenemangsId;
 
             // Ta bort temporär registrering
             smuService.TabortRegistrering(registrering);
@@ -282,7 +282,7 @@ namespace SignMeUp2.Controllers
                     Request.InputStream.Position = 0;
                     var content = new StreamReader(Request.InputStream).ReadToEnd();
 
-                    var org = smuService.HamtaOrganisation(registrering.Evenemang.OrganisationsId);
+                    var org = smuService.HamtaOrganisation(registrering.Formular.Evenemang.OrganisationsId);
                     var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
 
                     var response = api.MakeValidateIpnContentRequest(content);

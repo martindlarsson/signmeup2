@@ -24,12 +24,18 @@ namespace SignMeUp2.ViewModels
             {
                 var list = new List<ValViewModel>();
                 
-                // Bana
-                
-                list.Add(new ValViewModel { TypNamn = "Bana", Namn = Registrering.Bana.Namn, Avgift = Registrering.Bana.Avgift });
+                foreach (var svar in Registrering.Svar)
+                {
+                    if (svar.Falt.Avgiftsbelagd)
+                        list.Add(new ValViewModel { TypNamn = svar.Falt.Typ.ToString(), Namn = svar.Falt.Namn, Avgift = svar.Avgift });
+                }
 
-                // Kanot
-                list.Add(new ValViewModel { TypNamn = "Kanot", Namn = Registrering.Kanot.Namn, Avgift = Registrering.Kanot.Avgift });
+                //// Bana
+                
+                //list.Add(new ValViewModel { TypNamn = "Bana", Namn = Registrering.Bana.Namn, Avgift = Registrering.Bana.Avgift });
+
+                //// Kanot
+                //list.Add(new ValViewModel { TypNamn = "Kanot", Namn = Registrering.Kanot.Namn, Avgift = Registrering.Kanot.Avgift });
 
                 // Rabatt
                 if (Registrering.Rabatt != null)

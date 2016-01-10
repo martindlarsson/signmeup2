@@ -72,7 +72,7 @@ namespace SignMeUp2.Controllers
                 var appUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
                 var link = appUrl + "signmeup/bekraftelsebetalning/" + reg.Id;
                 SendMail.SendRegistration(RenderRazorViewToString("BekraftelseMail", reg), appUrl, link, reg);
-                log.Debug("Skickat epost till lagnamn: " + reg.Lagnamn);
+                log.Debug("Skickat epost till ?"); // lagnamn: " + reg.Lagnamn);
             }
             catch (Exception exc)
             {
@@ -82,7 +82,7 @@ namespace SignMeUp2.Controllers
 
         protected FakturaVM SkapaFakturaVM(Registreringar reg)
         {
-            var evenemang = smuService.HamtaEvenemang(reg.EvenemangsId.Value);
+            var evenemang = smuService.HamtaEvenemang(reg.Formular.EvenemangsId.Value);
             var arrangor = smuService.HamtaOrganisation(evenemang.OrganisationsId);
 
             if (reg.Invoice == null)
@@ -120,7 +120,7 @@ namespace SignMeUp2.Controllers
                 var appUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
                 var link = appUrl + "signmeup/faktura/" + reg.Id;
                 SendMail.SkickaFaktura(RenderRazorViewToString("_faktura", fakturaVm), appUrl, link, fakturaVm);
-                log.Debug("Skickat epost till lagnamn: " + reg.Lagnamn);
+                log.Debug("Skickat epost till ?"); // lagnamn: " + reg.Lagnamn);
                 return true;
             }
             catch (Exception exc)
@@ -138,9 +138,9 @@ namespace SignMeUp2.Controllers
             var reg = smuService.GetRegistrering(id.Value, true);
             var fakturaVm = SkapaFakturaVM(reg);
 
-            ViewBag.ev = reg.Evenemang.Namn;
+            ViewBag.ev = reg.Formular.Evenemang.Namn;
 
-            LogDebug(log, "Användare hämtar faktura för betalning (GET) för " + reg.Evenemang.Namn + " och laget heter " + reg.Lagnamn);
+            LogDebug(log, "Användare hämtar faktura för betalning (GET) för " + reg.Formular.Evenemang.Namn + " och reg id: " + reg.Id);
 
             return View("_faktura", fakturaVm);
         }

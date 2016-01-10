@@ -1,0 +1,23 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SignMeUp2.Data
+{
+    [Table("FaltSvar")]
+    public class FaltSvar
+    {
+        public int Id { get; set; }
+
+        [Required]
+        public Falt Falt { get; set; }
+
+        [Required]
+        public string Varde { get; set; }
+
+        [Required]
+        public int Avgift { get; set; }
+
+        public int? RegistreringsId { get; set; }
+        public virtual Registreringar Registrering { get; set; }
+    }
+}

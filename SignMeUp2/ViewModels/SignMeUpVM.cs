@@ -25,6 +25,8 @@ namespace SignMeUp2.ViewModels
             get { return Steps[CurrentStepIndex]; }
         }
 
+        public int FormularsId { get; set; }
+
         public int EvenemangsId { get; set; }
 
         public string EvenemangsNamn { get; set; }
@@ -51,7 +53,7 @@ namespace SignMeUp2.ViewModels
                     {
                         foreach (var falt in step.FaltLista)
                         {
-                            if (falt.Avgiftsbelagd && falt.Typ == FaltTyp.val_falt)
+                            if (falt.Avgiftsbelagd && falt.Typ == Data.FaltTyp.val_falt)
                             {
                                 list.Add(falt.Val.FirstOrDefault(v => v.Id == int.Parse(falt.Varde)));
                             }
@@ -114,14 +116,6 @@ namespace SignMeUp2.ViewModels
 
             return null;
         }
-    }
-
-    public class ValViewModel
-    {
-        public string TypNamn { get; set; }
-        public int Id { get; set; }
-        public string Namn { get; set; }
-        public int Avgift { get; set; }
     }
 
     public class PaysonKontaktViewModel

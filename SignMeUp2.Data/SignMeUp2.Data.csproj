@@ -62,6 +62,9 @@
     <Compile Include="Betalningsmetoder.cs" />
     <Compile Include="Deltagare.cs" />
     <Compile Include="Evenemang.cs" />
+    <Compile Include="Falt.cs" />
+    <Compile Include="FaltSvar.cs" />
+    <Compile Include="Formular.cs" />
     <Compile Include="Forseningsavgift.cs" />
     <Compile Include="IdentityModels.cs" />
     <Compile Include="Invoice.cs" />
@@ -72,6 +75,8 @@
     <Compile Include="Rabatter.cs" />
     <Compile Include="Registreringar.cs" />
     <Compile Include="SignMeUpDataModel.cs" />
+    <Compile Include="Val.cs" />
+    <Compile Include="WizardStep.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
