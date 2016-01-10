@@ -41,8 +41,8 @@ namespace SignMeUp2.Data
         //[Required]
         //public string Telefon { get; set; }
 
-        [Required]
-        public string Epost { get; set; }
+        //[Required]
+        //public string Epost { get; set; }
 
         //public string Klubb { get; set; }
 

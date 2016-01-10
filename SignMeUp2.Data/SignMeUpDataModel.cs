@@ -78,18 +78,6 @@ namespace SignMeUp2.Data
                 .HasForeignKey(v => v.FaltId)
                 .WillCascadeOnDelete(true);
 
-            //modelBuilder.Entity<Evenemang>()
-            //    .HasMany(e => e.Banor)
-            //    .WithRequired(e => e.Evenemang)
-            //    .HasForeignKey(e => e.EvenemangsId)
-            //    .WillCascadeOnDelete(true);
-
-            //modelBuilder.Entity<Evenemang>()
-            //    .HasMany(e => e.Klasser)
-            //    .WithRequired(e => e.Evenemang)
-            //    .HasForeignKey(e => e.EvenemangsId)
-            //    .WillCascadeOnDelete(true);
-
             modelBuilder.Entity<Evenemang>()
                 .HasMany(e => e.Rabatter)
                 .WithRequired(r => r.Evenemang)
@@ -102,34 +90,11 @@ namespace SignMeUp2.Data
                 .HasForeignKey(f => f.EvenemangsId)
                 .WillCascadeOnDelete(true);
 
-            //modelBuilder.Entity<Evenemang>()
-            //    .HasMany(e => e.Kanoter)
-            //    .WithRequired(e => e.Evenemang)
-            //    .HasForeignKey(e => e.EvenemangsId)
-            //    .WillCascadeOnDelete(true);
-
-            //modelBuilder.Entity<Registreringar>()
-            //    .HasRequired(r => r.Bana)
-            //    .WithMany(b => b.Registreringar)
-            //    .HasForeignKey(r => r.Bana_Id)
-            //    .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<Registreringar>()
-            //    .HasRequired(r => r.Kanot)
-            //    .WithMany(k => k.Registreringar)
-            //    .HasForeignKey(r => r.Kanot_Id)
-            //    .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<Registreringar>()
-            //    .HasRequired(r => r.Klass)
-            //    .WithMany(k => k.Registreringar)
-            //    .HasForeignKey(r => r.Klass_Id)
-            //    .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<Registreringar>()
-            //    .HasMany(e => e.Deltagare)
-            //    .WithRequired(d => d.Registreringar)
-            //    .WillCascadeOnDelete(true);
+            modelBuilder.Entity<Formular>()
+                .HasMany(f => f.Registreringar)
+                .WithRequired(r => r.Formular)
+                .HasForeignKey(r => r.FormularsId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Registreringar>()
                 .HasMany(r => r.Svar)

@@ -21,7 +21,7 @@ namespace SignMeUp2.Helpers
 
                 // Create the email object first, then add the properties.
                 SendGridMessage myMessage = new SendGridMessage();
-                myMessage.AddTo(reg.Epost);
+                myMessage.AddTo("jag@hemma.se");
                 myMessage.From = new MailAddress(reg.Formular.Evenemang.Organisation.Epost, reg.Formular.Evenemang.Organisation.Namn);
                 myMessage.Subject = string.Format("Bekräftelse anmälan till " + reg.Formular.Evenemang.Namn);
                 myMessage.Html = message;
@@ -55,7 +55,7 @@ namespace SignMeUp2.Helpers
                 var arrEpost = new MailAddress(fakturaVm.Arrangor.Epost, fakturaVm.Arrangor.Namn);
                 // Create the email object first, then add the properties.
                 SendGridMessage myMessage = new SendGridMessage();
-                myMessage.AddTo(fakturaVm.Registrering.Epost);
+                myMessage.AddTo("jag@hemma.se");
                 myMessage.AddCc(arrEpost);
                 myMessage.From = arrEpost;
                 myMessage.Subject = string.Format("Faktura för anmälan till " + fakturaVm.Evenemangsnamn);

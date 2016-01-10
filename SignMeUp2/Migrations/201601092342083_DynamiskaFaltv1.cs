@@ -96,9 +96,9 @@ namespace SignMeUp2.Migrations
                 .Index(t => t.Falt_Id);
             
             AddColumn("dbo.Registreringar", "FormularsId", c => c.Int());
-            AddColumn("dbo.Registreringar", "Formular_Id", c => c.Int());
-            CreateIndex("dbo.Registreringar", "Formular_Id");
-            AddForeignKey("dbo.Registreringar", "Formular_Id", "dbo.Formular", "Id");
+            //AddColumn("dbo.Registreringar", "Formular_Id", c => c.Int());
+            CreateIndex("dbo.Registreringar", "FormularsId");
+            AddForeignKey("dbo.Registreringar", "FormularsId", "dbo.Formular", "Id");
             DropColumn("dbo.Registreringar", "EvenemangsId");
             DropColumn("dbo.Registreringar", "Lagnamn");
             DropColumn("dbo.Registreringar", "Startnummer");

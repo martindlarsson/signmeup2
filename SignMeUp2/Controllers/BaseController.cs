@@ -68,7 +68,7 @@ namespace SignMeUp2.Controllers
         {
             try
             {
-                smuService.FillRegistrering(reg);
+                //smuService.FillRegistrering(reg);
                 var appUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
                 var link = appUrl + "signmeup/bekraftelsebetalning/" + reg.Id;
                 SendMail.SendRegistration(RenderRazorViewToString("BekraftelseMail", reg), appUrl, link, reg);

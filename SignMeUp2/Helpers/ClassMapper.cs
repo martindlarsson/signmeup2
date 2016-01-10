@@ -41,7 +41,26 @@ namespace SignMeUp2.Helpers
             if (SUPVM.FAVM != null)
                 forseningsavgId = SUPVM.FAVM.Id;
 
-            // TODO mappa alla fält osv
+            // Mappa alla svar
+            var faltsvar = new List<FaltSvar>();
+            foreach(var steg in SUPVM.Steps)
+            {
+                foreach(var falt in steg.FaltLista)
+                {
+                    ValViewModel val = null;
+                    if (falt.Avgiftsbelagd && falt.Typ == Data.FaltTyp.val_falt)
+                    {
+                        val = falt.Val.FirstOrDefault(v => v.Id == int.Parse(falt.Varde));
+                    }
+
+                    faltsvar.Add(new FaltSvar
+                    {
+                        Avgift = val != null ? val.Avgift : 0,
+                        FaltId = falt.FaltId,
+                        Varde = falt.Varde
+                    });
+                }
+            }
 
             return new Registreringar
             {
@@ -54,8 +73,8 @@ namespace SignMeUp2.Helpers
                 //Deltagare = deltagare.ToList(),
                 //Adress = SUPVM.GetFaltvarde("Adress"),
                 //Telefon = SUPVM.GetFaltvarde("Telefon"),
-                //Epost = SUPVM.GetFaltvarde("Epost"),
                 // TODO sätt rabatt och förseningsavgift som ints istället för FK
+                Svar = faltsvar,
                 RabattId = rabattId,
                 ForseningsavgiftId = forseningsavgId,
                 Invoice = SUPVM.Fakturaadress != null ? MappTillInvoice(SUPVM.Fakturaadress) : null,
@@ -108,7 +127,8 @@ namespace SignMeUp2.Helpers
                     Kravs = falt.Kravs,
                     Namn = falt.Namn,
                     Typ = falt.Typ,
-                    Val = MappTillVal(falt.Val)
+                    Val = MappTillVal(falt.Val),
+                    FaltId = falt.Id
                 });
             }
 

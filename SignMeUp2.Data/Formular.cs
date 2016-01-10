@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,6 +11,8 @@ namespace SignMeUp2.Data
 
         public int? EvenemangsId { get; set; }
         public virtual Evenemang Evenemang { get; set; }
+
+        public virtual ICollection<Registreringar> Registreringar { get; set; }
 
         [Required]
         public string Namn { get; set; }

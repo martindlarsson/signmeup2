@@ -7,8 +7,10 @@ namespace SignMeUp2.Data
     public class FaltSvar
     {
         public int Id { get; set; }
-
+        
         [Required]
+        public int FaltId { get; set; }
+
         public Falt Falt { get; set; }
 
         [Required]

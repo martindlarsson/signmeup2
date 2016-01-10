@@ -298,6 +298,14 @@
     <Compile Include="Migrations\201601092357176_tabellnamnbyte.Designer.cs">
       <DependentUpon>201601092357176_tabellnamnbyte.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601102029279_faltId.cs" />
+    <Compile Include="Migrations\201601102029279_faltId.Designer.cs">
+      <DependentUpon>201601102029279_faltId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601102036272_tabortepost.cs" />
+    <Compile Include="Migrations\201601102036272_tabortepost.Designer.cs">
+      <DependentUpon>201601102036272_tabortepost.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\BekraftaRegistreringViewModel.cs" />
@@ -595,6 +603,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601092357176_tabellnamnbyte.resx">
       <DependentUpon>201601092357176_tabellnamnbyte.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601102029279_faltId.resx">
+      <DependentUpon>201601102029279_faltId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601102036272_tabortepost.resx">
+      <DependentUpon>201601102036272_tabortepost.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

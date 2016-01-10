@@ -8,8 +8,8 @@
 
 @model SignMeUp2.Data.Registreringar
 
-<h2>Tack för din anmälan till @Model.Evenemang.Namn</h2>
+<h2>Tack för din anmälan till @ViewBag.ev</h2>
    
-<h4>Arrangör är @Model.Evenemang.Organisation.Namn</h4>
+<h4>Arrangör är @ViewBag.org</h4>
 
 @Html.Partial("_RegDetailsView", Model)

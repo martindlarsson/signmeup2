@@ -45,47 +45,41 @@ namespace SignMeUp2.Services
             var formular = Db.Formular.Include("Evenemang").Single(f => f.Id == formularsId);
             return ClassMapper.MappaTillFormular(formular);
         }
-        
-        //public IList<Registreringar> GetRegistreringar(int evenemangsId)
-        //{
-        //    return Db.Registreringar.Where(reg => reg.EvenemangsId == evenemangsId).ToList();
-        //}
 
         public Registreringar GetRegistrering(int id, bool fill)
         {
-            var reg = Db.Registreringar
-                //.Include("Bana")
-                //.Include("Klass")
-                //.Include("Kanot")
-                //.Include("Deltagare")
-                .Include("Formular")
-                .Include("Formular.Evenemang")
-                .Include("Invoice")
-                .Where(r => r.Id == id)
-                .FirstOrDefault();
+            if (fill)
+            {
+                return Db.Registreringar
+                        .Include("Formular")
+                        .Include("Formular.Evenemang")
+                        .Include("Formular.Evenemang.Organisation")
+                        .Include("Invoice")
+                        .Include("Rabatt")
+                        .Include("Forseningsavgift")
+                        .Where(r => r.Id == id)
+                        .FirstOrDefault();
+            }
 
-            return fill && reg != null ? FillRegistrering(reg) : reg;
+            return Db.Registreringar.Find(id);
         }
 
-        public Registreringar FillRegistrering(Registreringar reg)
-        {
-            //reg.Evenemang = Db.Evenemang.Find(reg.EvenemangsId);
-            reg.Formular = Db.Formular.Include("Evenemang").Single(f => f.Id == reg.FormularsId);
-            // TODO behövs organisation?
-            //reg.Evenemang.Organisation = Db.Organisationer.Find(reg.Evenemang.OrganisationsId);
+        //public Registreringar FillRegistrering(Registreringar reg)
+        //{
+        //    reg.Formular = Db.Formular.Include("Evenemang").Include("Evenemang.Organisation").Single(f => f.Id == reg.FormularsId);
             
-            if (reg.Rabatt == null && reg.RabattId != 0)
-            {
-                reg.Rabatt = Db.Rabatter.Find(reg.RabattId);
-            }
+        //    if (reg.Rabatt == null && reg.RabattId != 0)
+        //    {
+        //        reg.Rabatt = Db.Rabatter.Find(reg.RabattId);
+        //    }
 
-            if (reg.Forseningsavgift == null && reg.ForseningsavgiftId != 0)
-            {
-                reg.Forseningsavgift = Db.Forseningsavgift.Find(reg.ForseningsavgiftId);
-            }
+        //    if (reg.Forseningsavgift == null && reg.ForseningsavgiftId != 0)
+        //    {
+        //        reg.Forseningsavgift = Db.Forseningsavgift.Find(reg.ForseningsavgiftId);
+        //    }
 
-            return reg;
-        }
+        //    return reg;
+        //}
 
         /// <summary>
         /// Spara ny registrering i databasen
@@ -99,26 +93,6 @@ namespace SignMeUp2.Services
             {
                 reg.Registreringstid = DateTime.Now;
 
-                //if (reg.Bana != null)
-                //{
-                //    Db.Banor.Attach(reg.Bana);
-                //}
-
-                //if (reg.Kanot != null)
-                //{
-                //    Db.Kanoter.Attach(reg.Kanot);
-                //}
-
-                //if (reg.Klass != null)
-                //{
-                //    Db.Klasser.Attach(reg.Klass);
-                //}
-
-                //if (reg.Evenemang != null)
-                //{
-                //    Db.Evenemang.Attach(reg.Evenemang);
-                //}
-
                 if (reg.Forseningsavgift != null && reg.ForseningsavgiftId == null)
                 {
                     reg.ForseningsavgiftId = reg.Forseningsavgift.Id;
@@ -130,9 +104,6 @@ namespace SignMeUp2.Services
                     reg.RabattId = reg.Rabatt.Id;
                     reg.Rabatt = null;
                 }
-
-                //var ev = Db.Evenemang.Include("Registreringar").Where(e => e.Id == reg.EvenemangsId).FirstOrDefault();
-                //ev.Registreringar.Add(reg);
 
                 // TODO är evenemangets id sparat??
 

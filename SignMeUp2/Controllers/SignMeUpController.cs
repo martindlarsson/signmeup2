@@ -34,7 +34,7 @@ namespace SignMeUp2.Controllers
                 if (id == null)
                     return ShowError(log, "Inget formulär angivit. Klicka på länken nedan och välj ett formulär.", false);
 
-                var formular = smuService.GetFormular(id.Value); //Db.Formular.Include("Evenemang").Single(f => f.Id == id);
+                var formular = smuService.GetFormular(id.Value);
 
                 LogDebug(log, "Användare går in på anmälan för: " + formular.Namn);
 
@@ -64,11 +64,12 @@ namespace SignMeUp2.Controllers
 
                 SUPVM = new SignMeUpVM
                 {
-                    EvenemangsId = formular.Id,
+                    EvenemangsId = formular.EvenemangsId.Value,
+                    FormularsId = formular.Id,
                     EvenemangsNamn = formular.Namn,
                     KanBetalaMedFaktura = formular.Evenemang.Fakturabetalning.HasValue ? formular.Evenemang.Fakturabetalning.Value : false,
                     FAVM = f,
-                    Steps = formular.Steg// smuService.HamtaWizardSteps(formular.Id)
+                    Steps = formular.Steg
                 };
             }
 
@@ -350,10 +351,11 @@ namespace SignMeUp2.Controllers
             var reg = smuService.GetRegistrering(id.Value, true);
 
             ViewBag.ev = reg.Formular.Evenemang.Namn;
+            ViewBag.org = reg.Formular.Evenemang.Organisation.Namn;
 
             LogDebug(log, "Användare bekräftelse betalning (GET) för " + reg.Formular.Evenemang.Namn);
 
-            return View(smuService.FillRegistrering(reg));
+            return View(reg);
         }
 
         /// <summary>
