@@ -45,7 +45,7 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
             }
 
-            var regs = smuService.Db.Registreringar.Include("Deltagare").Where(reg => reg.FormularsId == id.Value && reg.HarBetalt).ToList();
+            var regs = smuService.Db.Registreringar.Include("Deltagare").Where(reg => reg.FormularId == id.Value && reg.HarBetalt).ToList();
             //var banor = smuService.Db.Banor.ToList();
             //var klasser = smuService.Db.Klasser.ToList();
 

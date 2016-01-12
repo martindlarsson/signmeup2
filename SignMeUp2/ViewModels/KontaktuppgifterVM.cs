@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SignMeUp2.ViewModels
 {
-    public class KontaktuppgifterViewModel : WizardStep
+    public class KontaktuppgifterViewModel : FormularSteg
     {
         // TODO namn på kontaktperson?
 

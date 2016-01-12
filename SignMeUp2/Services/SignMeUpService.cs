@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
-using System.Web;
 using SignMeUp2.Data;
 using SignMeUp2.ViewModels;
 using log4net;
@@ -46,7 +43,7 @@ namespace SignMeUp2.Services
             return ClassMapper.MappaTillFormular(formular);
         }
 
-        public Registreringar GetRegistrering(int id, bool fill)
+        public Registrering GetRegistrering(int id, bool fill)
         {
             if (fill)
             {
@@ -54,9 +51,9 @@ namespace SignMeUp2.Services
                         .Include("Formular")
                         .Include("Formular.Evenemang")
                         .Include("Formular.Evenemang.Organisation")
-                        .Include("Invoice")
-                        .Include("Rabatt")
-                        .Include("Forseningsavgift")
+                        .Include("Fakturaadress")
+                        //.Include("Rabatt")
+                        //.Include("Forseningsavgift")
                         .Where(r => r.Id == id)
                         .FirstOrDefault();
             }
@@ -64,28 +61,11 @@ namespace SignMeUp2.Services
             return Db.Registreringar.Find(id);
         }
 
-        //public Registreringar FillRegistrering(Registreringar reg)
-        //{
-        //    reg.Formular = Db.Formular.Include("Evenemang").Include("Evenemang.Organisation").Single(f => f.Id == reg.FormularsId);
-            
-        //    if (reg.Rabatt == null && reg.RabattId != 0)
-        //    {
-        //        reg.Rabatt = Db.Rabatter.Find(reg.RabattId);
-        //    }
-
-        //    if (reg.Forseningsavgift == null && reg.ForseningsavgiftId != 0)
-        //    {
-        //        reg.Forseningsavgift = Db.Forseningsavgift.Find(reg.ForseningsavgiftId);
-        //    }
-
-        //    return reg;
-        //}
-
         /// <summary>
         /// Spara ny registrering i databasen
         /// </summary>
         /// <param name="reg"></param>
-        public void SparaNyRegistrering(Registreringar reg)
+        public void SparaNyRegistrering(Registrering reg)
         {
             log.Debug("Sparar ny registrering");
 
@@ -93,17 +73,17 @@ namespace SignMeUp2.Services
             {
                 reg.Registreringstid = DateTime.Now;
 
-                if (reg.Forseningsavgift != null && reg.ForseningsavgiftId == null)
-                {
-                    reg.ForseningsavgiftId = reg.Forseningsavgift.Id;
-                    reg.Forseningsavgift = null;
-                }
+                //if (reg.Forseningsavgift != null && reg.Forseningsavgift == null)
+                //{
+                //    reg.Forseningsavgift = reg.Forseningsavgift.Id;
+                //    reg.Forseningsavgift = null;
+                //}
 
-                if (reg.Rabatt != null && reg.RabattId == null)
-                {
-                    reg.RabattId = reg.Rabatt.Id;
-                    reg.Rabatt = null;
-                }
+                //if (reg.Rabatt != null && reg.Rabatt == null)
+                //{
+                //    reg.Rabatt = reg.Rabatt.Id;
+                //    reg.Rabatt = null;
+                //}
 
                 // TODO är evenemangets id sparat??
 
@@ -118,7 +98,7 @@ namespace SignMeUp2.Services
             }
         }
 
-        internal Registreringar Spara(SignMeUpVM SUPVM)
+        internal Registrering Spara(SignMeUpVM SUPVM)
         {
             log.Debug("Sparar registrering");
 
@@ -137,7 +117,7 @@ namespace SignMeUp2.Services
             }
         }
 
-        public void UpdateraRegistrering(Registreringar updatedReg)
+        public void UpdateraRegistrering(Registrering updatedReg)
         {
             try
             {
@@ -153,7 +133,7 @@ namespace SignMeUp2.Services
             }
         }
 
-        public void TabortRegistrering(Registreringar reg)
+        public void TabortRegistrering(Registrering reg)
         {
             try
             {
@@ -169,7 +149,7 @@ namespace SignMeUp2.Services
             }
         }
 
-        public void HarBetalt(Registreringar reg)
+        public void HarBetalt(Registrering reg)
         {
             var registrering = GetRegistrering(reg.Id, false);
             registrering.HarBetalt = true;
@@ -221,110 +201,6 @@ namespace SignMeUp2.Services
             var formular = Db.Formular.Include(f => f.Evenemang).Single(f => f.Id == formularsId);
 
             return formular != null ? Db.Organisationer.Include("Betalningsmetoder").Single(o => o.Id == formular.Evenemang.OrganisationsId) : null;
-        }
-
-        //public IList<ValViewModel> HamtaBanor(int evenemangsId)
-        //{
-        //    var banor = from bana in Db.Banor.Where(b => b.EvenemangsId == evenemangsId)
-        //            select new ValViewModel { Id = bana.Id, Namn = bana.Namn, Avgift = bana.Avgift, TypNamn = "Bana" };
-        //    return banor.ToList();
-        //}
-
-        //public IList<ValViewModel> HamtaKanoter(int evenemangsId)
-        //{
-        //    var kanoter = from kanot in Db.Kanoter.Where(b => b.EvenemangsId == evenemangsId)
-        //                select new ValViewModel { Id = kanot.Id, Namn = kanot.Namn, Avgift = kanot.Avgift, TypNamn = "Kanot" };
-        //    return kanoter.ToList();
-        //}
-
-        //public IList<ValViewModel> HamtaKlasser(int evenemangsId)
-        //{
-        //    var klasser = from klass in Db.Klasser.Where(k => k.EvenemangsId == evenemangsId)
-        //                select new ValViewModel { Id = klass.Id, Namn = klass.Namn, TypNamn = "Klass" };
-        //    return klasser.ToList();
-        //}
-
-        public IList<ViewModels.WizardStep> HamtaWizardSteps(int evenemangsId)
-        {
-
-
-            //var list = new List<WizardStep> {
-            //    // Registrering
-            //    new WizardStep
-            //    {
-            //        Namn = "Registrering",
-            //        StepIndex = 0,
-            //        StepCount = 3,
-            //        FaltLista = new List<FaltViewModel>
-            //        {
-            //            new FaltViewModel {
-            //                Namn = "Lagnamn",
-            //                Kravs = true,
-            //                Typ = FaltTyp.text_falt
-            //            },
-            //            new FaltViewModel {
-            //                Namn = "Bana",
-            //                Kravs = true,
-            //                Val = HamtaBanor(evenemangsId),
-            //                Typ = FaltTyp.val_falt,
-            //                Avgiftsbelagd = true
-            //            },
-            //            new FaltViewModel {
-            //                Namn = "Klass",
-            //                Kravs = true,
-            //                Val = HamtaKlasser(evenemangsId),
-            //                Typ = FaltTyp.val_falt,
-            //                Avgiftsbelagd = false
-            //            },
-            //            new FaltViewModel {
-            //                Namn = "Kanot",
-            //                Kravs = true,
-            //                Val = HamtaKanoter(evenemangsId),
-            //                Typ = FaltTyp.val_falt,
-            //                Avgiftsbelagd = false
-            //            }
-            //        }
-            //    },
-            //    // Deltagare
-            //    new WizardStep
-            //    {
-            //        Namn = "Deltagare",
-            //        StepIndex = 1,
-            //        StepCount = 3
-            //    },
-            //    // Kontaktinformation
-            //    new WizardStep
-            //    {
-            //        Namn = "Kontaktinformation",
-            //        StepIndex = 2,
-            //        StepCount = 3,
-            //        FaltLista = new List<FaltViewModel>
-            //        {
-            //            new FaltViewModel {
-            //                Namn = "Adress",
-            //                Kravs = true,
-            //                Typ = FaltTyp.text_falt
-            //            },
-            //            new FaltViewModel {
-            //                Namn = "Telefon",
-            //                Kravs = true,
-            //                Typ = FaltTyp.text_falt
-            //            },
-            //            new FaltViewModel {
-            //                Namn = "Epost",
-            //                Kravs = true,
-            //                Typ = FaltTyp.epost_falt
-            //            },
-            //            new FaltViewModel {
-            //                Namn = "Klubb",
-            //                Kravs = false,
-            //                Typ = FaltTyp.text_falt
-            //            }
-            //        }
-            //    },
-            //};
-
-            return null;
         }
 
         /// <summary>

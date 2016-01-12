@@ -10,10 +10,6 @@ namespace SignMeUp2.Data
     {
         public Evenemang()
         {
-            //Registreringar = new HashSet<Registreringar>();
-            //Banor = new HashSet<Banor>();
-            //Kanoter = new HashSet<Kanoter>();
-            //Klasser = new HashSet<Klasser>();
             Rabatter = new HashSet<Rabatter>();
             Forseningsavgifter = new HashSet<Forseningsavgift>();
         }

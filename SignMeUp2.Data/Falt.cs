@@ -15,7 +15,7 @@ namespace SignMeUp2.Data
         public string Namn { get; set; }
 
         public int? StegId { get; set; }
-        public virtual WizardStep Steg { get; set; }
+        public virtual FormularSteg Steg { get; set; }
 
         [Required]
         public bool Kravs { get; set; }

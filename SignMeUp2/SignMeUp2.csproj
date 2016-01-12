@@ -278,33 +278,9 @@
     <Compile Include="Helpers\SendMail.cs" />
     <Compile Include="Helpers\SpamPreventor.cs" />
     <Compile Include="Helpers\Validators.cs" />
-    <Compile Include="Migrations\201505231907233_skapa.cs" />
-    <Compile Include="Migrations\201505231907233_skapa.Designer.cs">
-      <DependentUpon>201505231907233_skapa.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507291934507_BetalningsmetoderMm.cs" />
-    <Compile Include="Migrations\201507291934507_BetalningsmetoderMm.Designer.cs">
-      <DependentUpon>201507291934507_BetalningsmetoderMm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507292158562_nullDate.cs" />
-    <Compile Include="Migrations\201507292158562_nullDate.Designer.cs">
-      <DependentUpon>201507292158562_nullDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601092342083_DynamiskaFaltv1.cs" />
-    <Compile Include="Migrations\201601092342083_DynamiskaFaltv1.Designer.cs">
-      <DependentUpon>201601092342083_DynamiskaFaltv1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601092357176_tabellnamnbyte.cs" />
-    <Compile Include="Migrations\201601092357176_tabellnamnbyte.Designer.cs">
-      <DependentUpon>201601092357176_tabellnamnbyte.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601102029279_faltId.cs" />
-    <Compile Include="Migrations\201601102029279_faltId.Designer.cs">
-      <DependentUpon>201601102029279_faltId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601102036272_tabortepost.cs" />
-    <Compile Include="Migrations\201601102036272_tabortepost.Designer.cs">
-      <DependentUpon>201601102036272_tabortepost.cs</DependentUpon>
+    <Compile Include="Migrations\201601122019550_dynamiska_falt.cs" />
+    <Compile Include="Migrations\201601122019550_dynamiska_falt.Designer.cs">
+      <DependentUpon>201601122019550_dynamiska_falt.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
@@ -589,26 +565,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201505231907233_skapa.resx">
-      <DependentUpon>201505231907233_skapa.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507291934507_BetalningsmetoderMm.resx">
-      <DependentUpon>201507291934507_BetalningsmetoderMm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507292158562_nullDate.resx">
-      <DependentUpon>201507292158562_nullDate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601092342083_DynamiskaFaltv1.resx">
-      <DependentUpon>201601092342083_DynamiskaFaltv1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601092357176_tabellnamnbyte.resx">
-      <DependentUpon>201601092357176_tabellnamnbyte.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601102029279_faltId.resx">
-      <DependentUpon>201601102029279_faltId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601102036272_tabortepost.resx">
-      <DependentUpon>201601102036272_tabortepost.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201601122019550_dynamiska_falt.resx">
+      <DependentUpon>201601122019550_dynamiska_falt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

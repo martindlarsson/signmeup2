@@ -64,7 +64,7 @@ namespace SignMeUp2.Controllers
             }
         }
 
-        protected void SkickaRegMail(Registreringar reg)
+        protected void SkickaRegMail(Registrering reg)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace SignMeUp2.Controllers
             }
         }
 
-        protected FakturaVM SkapaFakturaVM(Registreringar reg)
+        protected FakturaVM SkapaFakturaVM(Registrering reg)
         {
             var evenemang = smuService.HamtaEvenemang(reg.Formular.EvenemangsId.Value);
             var arrangor = smuService.HamtaOrganisation(evenemang.OrganisationsId);
@@ -112,7 +112,7 @@ namespace SignMeUp2.Controllers
                 logger.Error(string.Format("Session: {0}. {1}", HttpContext.Session.SessionID, message));
         }
 
-        protected bool SkickaFaktura(Registreringar reg)
+        protected bool SkickaFaktura(Registrering reg)
         {
             var fakturaVm = SkapaFakturaVM(reg);
             try

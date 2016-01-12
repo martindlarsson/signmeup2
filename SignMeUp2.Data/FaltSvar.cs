@@ -20,6 +20,6 @@ namespace SignMeUp2.Data
         public int Avgift { get; set; }
 
         public int? RegistreringsId { get; set; }
-        public virtual Registreringar Registrering { get; set; }
+        public virtual Registrering Registrering { get; set; }
     }
 }

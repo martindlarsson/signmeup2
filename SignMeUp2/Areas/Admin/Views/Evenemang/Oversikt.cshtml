@@ -16,25 +16,26 @@
     <div class="col-md-4">@Html.ActionLink("Editera evenemang", "Edit", "Evenemang", new { id = Model.Id }, new { @class = "btn btn-primary" })</div>
 </div>
 
-<div class="row col-md-12">
+@* TODO - Summera antelet anmälningar från formulären *@
+@*<div class="row col-md-12">
     <h3>@Model.Registreringar.Count() anmälda lag</h3> @Html.ActionLink("Visa listan", "Index", "Registreringar", new { id = Model.Id }, new { @class = "btn btn-primary" })
-</div>
+</div>*@
 
 <div class="row">
     <div class="col-md-6">
-        <h3>Banor</h3>
+        <h3>Formulär</h3>
         <table class="table table-striped">
             <tr>
                 <th>Namn</th>
-                <th>Antal deltagare</th>
+                <th>Antal steg</th>
                 <th>Avgift</th>
             </tr>
-            @foreach (var bana in Model.Banor)
+            @foreach (var formular in Model.Formular)
             {
                 <tr>
-                    <td>@bana.Namn</td>
-                    <td>@bana.AntalDeltagare</td>
-                    <td>@bana.Avgift</td>
+                    <td>@formular.Namn</td>
+                    <td>@formular.Steg.Count</td>
+                    <td>@formular.Avgift</td>
                 </tr>
             }
         </table>
@@ -46,12 +47,12 @@
             <tr>
                 <th>Namn</th>
             </tr>
-            @foreach (var klass in Model.Klasser)
+            @*@foreach (var klass in Model.Klasser)
             {
                 <tr>
                     <td>@klass.Namn</td>
                 </tr>
-            }
+            }*@
         </table>
         @Html.ActionLink("Redigera klasser", "Index", "Klasser", new { id = Model.Id }, new { @class = "btn btn-primary" })
     </div>
@@ -65,13 +66,13 @@
                 <th>Namn</th>
                 <th>Avgift</th>
             </tr>
-            @foreach (var kanot in Model.Kanoter)
+            @*@foreach (var kanot in Model.Kanoter)
             {
                 <tr>
                     <td>@kanot.Namn</td>
                     <td>@kanot.Avgift</td>
                 </tr>
-            }
+            }*@
         </table>
         @Html.ActionLink("Redigera kanoter", "Index", "Kanoter", new { id = Model.Id }, new { @class = "btn btn-primary" })
     </div>

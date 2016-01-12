@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SignMeUp2.ViewModels
 {
-    public class WizardStep
+    public class FormularSteg
     {
         public string Namn { get; set; }
 

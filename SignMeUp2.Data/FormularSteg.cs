@@ -4,18 +4,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SignMeUp2.Data
 {
-    [Table("FormularsSteg")]
-    public partial class WizardStep
+    [Table("FormularSteg")]
+    public partial class FormularSteg
     {
         public int Id { get; set; }
 
-        [Required]
-        public string Namn { get; set; }
+        //[Required]
+        //public string Namn { get; set; }
 
         [Required]
-        public int StepIndex { get; set; }
+        public int Index { get; set; }
         
-        public int? FormularsId { get; set; }
+        public int? FormularId { get; set; }
         public virtual Formular Formular { get; set; }
 
         public virtual ICollection<Falt> Falt { get; set; }

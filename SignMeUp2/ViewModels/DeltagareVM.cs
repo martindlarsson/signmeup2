@@ -17,7 +17,7 @@ namespace SignMeUp2.ViewModels
         public string Efternamn { get; set; }
     }
 
-    public class DeltagareListViewModel : WizardStep
+    public class DeltagareListViewModel : FormularSteg
     {
         public IList<DeltagareViewModel> DeltagareLista { get; set; }
 

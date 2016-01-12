@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using SignMeUp2.Data;
 
 namespace SignMeUp2.Data
 {
@@ -10,8 +9,6 @@ namespace SignMeUp2.Data
     public class ApplicationUser : IdentityUser
     {
         public int OrganisationsId { get; set; }
-
-        //public virtual Organisation Organisation { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

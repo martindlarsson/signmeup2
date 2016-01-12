@@ -58,25 +58,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Banor.cs" />
     <Compile Include="Betalningsmetoder.cs" />
-    <Compile Include="Deltagare.cs" />
     <Compile Include="Evenemang.cs" />
     <Compile Include="Falt.cs" />
     <Compile Include="FaltSvar.cs" />
     <Compile Include="Formular.cs" />
     <Compile Include="Forseningsavgift.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Invoice.cs" />
-    <Compile Include="Kanoter.cs" />
-    <Compile Include="Klasser.cs" />
+    <Compile Include="Fakturaadress.cs" />
     <Compile Include="Organisation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rabatter.cs" />
-    <Compile Include="Registreringar.cs" />
+    <Compile Include="Registrering.cs" />
     <Compile Include="SignMeUpDataModel.cs" />
     <Compile Include="Val.cs" />
-    <Compile Include="WizardStep.cs" />
+    <Compile Include="FormularSteg.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

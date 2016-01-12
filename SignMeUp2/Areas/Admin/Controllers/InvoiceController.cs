@@ -28,7 +28,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Invoice invoice = db.Invoice.Find(id);
+            Fakturaadress invoice = db.Invoice.Find(id);
             if (invoice == null)
             {
                 return HttpNotFound();
@@ -47,7 +47,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Box,Postnummer,Organisationsnummer,Postort,Postadress,Namn,Att")] Invoice invoice)
+        public ActionResult Create([Bind(Include = "Id,Box,Postnummer,Organisationsnummer,Postort,Postadress,Namn,Att")] Fakturaadress invoice)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +66,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Invoice invoice = db.Invoice.Find(id);
+            Fakturaadress invoice = db.Invoice.Find(id);
             if (invoice == null)
             {
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Box,Postnummer,Organisationsnummer,Postort,Postadress,Namn,Att")] Invoice invoice)
+        public ActionResult Edit([Bind(Include = "Id,Box,Postnummer,Organisationsnummer,Postort,Postadress,Namn,Att")] Fakturaadress invoice)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Invoice invoice = db.Invoice.Find(id);
+            Fakturaadress invoice = db.Invoice.Find(id);
             if (invoice == null)
             {
                 return HttpNotFound();
@@ -110,7 +110,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Invoice invoice = db.Invoice.Find(id);
+            Fakturaadress invoice = db.Invoice.Find(id);
             db.Invoice.Remove(invoice);
             db.SaveChanges();
             return RedirectToAction("Index");

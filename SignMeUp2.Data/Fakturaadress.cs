@@ -4,7 +4,7 @@ namespace SignMeUp2.Data
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Invoice")]
-    public partial class Invoice
+    public partial class Fakturaadress
     {
         public int Id { get; set; }
 
@@ -27,6 +27,6 @@ namespace SignMeUp2.Data
 
         public string Att { get; set; }
 
-        public Registreringar Registrering { get; set; }
+        public Registrering Registrering { get; set; }
     }
 }

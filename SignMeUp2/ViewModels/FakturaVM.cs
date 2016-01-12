@@ -8,7 +8,7 @@ namespace SignMeUp2.ViewModels
     {
         public string Evenemangsnamn { get; set; }
 
-        public Registreringar Registrering { get; set; }
+        public Registrering Registrering { get; set; }
 
         public InvoiceViewModel Fakturaadress { get; set; }
 
@@ -30,24 +30,17 @@ namespace SignMeUp2.ViewModels
                         list.Add(new ValViewModel { TypNamn = svar.Falt.Typ.ToString(), Namn = svar.Falt.Namn, Avgift = svar.Avgift });
                 }
 
-                //// Bana
-                
-                //list.Add(new ValViewModel { TypNamn = "Bana", Namn = Registrering.Bana.Namn, Avgift = Registrering.Bana.Avgift });
-
-                //// Kanot
-                //list.Add(new ValViewModel { TypNamn = "Kanot", Namn = Registrering.Kanot.Namn, Avgift = Registrering.Kanot.Avgift });
-
                 // Rabatt
-                if (Registrering.Rabatt != null)
+                if (Registrering.Rabatt != 0)
                 {
-                    list.Add(new ValViewModel { TypNamn = "Rabatt", Namn = Registrering.Rabatt.Kod, Avgift = -Registrering.Rabatt.Summa });
+                    list.Add(new ValViewModel { TypNamn = "Rabatt", Namn = Registrering.Rabattkod, Avgift = -Registrering.Rabatt });
                 }
 
                 // Förseningsavgift
-                if (Registrering.Forseningsavgift != null)
+                if (Registrering.Forseningsavgift != 0)
                 {
-                    var summa = Registrering.Forseningsavgift.PlusEllerMinus == TypAvgift.Avgift ? Registrering.Forseningsavgift.Summa : -Registrering.Forseningsavgift.Summa;
-                    list.Add(new ValViewModel { TypNamn = Registrering.Forseningsavgift.PlusEllerMinus.ToString(), Namn = Registrering.Forseningsavgift.Namn, Avgift = summa });
+                    //var summa = Registrering.Forseningsavgift.PlusEllerMinus == TypAvgift.Avgift ? Registrering.Forseningsavgift.Summa : -Registrering.Forseningsavgift.Summa;
+                    list.Add(new ValViewModel { TypNamn = "Avgift" /*Registrering.Forseningsavgift.PlusEllerMinus.ToString()*/, Namn = "Sen anmälan" /*Registrering.Forseningsavgift.Namn*/, Avgift = Registrering.Forseningsavgift });
                 }
 
                 return list;

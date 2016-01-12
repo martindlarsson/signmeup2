@@ -28,7 +28,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
         public ActionResult Oversikt(int? id)
         {
-            var evenemang = db.Evenemang.Include("Banor").Include("Klasser").Include("Kanoter").Include("Rabatter").Include("Forseningsavgifter").Include("Registreringar").FirstOrDefault(e => e.Id == id.Value);
+            var evenemang = db.Evenemang.Include("Rabatter").Include("Forseningsavgifter").Include("Formular").FirstOrDefault(e => e.Id == id.Value);
 
             if (evenemang == null)
                 ShowError(log, "Hittade inte evenemanget", true);

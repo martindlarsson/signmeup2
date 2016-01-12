@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using SignMeUp2.Data;
 
 namespace SignMeUp2.Helpers
 {
@@ -46,9 +45,9 @@ namespace SignMeUp2.Helpers
             return source;
         }
 
-        public static string Deltagarnamn(this Deltagare deltagare)
-        {
-            return deltagare.Förnamn + " " + deltagare.Efternamn;
-        }
+        //public static string Deltagarnamn(this Deltagare deltagare)
+        //{
+        //    return deltagare.Förnamn + " " + deltagare.Efternamn;
+        //}
     }
 }

@@ -195,7 +195,7 @@ namespace SignMeUp2.Controllers
             // If no payment message has been sent (IPN)
             if (!registration.HarBetalt)
             {
-                var org = smuService.HamtaOrganisation(registration.FormularsId.Value);
+                var org = smuService.HamtaOrganisation(registration.FormularId.Value);
 
                 var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
 
@@ -244,7 +244,7 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Betalningen avbröts av okänd anledning", true, new Exception("Payson betalning avbruten och ingen registrering i Session hittades."));
             }
 
-            var org = smuService.HamtaOrganisation(registrering.FormularsId.Value);
+            var org = smuService.HamtaOrganisation(registrering.FormularId.Value);
 
             var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
 

@@ -10,36 +10,15 @@ namespace SignMeUp2.Helpers
 {
     public class ClassMapper
     {
-        public static Registreringar MappaTillRegistrering(SignMeUpVM SUPVM, SignMeUpService SMU)
+        public static Registrering MappaTillRegistrering(SignMeUpVM SUPVM, SignMeUpService SMU)
         {
-            //var banId = int.Parse(SUPVM.GetFaltvarde("Bana"));
-            //var bana = SMU.Db.Banor.Find(banId);
-
-            //var klassId = int.Parse(SUPVM.GetFaltvarde("Klass"));
-            //var klass = SMU.Db.Klasser.Find(klassId);
-
-            //var kanotId = int.Parse(SUPVM.GetFaltvarde("Kanot"));
-            //var kanot = SMU.Db.Kanoter.Find(kanotId);
-
-            //var deltagareSteg = SUPVM.GetStep("Deltagare");
-            //int antalDeltagare = deltagareSteg.FaltLista.Count / 2;
-            //var deltagare = new List<Deltagare>();
-            //for (int i = 1; i <= antalDeltagare; i++)
-            //{
-            //    deltagare.Add(new Deltagare
-            //    {
-            //        Förnamn = SUPVM.GetFaltvarde("Förnamn " + i),
-            //        Efternamn = SUPVM.GetFaltvarde("Efternamn " + i)
-            //    });
-            //} 
-
-            int? rabattId = null;
+            int rabatt = 0;
             if (SUPVM.Rabatt != null)
-                rabattId = SUPVM.Rabatt.Id;
+                rabatt = SUPVM.Rabatt.Summa;
 
-            int? forseningsavgId = null;
+            int forseningsavg = 0;
             if (SUPVM.FAVM != null)
-                forseningsavgId = SUPVM.FAVM.Id;
+                forseningsavg = SUPVM.FAVM.Summa;
 
             // Mappa alla svar
             var faltsvar = new List<FaltSvar>();
@@ -62,21 +41,12 @@ namespace SignMeUp2.Helpers
                 }
             }
 
-            return new Registreringar
+            return new Registrering
             {
-                FormularsId = SUPVM.FormularsId,
-                //Lagnamn = SUPVM.GetFaltvarde("Lagnamn"),
-                //Bana = bana,
-                //Klass = klass,
-                //Kanot = kanot,
-                //Klubb = SUPVM.GetFaltvarde("Klubb"),
-                //Deltagare = deltagare.ToList(),
-                //Adress = SUPVM.GetFaltvarde("Adress"),
-                //Telefon = SUPVM.GetFaltvarde("Telefon"),
-                // TODO sätt rabatt och förseningsavgift som ints istället för FK
+                FormularId = SUPVM.FormularsId,
                 Svar = faltsvar,
-                RabattId = rabattId,
-                ForseningsavgiftId = forseningsavgId,
+                Rabatt = rabatt,
+                Forseningsavgift = forseningsavg,
                 Invoice = SUPVM.Fakturaadress != null ? MappTillInvoice(SUPVM.Fakturaadress) : null,
                 Registreringstid = DateTime.Now,
                 PaysonToken = SUPVM.PaysonToken
@@ -89,24 +59,23 @@ namespace SignMeUp2.Helpers
             {
                 Evenemang = formular.Evenemang,
                 EvenemangsId = formular.EvenemangsId,
-                Gratis = formular.Gratis,
                 Id = formular.Id,
                 Namn = formular.Namn,
-                Startavgift = formular.Startavgift,
+                Avgift = formular.Avgift,
                 Steg = MappaTillSteg(formular.Steg)
             };
         }
 
-        private static List<ViewModels.WizardStep> MappaTillSteg(ICollection<Data.WizardStep> stegs)
+        private static List<ViewModels.FormularSteg> MappaTillSteg(ICollection<Data.FormularSteg> stegs)
         {
-            var list = new List<ViewModels.WizardStep>();
+            var list = new List<ViewModels.FormularSteg>();
 
             foreach (var steg in stegs)
             {
-                list.Add(new ViewModels.WizardStep
+                list.Add(new ViewModels.FormularSteg
                 {
-                    Namn = steg.Namn,
-                    StepIndex = steg.StepIndex,
+                    //Namn = steg.Namn,
+                    StepIndex = steg.Index,
                     StepCount = stegs.Count(),
                     FaltLista = MappaTillFalt(steg.Falt)
                 });
@@ -153,9 +122,9 @@ namespace SignMeUp2.Helpers
             return list;
         }
 
-        public static Invoice MappTillInvoice(InvoiceViewModel invoiceVM)
+        public static Fakturaadress MappTillInvoice(InvoiceViewModel invoiceVM)
         {
-            return new Invoice
+            return new Fakturaadress
             {
                 Att = invoiceVM.Att,
                 Box = invoiceVM.Box,
@@ -168,7 +137,7 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        public static InvoiceViewModel MappTillInvoiceVM(Invoice invoice)
+        public static InvoiceViewModel MappTillInvoiceVM(Fakturaadress invoice)
         {
             return new InvoiceViewModel
             {

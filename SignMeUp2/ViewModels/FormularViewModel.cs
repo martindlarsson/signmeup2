@@ -14,8 +14,8 @@ namespace SignMeUp2.ViewModels
         
         public bool Gratis { get; set; }
         
-        public int Startavgift { get; set; }
+        public int Avgift { get; set; }
 
-        public virtual List<WizardStep> Steg { get; set; }
+        public virtual List<FormularSteg> Steg { get; set; }
     }
 }

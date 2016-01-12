@@ -22,15 +22,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Registreringar
         public ActionResult Index(int? id)
         {
-            IQueryable<Registreringar> reggs;
+            IQueryable<Registrering> reggs;
             if (id != null)
             {
-                reggs = db.Registreringar.Where(r => r.FormularsId == id.Value); //Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass).Include(r => r.Invoice).Where(r => r.EvenemangsId == id.Value);
+                reggs = db.Registreringar.Where(r => r.FormularId == id.Value); //Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass).Include(r => r.Invoice).Where(r => r.EvenemangsId == id.Value);
                 ViewBag.Evenemang = db.Evenemang.FirstOrDefault(e => e.Id == id.Value);
             }
             else if (IsUserAdmin)
             {
-                reggs = db.Registreringar.Where(r => r.FormularsId == id.Value); //.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass);
+                reggs = db.Registreringar.Where(r => r.FormularId == id.Value); //.Include(r => r.Bana).Include(r => r.Evenemang).Include(r => r.Kanot).Include(r => r.Klass);
             }
             else
             {
@@ -46,7 +46,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return ShowError(log, "Kan inte skicka faktura utan id", false);
             }
-            Registreringar registreringar = smuService.GetRegistrering(id.Value, true);
+            Registrering registreringar = smuService.GetRegistrering(id.Value, true);
 
             if (registreringar == null)
             {
@@ -69,7 +69,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 TempData["Meddelande"] = "Faktura skickad till användaren."; // + registreringar.Epost;
             }
 
-            return RedirectToAction("Index", new { id = registreringar.FormularsId });
+            return RedirectToAction("Index", new { id = registreringar.FormularId });
         }
 
         // GET: Registreringar/Details/5
@@ -79,7 +79,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Registreringar registreringar = db.Registreringar.Find(id);
+            Registrering registreringar = db.Registreringar.Find(id);
             if (registreringar == null)
             {
                 return HttpNotFound();
@@ -104,7 +104,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Adress,Telefon,Epost,Ranking,Startnummer,Lagnamn,Kanot,Klubb,Klass,HarBetalt,Forseningsavgift,Registreringstid,Kommentar,Bana,Rabatter,PaysonToken,Evenemang_Id,Invoice")] Registreringar registreringar)
+        public ActionResult Create([Bind(Include = "ID,Adress,Telefon,Epost,Ranking,Startnummer,Lagnamn,Kanot,Klubb,Klass,HarBetalt,Forseningsavgift,Registreringstid,Kommentar,Bana,Rabatter,PaysonToken,Evenemang_Id,Invoice")] Registrering registreringar)
         {
             if (ModelState.IsValid)
             {
@@ -125,7 +125,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Registreringar registreringar = smuService.GetRegistrering(id.Value, true);
+            Registrering registreringar = smuService.GetRegistrering(id.Value, true);
             if (registreringar == null)
             {
                 return HttpNotFound();
@@ -141,7 +141,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Adress,Telefon,Epost,Startnummer,Lagnamn,Kanot_Id,Klubb,Klass_Id,HarBetalt,ForseningsavgiftId,Registreringstid,Kommentar,Bana_Id,RabattId,PaysonToken,EvenemangsId,Invoice")] Registreringar registreringar)
+        public ActionResult Edit([Bind(Include = "ID,Adress,Telefon,Epost,Startnummer,Lagnamn,Kanot_Id,Klubb,Klass_Id,HarBetalt,ForseningsavgiftId,Registreringstid,Kommentar,Bana_Id,RabattId,PaysonToken,EvenemangsId,Invoice")] Registrering registreringar)
         {
             if (ModelState.IsValid)
             {
@@ -168,7 +168,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 }
 
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = registreringar.FormularsId });
+                return RedirectToAction("Index", new { id = registreringar.FormularId });
             }
 
             //SetViewBag(registreringar, registreringar.EvenemangsId.Value);
@@ -201,7 +201,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Registreringar registreringar = db.Registreringar.Find(id);
+            Registrering registreringar = db.Registreringar.Find(id);
             if (registreringar == null)
             {
                 return HttpNotFound();
@@ -214,7 +214,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Registreringar registreringar = db.Registreringar.Find(id);
+            Registrering registreringar = db.Registreringar.Find(id);
             db.Registreringar.Remove(registreringar);
             db.SaveChanges();
             return RedirectToAction("Index");

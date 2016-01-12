@@ -6,7 +6,7 @@ namespace SignMeUp2.Helpers
 {
     public class Avgift
     {
-        public static int Kalk(Registreringar registrering)
+        public static int Kalk(Registrering registrering)
         {
             int tot = 0;
 
@@ -16,8 +16,8 @@ namespace SignMeUp2.Helpers
             }
 
             return tot
-                + registrering.Forseningsavgift.Summa
-                - registrering.Rabatt.Summa;
+                + registrering.Forseningsavgift
+                - registrering.Rabatt;
         }
     }
 }

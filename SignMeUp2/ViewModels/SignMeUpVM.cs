@@ -18,9 +18,9 @@ namespace SignMeUp2.ViewModels
         public int CurrentStepIndex { get; set; }
         public int CountSteps { get { return Steps == null ? 0 : Steps.Count(); } }
 
-        public IList<WizardStep> Steps { get; set; }
+        public IList<FormularSteg> Steps { get; set; }
 
-        public WizardStep CurrentStep
+        public FormularSteg CurrentStep
         {
             get { return Steps[CurrentStepIndex]; }
         }
@@ -96,7 +96,7 @@ namespace SignMeUp2.ViewModels
 
         public string PaysonToken { get; set; }
 
-        public WizardStep GetStep(string stegNamn)
+        public FormularSteg GetStep(string stegNamn)
         {
             return Steps.FirstOrDefault(s => s.Namn == stegNamn);
         }

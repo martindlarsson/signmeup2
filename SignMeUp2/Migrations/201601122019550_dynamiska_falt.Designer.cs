@@ -7,13 +7,13 @@ namespace SignMeUp2.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class tabortepost : IMigrationMetadata
+    public sealed partial class dynamiska_falt : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(tabortepost));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(dynamiska_falt));
         
         string IMigrationMetadata.Id
         {
-            get { return "201601102036272_tabortepost"; }
+            get { return "201601122019550_dynamiska_falt"; }
         }
         
         string IMigrationMetadata.Source

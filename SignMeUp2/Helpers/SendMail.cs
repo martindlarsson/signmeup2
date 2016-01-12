@@ -11,7 +11,7 @@ namespace SignMeUp2.Helpers
 {
     public class SendMail
     {
-        public static void SendRegistration(string message, string hostAddress, string link, Registreringar reg)
+        public static void SendRegistration(string message, string hostAddress, string link, Registrering reg)
         {
             try
             {

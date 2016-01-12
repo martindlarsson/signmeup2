@@ -70,7 +70,7 @@ namespace SignMeUp2.Models
     /// </summary>
     /// <param name="registreringar"></param>
     /// <returns></returns>
-    public static StartlistaViewModel GetStartlist(IList<Registreringar> registreringar, string Evenemang) //, IList<Banor> banor, IList<Klasser> klasser)
+    public static StartlistaViewModel GetStartlist(IList<Registrering> registreringar, string Evenemang) //, IList<Banor> banor, IList<Klasser> klasser)
     {
         var regList = new StartlistaViewModel();
         regList.Evenemang = Evenemang;
@@ -93,7 +93,7 @@ namespace SignMeUp2.Models
             // Mappa registreringen
             var registrering = new RegistreringViewModel
             {
-                Lagnamn = reg.FormularsId.ToString(),
+                Lagnamn = reg.FormularId.ToString(),
                 DeltagarLista = new List<DeltagareSimple>(),
                 Klubb = "-"
             };

@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Organisationer")]
+    [Table("Organisation")]
     public class Organisation
     {
         public Organisation()
