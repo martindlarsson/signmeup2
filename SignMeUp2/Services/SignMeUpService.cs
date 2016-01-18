@@ -37,9 +37,21 @@ namespace SignMeUp2.Services
             }
         }
 
+        internal TabellViewModel GetLista(int value)
+        {
+            var listan = Db.Listor.Include(l => l.Falt).Include(l => l.Formular).Include(l => l.Formular.Registreringar).Single(l => l.Id == value);
+            if (listan == null)
+                return null;
+
+            //var formular = Db.Formular.Single(f => f.Id == listan.FormularId);
+            
+            // TODO mappa till en view model
+            return ClassMapper.MappaTillTabell(listan);
+        }
+
         public FormularViewModel GetFormular(int formularsId)
         {
-            var formular = Db.Formular.Include("Evenemang").Single(f => f.Id == formularsId);
+            var formular = Db.Formular.Include(r => r.Evenemang).Single(f => f.Id == formularsId);
             return ClassMapper.MappaTillFormular(formular);
         }
 
@@ -48,12 +60,10 @@ namespace SignMeUp2.Services
             if (fill)
             {
                 return Db.Registreringar
-                        .Include("Formular")
-                        .Include("Formular.Evenemang")
-                        .Include("Formular.Evenemang.Organisation")
-                        .Include("Fakturaadress")
-                        //.Include("Rabatt")
-                        //.Include("Forseningsavgift")
+                        .Include(r => r.Formular)
+                        .Include(r => r.Formular.Evenemang)
+                        .Include(r => r.Formular.Evenemang.Organisation)
+                        .Include(r => r.Invoice)
                         .Where(r => r.Id == id)
                         .FirstOrDefault();
             }
@@ -72,20 +82,6 @@ namespace SignMeUp2.Services
             try
             {
                 reg.Registreringstid = DateTime.Now;
-
-                //if (reg.Forseningsavgift != null && reg.Forseningsavgift == null)
-                //{
-                //    reg.Forseningsavgift = reg.Forseningsavgift.Id;
-                //    reg.Forseningsavgift = null;
-                //}
-
-                //if (reg.Rabatt != null && reg.Rabatt == null)
-                //{
-                //    reg.Rabatt = reg.Rabatt.Id;
-                //    reg.Rabatt = null;
-                //}
-
-                // TODO är evenemangets id sparat??
 
                 Db.Registreringar.Add(reg);
 

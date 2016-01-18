@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SignMeUp2.Data;
 using SignMeUp2.Controllers;
@@ -67,6 +63,63 @@ namespace SignMeUp2.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 evenemang.OrganisationsId = HamtaUser().OrganisationsId;
+                var formular = new Formular
+                {
+                    Avgift = 100,
+                    Namn = "Mitt första formulär"
+                };
+                var formularSteg1 = new FormularSteg
+                {
+                    Index = 0,
+                    Namn = "Kontaktuppgifter"
+                };
+                var formularSteg2 = new FormularSteg
+                {
+                    Index = 1,
+                    Namn = "Tävling"
+                };
+                var falt1 = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "För och efternamn",
+                    Typ = FaltTyp.text_falt
+                };
+                var falt2 = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "Epost",
+                    Typ = FaltTyp.epost_falt
+                };
+                var falt3 = new Falt
+                {
+                    Avgiftsbelagd = true,
+                    Kravs = true,
+                    Namn = "Bana",
+                    Typ = FaltTyp.val_falt
+                };
+                var val1 = new Val
+                {
+                    Avgift = 50,
+                    Namn = "Korta banan (5 km)",
+                    TypNamn = "Bana"
+                };
+                var val2 = new Val
+                {
+                    Avgift = 100,
+                    Namn = "Långa banan (10 km)",
+                    TypNamn = "Bana"
+                };
+                falt3.Val.Add(val1);
+                falt3.Val.Add(val2);
+                formularSteg1.Falt.Add(falt1);
+                formularSteg1.Falt.Add(falt2);
+                formularSteg2.Falt.Add(falt3);
+                formular.Steg.Add(formularSteg1);
+                formular.Steg.Add(formularSteg2);
+                evenemang.Formular.Add(formular);
+
                 db.Evenemang.Add(evenemang);
                 db.SaveChanges();
                 db.Entry(evenemang).GetDatabaseValues();

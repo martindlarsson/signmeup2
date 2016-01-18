@@ -17,9 +17,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
         public ActionResult CreateOrUpdate()
         {
-            var org = HamtaOrganisation();
-
-            return View(org.Betalningsmetoder);
+            return View(HamtaOrganisation().Betalningsmetoder);
         }
 
         // POST: Admin/Betalningsmetoder/Create

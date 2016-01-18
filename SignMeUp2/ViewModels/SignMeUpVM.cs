@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Configuration;
 
 namespace SignMeUp2.ViewModels
 {
@@ -18,7 +14,9 @@ namespace SignMeUp2.ViewModels
         public int CurrentStepIndex { get; set; }
         public int CountSteps { get { return Steps == null ? 0 : Steps.Count(); } }
 
-        public IList<FormularSteg> Steps { get; set; }
+        public FormularViewModel Formular { get; set; }
+
+        public IList<FormularSteg> Steps { get { return Formular.Steg; } }
 
         public FormularSteg CurrentStep
         {
@@ -47,6 +45,19 @@ namespace SignMeUp2.ViewModels
             get
             {
                 var list = new List<ValViewModel>();
+
+                // Lägg till grundavgiften för evenemanget
+                if (Formular.Avgift != 0)
+                {
+                    list.Add(new ValViewModel
+                    {
+                        Avgift = Formular.Avgift,
+                        Id = Formular.Id,
+                        Namn = Formular.Namn,
+                        TypNamn = "Grundavgift"
+                    });
+                }   
+
                 if (Steps != null)
                 {
                     foreach (var step in Steps)
@@ -95,12 +106,7 @@ namespace SignMeUp2.ViewModels
         public PaysonKontaktViewModel Kontaktinformation { get; set; }
 
         public string PaysonToken { get; set; }
-
-        public FormularSteg GetStep(string stegNamn)
-        {
-            return Steps.FirstOrDefault(s => s.Namn == stegNamn);
-        }
-
+        
         public string GetFaltvarde(string faltnamn)
         {
             foreach (var steg in Steps)

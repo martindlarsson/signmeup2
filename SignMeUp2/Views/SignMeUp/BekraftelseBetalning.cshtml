@@ -6,10 +6,12 @@
     Layout = "~/Views/Shared/_LayoutSimple.cshtml";
 }
 
-@model SignMeUp2.Data.Registreringar
+@model Registrering
 
 <h2>Tack för din anmälan till @ViewBag.ev</h2>
    
 <h4>Arrangör är @ViewBag.org</h4>
 
-@Html.Partial("_RegDetailsView", Model)
+@Html.DisplayFor(m => Model)
+
+@*@Html.Partial("_RegDetailsView", Model)*@

@@ -66,6 +66,8 @@
     <Compile Include="Forseningsavgift.cs" />
     <Compile Include="IdentityModels.cs" />
     <Compile Include="Fakturaadress.cs" />
+    <Compile Include="Lista.cs" />
+    <Compile Include="ListaFalt.cs" />
     <Compile Include="Organisation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rabatter.cs" />

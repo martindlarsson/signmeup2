@@ -4,11 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SignMeUp2.Data
 {
-    public enum FaltTyp { text_falt = 0, val_falt = 1, epost_falt = 3 }
+    public enum FaltTyp { text_falt = 0, val_falt = 1, epost_falt = 2 }
 
     [Table("Falt")]
     public partial class Falt
     {
+        public Falt()
+        {
+            Val = new List<Val>();
+        }
+
         public int Id { get; set; }
 
         [Required]
@@ -27,5 +32,7 @@ namespace SignMeUp2.Data
 
         [Required]
         public bool Avgiftsbelagd { get; set; }
+
+        public virtual ICollection<ListaFalt> Listor { get; set; }
     }
 }

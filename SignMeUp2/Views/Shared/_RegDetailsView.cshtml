@@ -1,6 +1,6 @@
 ﻿@using SignMeUp2.Data
 
-@model SignMeUp2.Data.Registreringar
+@model Registrering
 
 <table class="table table-striped">
     <thead>
@@ -8,7 +8,7 @@
             <th colspan="2"><h3>Anmälan</h3></th>
         </tr>
     </thead>
-    <tr>
+    @*<tr>
         <th>Lagnamn</th>
         <td>@Html.DisplayFor(model => model.Lagnamn)</td>
     </tr>
@@ -70,7 +70,7 @@
     <tr>
         <th>Klubb</th>
         <td>@Html.DisplayFor(model => model.Klubb)</td>
-    </tr>
+    </tr>*@
 
     <!-- Fakturaadress -->
     @if (Model.Invoice != null)

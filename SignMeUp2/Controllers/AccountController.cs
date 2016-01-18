@@ -122,7 +122,8 @@ namespace SignMeUp2.Controllers
                             Adress = model.Adress,
                             AnvändareId = user.Id,
                             Epost = !string.IsNullOrEmpty(model.EmailSender) ? model.EmailSender : model.Email,
-                            Namn = model.Organisation
+                            Namn = model.Organisation,
+                            Betalningsmetoder = new Betalningsmetoder()
                         };
 
                         // Spara

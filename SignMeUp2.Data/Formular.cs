@@ -7,6 +7,12 @@ namespace SignMeUp2.Data
     [Table("Formular")]
     public partial class Formular
     {
+        public Formular()
+        {
+            Registreringar = new List<Registrering>();
+            Steg = new List<FormularSteg>();
+        }
+        
         public int Id { get; set; }
 
         public int? EvenemangsId { get; set; }
@@ -21,5 +27,7 @@ namespace SignMeUp2.Data
         public int Avgift { get; set; }
         
         public virtual ICollection<FormularSteg> Steg { get; set; }
+
+        public virtual ICollection<Lista> Listor { get; set; }
     }
 }

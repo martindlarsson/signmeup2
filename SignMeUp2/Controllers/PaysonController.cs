@@ -2,8 +2,6 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using SignMeUp2.ViewModels;
@@ -39,19 +37,19 @@ namespace SignMeUp2.Controllers
 
             ViewBag.ev = SUPVM.EvenemangsNamn;
 
-            LogDebug(log, "Paysonbetalning påbörjad för lag " + SUPVM.GetFaltvarde("Lagnamn"));
+            //LogDebug(log, "Paysonbetalning påbörjad för lag " + SUPVM.GetFaltvarde("Lagnamn"));
 
-            var paysonKontaktinfo = new PaysonKontaktViewModel
-            {
-                SenderEmail = SUPVM.GetFaltvarde("Epost"),
-                SenderFirstName = SUPVM.GetFaltvarde("Förnamn 1"),
-                SenderLastName = SUPVM.GetFaltvarde("Efternamn 1")
-            };
-            SUPVM.Kontaktinformation = paysonKontaktinfo;
+            //var paysonKontaktinfo = new PaysonKontaktViewModel
+            //{
+            //    SenderEmail = SUPVM.GetFaltvarde("Epost"),
+            //    SenderFirstName = SUPVM.GetFaltvarde("Förnamn 1"),
+            //    SenderLastName = SUPVM.GetFaltvarde("Efternamn 1")
+            //};
+            SUPVM.Kontaktinformation = new PaysonKontaktViewModel();
 
             Session["VM"] = SUPVM;
 
-            return View(paysonKontaktinfo);
+            return View(SUPVM.Kontaktinformation);
         }
 
         [HttpPost]
@@ -86,7 +84,15 @@ namespace SignMeUp2.Controllers
 
                     PayData payData = SkapaPaysonPayData(SUPVM, org);
 
-                    var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
+                    var testMode = false;
+                    var paysonUserId = org.Betalningsmetoder.PaysonUserId;
+                    var paysonUserKey  = org.Betalningsmetoder.PaysonUserKey;
+#if DEBUG
+                    testMode = true;
+                    paysonUserId = "4";
+                    paysonUserKey = "2acab30d-fe50-426f-90d7-8c60a7eb31d4";
+#endif
+                    var api = new PaysonApi(paysonUserId, paysonUserKey, ApplicationId, testMode);
 
                     var response = api.MakePayRequest(payData);
 

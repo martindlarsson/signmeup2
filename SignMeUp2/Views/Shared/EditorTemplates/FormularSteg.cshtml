@@ -1,9 +1,9 @@
 ﻿@using SignMeUp2.ViewModels
 @using SignMeUp2.Data
 
-@model SignMeUp2.ViewModels.WizardStep
+@model SignMeUp2.ViewModels.FormularSteg
 
-@Html.HiddenFor(model => model.Namn)
+@Html.Hidden("StegId", Model.Id)
 
 <h2>@Model.Namn</h2>
 

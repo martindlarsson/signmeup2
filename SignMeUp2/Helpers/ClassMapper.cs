@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using SignMeUp2.Data;
 using SignMeUp2.ViewModels;
 using SignMeUp2.Services;
@@ -12,14 +11,6 @@ namespace SignMeUp2.Helpers
     {
         public static Registrering MappaTillRegistrering(SignMeUpVM SUPVM, SignMeUpService SMU)
         {
-            int rabatt = 0;
-            if (SUPVM.Rabatt != null)
-                rabatt = SUPVM.Rabatt.Summa;
-
-            int forseningsavg = 0;
-            if (SUPVM.FAVM != null)
-                forseningsavg = SUPVM.FAVM.Summa;
-
             // Mappa alla svar
             var faltsvar = new List<FaltSvar>();
             foreach(var steg in SUPVM.Steps)
@@ -41,16 +32,51 @@ namespace SignMeUp2.Helpers
                 }
             }
 
+            var forseningsavgift = 0;
+            if (SUPVM.FAVM != null)
+            {
+                forseningsavgift = SUPVM.FAVM.PlusEllerMinus == TypAvgift.Rabatt ? -SUPVM.FAVM.Summa : SUPVM.FAVM.Summa;
+            }
+
             return new Registrering
             {
                 FormularId = SUPVM.FormularsId,
                 Svar = faltsvar,
-                Rabatt = rabatt,
-                Forseningsavgift = forseningsavg,
+                Rabatt = SUPVM.Rabatt != null ? SUPVM.Rabatt.Summa : 0,
+                Rabattkod = SUPVM.Rabatt != null ? SUPVM.Rabatt.Kod : string.Empty,
+                Forseningsavgift = forseningsavgift,
                 Invoice = SUPVM.Fakturaadress != null ? MappTillInvoice(SUPVM.Fakturaadress) : null,
                 Registreringstid = DateTime.Now,
-                PaysonToken = SUPVM.PaysonToken
+                PaysonToken = SUPVM.PaysonToken,
+                AttBetala = SUPVM.AttBetala
             };
+        }
+
+        internal static TabellViewModel MappaTillTabell(Lista listan)
+        {
+            var tabell = new TabellViewModel { Namn = listan.Namn };
+
+            // Sortera efter index
+            listan.Falt.OrderBy(f => f.Index);
+
+            // skapa kolumnerna
+            foreach(var falt in listan.Falt)
+            {
+                // TODO, speca ordning på fälten i listan??
+                tabell.Kolumner.Add(new Kolumn { Rubrik = falt.Falt.Namn, FaltId = falt.FaltId.Value });
+            }
+
+            // Hämta svaren
+            foreach(var registrering in listan.Formular.Registreringar)
+            {
+                var rad = new Rad();
+                foreach (var kolumn in tabell.Kolumner)
+                {
+                    rad.Varden.Add(registrering.Svar.Single(s => s.FaltId == kolumn.FaltId).Varde);
+                }
+            }
+
+            return tabell;
         }
 
         public static FormularViewModel MappaTillFormular(Formular formular)
@@ -67,14 +93,15 @@ namespace SignMeUp2.Helpers
         }
 
         private static List<ViewModels.FormularSteg> MappaTillSteg(ICollection<Data.FormularSteg> stegs)
-        {
+{
             var list = new List<ViewModels.FormularSteg>();
 
             foreach (var steg in stegs)
             {
                 list.Add(new ViewModels.FormularSteg
                 {
-                    //Namn = steg.Namn,
+                    Id = steg.Id,
+                    Namn = steg.Namn,
                     StepIndex = steg.Index,
                     StepCount = stegs.Count(),
                     FaltLista = MappaTillFalt(steg.Falt)

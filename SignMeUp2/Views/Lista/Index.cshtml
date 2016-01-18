@@ -1,0 +1,29 @@
+﻿@model SignMeUp2.ViewModels.TabellViewModel
+
+@{
+    ViewBag.Title = Model.Namn;
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+
+<h2>@Model.Namn</h2>
+
+<table class="table">
+    <tr>
+        @foreach (var kolumn in Model.Kolumner)
+        {
+            <th>
+                @kolumn.Rubrik
+            </th>
+        }
+    </tr>
+    @foreach (var rad in Model.Rader) {
+        <tr>
+            @foreach (var varde in rad.Varden)
+            {
+                <td>
+                    @varde
+                </td>
+            }
+        </tr>
+    }
+</table>

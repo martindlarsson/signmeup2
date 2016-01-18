@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using SignMeUp2.Data;
 using SignMeUp2.ViewModels;
 using SignMeUp2.Helpers;
 
@@ -69,7 +63,7 @@ namespace SignMeUp2.Controllers
                     EvenemangsNamn = formular.Namn,
                     KanBetalaMedFaktura = formular.Evenemang.Fakturabetalning.HasValue ? formular.Evenemang.Fakturabetalning.Value : false,
                     FAVM = f,
-                    Steps = formular.Steg
+                    Formular = formular
                 };
             }
 
@@ -106,8 +100,8 @@ namespace SignMeUp2.Controllers
             {
                 if (!string.IsNullOrEmpty(ok))
                 {
-                    var stegNamn = form.Get("Namn");
-                    var steg = SUPVM.Steps.FirstOrDefault(s => s.Namn == stegNamn);
+                    var stegId = form.Get("StegId");
+                    var steg = SUPVM.Steps.FirstOrDefault(s => s.Id.ToString() == stegId);
 
                     if (steg == null)
                         return ShowError(log, "Ett oväntat fel inträffade, var god försök igen.", true, new Exception("Wizard steg finns inte i TempData"));
@@ -222,14 +216,14 @@ namespace SignMeUp2.Controllers
             // Payson
             else if (!string.IsNullOrEmpty(Request["betala"]))
             {
-#if DEBUG
-                // Spara i databasen
-                var reg = smuService.Spara(SUPVM);
-                Session["VM"] = null;
-                return RedirectToAction("BekraftelseBetalning", new { id = reg.Id });
-#else
+//#if DEBUG
+//                // Spara i databasen
+//                var reg = smuService.Spara(SUPVM);
+//                Session["VM"] = null;
+//                return RedirectToAction("BekraftelseBetalning", new { id = reg.Id });
+//#else
                 return RedirectToAction("Index", "Payson");
-#endif
+//#endif
             }
             // Faktura
             else if (!string.IsNullOrEmpty(Request["faktura"]))

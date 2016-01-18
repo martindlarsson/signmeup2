@@ -1,0 +1,6 @@
+﻿For credit card payments a test card can be used: 4581 1111 1111 1112.
+Any expiration date and any Cvc code between 100 and 500 will work with this card.
+
+API User ID (AgentId): 4
+API Password (MD5-key): 2acab30d-fe50-426f-90d7-8c60a7eb31d4
+Receiver Email: testagent-1@payson.se

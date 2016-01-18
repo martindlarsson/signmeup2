@@ -12,6 +12,7 @@ namespace SignMeUp2.Data
         {
             Rabatter = new HashSet<Rabatter>();
             Forseningsavgifter = new HashSet<Forseningsavgift>();
+            Formular = new HashSet<Formular>();
         }
 
         public int Id { get; set; }
@@ -37,16 +38,10 @@ namespace SignMeUp2.Data
 
         public virtual ICollection<Formular> Formular { get; set; }
 
-        //public virtual ICollection<Registreringar> Registreringar { get; set; }
-
-        //public virtual ICollection<Banor> Banor { get; set; }
-
-        //public virtual ICollection<Kanoter> Kanoter { get; set; }
-
-        //public virtual ICollection<Klasser> Klasser { get; set; }
-
         public virtual ICollection<Rabatter> Rabatter { get; set; }
 
         public virtual ICollection<Forseningsavgift> Forseningsavgifter { get; set; }
+
+        //public virtual ICollection<Lista> Listor { get; set; }
     }
 }

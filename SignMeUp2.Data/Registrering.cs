@@ -8,6 +8,11 @@ namespace SignMeUp2.Data
     [Table("Registrering")]
     public partial class Registrering
     {
+        public Registrering()
+        {
+            Svar = new List<FaltSvar>();
+        }
+
         public int Id { get; set; }
 
         public int? FormularId { get; set; }
@@ -24,6 +29,8 @@ namespace SignMeUp2.Data
 
         [Required]
         public DateTime? Registreringstid { get; set; }
+
+        public int AttBetala { get; set; }
         
         public int Forseningsavgift { get; set; }
         

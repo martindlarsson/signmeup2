@@ -7,10 +7,15 @@ namespace SignMeUp2.Data
     [Table("FormularSteg")]
     public partial class FormularSteg
     {
+        public FormularSteg()
+        {
+            Falt = new List<Falt>();
+        }
+
         public int Id { get; set; }
 
-        //[Required]
-        //public string Namn { get; set; }
+        [Required]
+        public string Namn { get; set; }
 
         [Required]
         public int Index { get; set; }
