@@ -17,15 +17,24 @@ namespace SignMeUp2.Data
 
         public int? EvenemangsId { get; set; }
         public virtual Evenemang Evenemang { get; set; }
-
-        public virtual ICollection<Registrering> Registreringar { get; set; }
-
+        
         [Required]
         public string Namn { get; set; }
 
         [Required]
         public int Avgift { get; set; }
+
+        public int? MaxRegistreringar { get; set; }
+
+        [Required]
+        public bool Publikt { get; set; }
+
+        public int AktivitetsId { get; set; }
+
+        public Aktivitet Aktivitet { get; set; }
         
+        public virtual ICollection<Registrering> Registreringar { get; set; }
+
         public virtual ICollection<FormularSteg> Steg { get; set; }
 
         public virtual ICollection<Lista> Listor { get; set; }

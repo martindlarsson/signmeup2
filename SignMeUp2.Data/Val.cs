@@ -17,6 +17,9 @@
         [Required]
         public int Avgift { get; set; }
 
+        [Required]
+        public int Index { get; set; }
+
         public int? FaltId { get; set; }
         public virtual Falt Falt { get; set; }
     }

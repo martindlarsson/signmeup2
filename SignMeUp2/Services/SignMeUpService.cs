@@ -5,6 +5,7 @@ using SignMeUp2.ViewModels;
 using log4net;
 using System.Data.Entity;
 using SignMeUp2.Helpers;
+using System.Collections.Generic;
 
 namespace SignMeUp2.Services
 {
@@ -18,6 +19,15 @@ namespace SignMeUp2.Services
         public SignMeUpService()
         {
             log = LogManager.GetLogger(GetType());
+        }
+
+        internal ICollection<Formular> GetFormularForEvenemang(int evenemandsId)
+        {
+            var formularQuery = from formular in Db.Formular
+                                where formular.EvenemangsId == evenemandsId
+                                select formular;
+
+            return formularQuery.ToList();
         }
 
         public SignMeUpDataModel Db
@@ -42,8 +52,6 @@ namespace SignMeUp2.Services
             var listan = Db.Listor.Include(l => l.Falt).Include(l => l.Formular).Include(l => l.Formular.Registreringar).Single(l => l.Id == value);
             if (listan == null)
                 return null;
-
-            //var formular = Db.Formular.Single(f => f.Id == listan.FormularId);
             
             // TODO mappa till en view model
             return ClassMapper.MappaTillTabell(listan);

@@ -19,6 +19,7 @@ namespace SignMeUp2.ViewModels
     {
         public string Rubrik { get; set; }
         public int FaltId { get; set; }
+        public int Index { get; set; }
     }
 
     public class Rad

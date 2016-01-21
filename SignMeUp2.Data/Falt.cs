@@ -33,6 +33,9 @@ namespace SignMeUp2.Data
         [Required]
         public bool Avgiftsbelagd { get; set; }
 
+        [Required]
+        public int Index { get; set; }
+
         public virtual ICollection<ListaFalt> Listor { get; set; }
     }
 }

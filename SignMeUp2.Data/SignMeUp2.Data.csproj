@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aktivitet.cs" />
     <Compile Include="Betalningsmetoder.cs" />
     <Compile Include="Evenemang.cs" />
     <Compile Include="Falt.cs" />

@@ -41,7 +41,5 @@ namespace SignMeUp2.Data
         public virtual ICollection<Rabatter> Rabatter { get; set; }
 
         public virtual ICollection<Forseningsavgift> Forseningsavgifter { get; set; }
-
-        //public virtual ICollection<Lista> Listor { get; set; }
     }
 }

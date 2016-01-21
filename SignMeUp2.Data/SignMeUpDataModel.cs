@@ -51,23 +51,18 @@ namespace SignMeUp2.Data
                 .WithRequired(f => f.Evenemang)
                 .HasForeignKey(f => f.EvenemangsId)
                 .WillCascadeOnDelete(true);
-
-            //modelBuilder.Entity<Evenemang>()
-            //    .HasMany(e => e.Listor)
-            //    .WithRequired(l => l.Evenemang)
-            //    .HasForeignKey(l => l.EvenemangId)
-            //    .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<Lista>()
-            //    .HasRequired(l => l.Formular)
-            //    .WithRequiredDependent()
-            //    .WillCascadeOnDelete(false);
-
+            
             modelBuilder.Entity<Formular>()
                 .HasMany(f => f.Listor)
                 .WithRequired(l => l.Formular)
                 .HasForeignKey(l => l.FormularId)
                 .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Aktivitet>()
+                .HasMany(a => a.Formular)
+                .WithRequired(f => f.Aktivitet)
+                .HasForeignKey(f => f.AktivitetsId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Lista>()
                 .HasMany(l => l.Falt) // ListaFalt mappar falten i listan till falten

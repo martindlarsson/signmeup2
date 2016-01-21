@@ -55,25 +55,33 @@ namespace SignMeUp2.Helpers
         internal static TabellViewModel MappaTillTabell(Lista listan)
         {
             var tabell = new TabellViewModel { Namn = listan.Namn };
-
-            // Sortera efter index
-            listan.Falt.OrderBy(f => f.Index);
-
-            // skapa kolumnerna
+            var kolumner = new List<Kolumn>();
+            
+            // Skapa kolumnerna
             foreach(var falt in listan.Falt)
             {
-                // TODO, speca ordning på fälten i listan??
-                tabell.Kolumner.Add(new Kolumn { Rubrik = falt.Falt.Namn, FaltId = falt.FaltId.Value });
+                kolumner.Add(new Kolumn { Rubrik = falt.Falt.Namn, FaltId = falt.FaltId.Value, Index = falt.Index });
             }
-
+            
+            tabell.Kolumner = kolumner.OrderBy(k => k.Index).ToList();
+            kolumner = null;
+            
             // Hämta svaren
-            foreach(var registrering in listan.Formular.Registreringar)
+            foreach (var registrering in listan.Formular.Registreringar)
             {
                 var rad = new Rad();
                 foreach (var kolumn in tabell.Kolumner)
                 {
-                    rad.Varden.Add(registrering.Svar.Single(s => s.FaltId == kolumn.FaltId).Varde);
+                    var svar = registrering.Svar.Single(s => s.FaltId == kolumn.FaltId);
+                    var textSvar = svar.Varde;
+                    // Om det är val, slå upp namnet på valet
+                    if (svar.Falt.Typ == FaltTyp.val_falt)
+                    {
+                        textSvar = svar.Falt.Val.Single(v => v.Id.ToString() == svar.Varde).Namn;
+                    }
+                    rad.Varden.Add(textSvar);
                 }
+                tabell.Rader.Add(rad);
             }
 
             return tabell;

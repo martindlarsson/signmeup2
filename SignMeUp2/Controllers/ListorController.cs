@@ -11,7 +11,7 @@ using SignMeUp2.ViewModels;
 
 namespace SignMeUp2.Controllers
 {
-    public class ListController : BaseController
+    public class ListorController : BaseController
     {
 
         protected override string GetEntitetsNamn()
