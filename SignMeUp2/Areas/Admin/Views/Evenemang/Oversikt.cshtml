@@ -10,115 +10,85 @@
 
 <h2>@Model.Namn</h2>
 
-<div class="row col-md-12">
-    <div class="col-md-4">Anmälan öppnar: @Model.RegStart.ToString("yyyy-MM-dd kl HH:mm")</div>
-    <div class="col-md-4">Anmälan stänger: @Model.RegStop.ToString("yyyy-MM-dd kl HH:mm")</div>
-    <div class="col-md-4">@Html.ActionLink("Editera evenemang", "Edit", "Evenemang", new { id = Model.Id }, new { @class = "btn btn-primary" })</div>
+<div class="col-md-12 bg-success">
+    <p>Anmälan öppnar: @Model.RegStart.ToString("yyyy-MM-dd kl HH:mm")</p>
+    <p>Anmälan stänger: @Model.RegStop.ToString("yyyy-MM-dd kl HH:mm")</p>
+    <p>@Html.ActionLink("Redigera evenemang", "Edit", "Evenemang", new { id = Model.Id }, new { @class = "btn btn-primary" })</p>
 </div>
 
-@* TODO - Summera antelet anmälningar från formulären *@
-@*<div class="row col-md-12">
-    <h3>@Model.Registreringar.Count() anmälda lag</h3> @Html.ActionLink("Visa listan", "Index", "Registreringar", new { id = Model.Id }, new { @class = "btn btn-primary" })
-</div>*@
+@{Html.RenderPartial("_Message", null);}
 
-<div class="row">
-    <div class="col-md-6">
-        <h3>Formulär</h3>
-        <table class="table table-striped">
+<div class="col-md-12">
+    <h3>
+        @Html.ActionLink("+", "Create", "Formular", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+        Formulär
+    </h3>
+    <table class="table table-striped">
+        <tr>
+            <th>Namn</th>
+            <th>Anmälda</th>
+            <th>Max anmälningar</th>
+            <th>Avgift</th>
+        </tr>
+        @foreach (var formular in Model.Formular)
+        {
+            var max = formular.MaxRegistreringar == null || formular.MaxRegistreringar == 0 ?
+                "Obegränsat" :
+                formular.MaxRegistreringar.ToString();
             <tr>
-                <th>Namn</th>
-                <th>Antal steg</th>
-                <th>Avgift</th>
+                <td>@Html.ActionLink(formular.Namn, "Edit", "Formular", new { id = formular.Id }, new { @class = "btn btn-link" }) </td>
+                <td>@formular.Registreringar.Count()</td>
+                <td>@max</td>
+                <td>@formular.Avgift</td>
             </tr>
-            @foreach (var formular in Model.Formular)
-            {
-                <tr>
-                    <td>@formular.Namn</td>
-                    <td>@formular.Steg.Count</td>
-                    <td>@formular.Avgift</td>
-                </tr>
-            }
-        </table>
-        @Html.ActionLink("Redigera banor", "Index", "Banor", new { id = Model.Id }, new { @class = "btn btn-primary" })
-    </div>
-    <div class="col-md-6">
-        <h3>Klasser</h3>
-        <table class="table table-striped">
-            <tr>
-                <th>Namn</th>
-            </tr>
-            @*@foreach (var klass in Model.Klasser)
-            {
-                <tr>
-                    <td>@klass.Namn</td>
-                </tr>
-            }*@
-        </table>
-        @Html.ActionLink("Redigera klasser", "Index", "Klasser", new { id = Model.Id }, new { @class = "btn btn-primary" })
-    </div>
+        }
+    </table>
 </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <h3>Kanoter</h3>
-        <table class="table table-striped">
+<div class="col-md-12">
+    <h3>
+        @Html.ActionLink("+", "Create", "Rabatter", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+        Rabatter
+    </h3>
+    <table class="table table-striped">
+        <tr>
+            <th>Kod</th>
+            <th>Summa</th>
+            <th>Beskrivning</th>
+        </tr>
+        @foreach (var rabatt in Model.Rabatter)
+        {
             <tr>
-                <th>Namn</th>
-                <th>Avgift</th>
+                <td>@Html.ActionLink(rabatt.Kod, "Edit", "Rabatter", new { id = rabatt.Id }, new { @class = "btn btn-link" }) </td>
+                <td>@rabatt.Summa</td>
+                <td>@rabatt.Beskrivning</td>
             </tr>
-            @*@foreach (var kanot in Model.Kanoter)
-            {
-                <tr>
-                    <td>@kanot.Namn</td>
-                    <td>@kanot.Avgift</td>
-                </tr>
-            }*@
-        </table>
-        @Html.ActionLink("Redigera kanoter", "Index", "Kanoter", new { id = Model.Id }, new { @class = "btn btn-primary" })
-    </div>
-    <div class="col-md-6">
-        <h3>Rabatter</h3>
-        <table class="table table-striped">
-            <tr>
-                <th>Kod</th>
-                <th>Beskrivning</th>
-                <th>Summa</th>
-            </tr>
-            @foreach (var rabatt in Model.Rabatter)
-            {
-                <tr>
-                    <td>@rabatt.Kod</td>
-                    <td>@rabatt.Beskrivning</td>
-                    <td>@rabatt.Summa</td>
-                </tr>
-            }
-        </table>
-        @Html.ActionLink("Redigera rabatter", "Index", "Rabatter", new { id = Model.Id }, new { @class = "btn btn-primary" })
-    </div>
+        }
+    </table>
 </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <h3>Förseningsavgifter/ kanpanjer</h3>
-        <table class="table table-striped">
+<div class="col-md-12">
+    <h3>
+        @Html.ActionLink("+", "Create", "Forseningsavgift", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+        Förseningsavgifter/ kanpanjer
+    </h3>
+    <table class="table table-striped">
+        <tr>
+            <th>Namn</th>
+            <th>Från</th>
+            <th>Till</th>
+            <th>+/-</th>
+            <th>Summa</th>
+        </tr>
+        @foreach (var fa in Model.Forseningsavgifter)
+        {
             <tr>
-                <th>Namn</th>
-                <th>Valör</th>
-                <th>Från</th>
-                <th>Till</th>
-                <th>Summa</th>
+                <td>@Html.ActionLink(fa.Namn, "Edit", "Forseningsavgift", new { id = fa.Id }, new { @class = "btn btn-link" }) </td>
+                <td>@fa.FranDatum.ToString("yyyy-MM-dd kl HH:mm")</td>
+                <td>@fa.TillDatum.ToString("yyyy-MM-dd kl HH:mm")</td>
+                <td>@fa.PlusEllerMinus</td>
+                <td>@fa.Summa</td>
             </tr>
-            @foreach (var fa in Model.Forseningsavgifter)
-            {
-                <tr>
-                    <td>@fa.Namn</td>
-                    <td>@fa.PlusEllerMinus</td>
-                    <td>@fa.FranDatum.ToString("yyyy-MM-dd kl HH:mm")</td>
-                    <td>@fa.TillDatum.ToString("yyyy-MM-dd kl HH:mm")</td>
-                    <td>@fa.Summa</td>
-                </tr>
-            }
-        </table>
-        @Html.ActionLink("Redigera förseningsavgifter", "Index", "Forseningsavgift", new { id = Model.Id }, new { @class = "btn btn-primary" })
-    </div>
+        }
+    </table>
 </div>

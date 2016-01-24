@@ -17,11 +17,14 @@ namespace SignMeUp2.Areas.Admin.Controllers
         {
             var ev = HamtaEvenemangForAnv();
 
-            ViewBag.Evenemang = new SelectList(ev, "Id", "Namn");
+            //ViewBag.Evenemang = new SelectList(ev, "Id", "Namn");
             // Lägg till ngt i ViewBag som fyller dropdown för val av evenemang
 
-            ViewBag.IsAdmin = User.IsInRole("admin");
             // if role admin then show all
+            ViewBag.IsAdmin = User.IsInRole("admin");
+
+            ViewBag.Org = HamtaOrganisation();
+
             return View(ev);
         }
     }

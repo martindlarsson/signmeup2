@@ -18,7 +18,7 @@ namespace SignMeUp2.Helpers
                 foreach(var falt in steg.FaltLista)
                 {
                     ValViewModel val = null;
-                    if (falt.Avgiftsbelagd && falt.Typ == Data.FaltTyp.val_falt)
+                    if (falt.Avgiftsbelagd && falt.Typ == FaltTyp.val_falt)
                     {
                         val = falt.Val.FirstOrDefault(v => v.Id == int.Parse(falt.Varde));
                     }
@@ -49,6 +49,34 @@ namespace SignMeUp2.Helpers
                 Registreringstid = DateTime.Now,
                 PaysonToken = SUPVM.PaysonToken,
                 AttBetala = SUPVM.AttBetala
+            };
+        }
+
+        internal static Forseningsavgift MappaTillForseningsavgift(ForseningsavgiftVM forseningsavgift)
+        {
+            return new Forseningsavgift
+            {
+                EvenemangsId = forseningsavgift.EvenemangsId,
+                FranDatum = forseningsavgift.FranDatum,
+                Id = forseningsavgift.Id,
+                Namn = forseningsavgift.Namn,
+                PlusEllerMinus = forseningsavgift.PlusEllerMinus,
+                Summa = forseningsavgift.Summa,
+                TillDatum = forseningsavgift.TillDatum
+            };
+        }
+
+        internal static ForseningsavgiftVM MappaTillForseningsavgiftVM(Forseningsavgift forseningsavgift)
+        {
+            return new ForseningsavgiftVM
+            {
+                EvenemangsId = forseningsavgift.EvenemangsId.Value,
+                FranDatum = forseningsavgift.FranDatum,
+                Id = forseningsavgift.Id,
+                Namn = forseningsavgift.Namn,
+                PlusEllerMinus = forseningsavgift.PlusEllerMinus,
+                Summa = forseningsavgift.Summa,
+                TillDatum = forseningsavgift.TillDatum
             };
         }
 
@@ -85,6 +113,44 @@ namespace SignMeUp2.Helpers
             }
 
             return tabell;
+        }
+
+        internal static RabattVM MappaTillRabattVM(Rabatter rabatter)
+        {
+            return new RabattVM
+            {
+                Beskrivning = rabatter.Beskrivning,
+                Id = rabatter.Id,
+                Kod = rabatter.Kod,
+                Summa = rabatter.Summa,
+                EvenemangsId = rabatter.EvenemangsId
+            };
+        }
+
+        internal static Rabatter MappaTillRabatt(RabattVM rabatt)
+        {
+            return new Rabatter
+            {
+                Beskrivning = rabatt.Beskrivning,
+                EvenemangsId = rabatt.EvenemangsId,
+                Id = rabatt.Id,
+                Kod = rabatt.Kod,
+                Summa = rabatt.Summa
+            };
+        }
+
+        internal static Data.Evenemang MappaTillEvenemang(EvenemangVM evenemang)
+        {
+            return new Data.Evenemang
+            {
+                Id = evenemang.Id,
+                FakturaBetaldSenast = evenemang.FakturaBetaldSenast,
+                Fakturabetalning = evenemang.Fakturabetalning,
+                Namn = evenemang.Namn,
+                OrganisationsId = evenemang.OrganisationsId,
+                RegStart = evenemang.RegStart,
+                RegStop = evenemang.RegStop
+            };
         }
 
         public static FormularViewModel MappaTillFormular(Formular formular)

@@ -179,12 +179,16 @@ namespace SignMeUp2.Controllers
             {
                 return ShowError(log, "Ett oväntat fel uppstod. Var god försök senare.", true, new Exception("View model var null i Session. (BekraftaRegistrering POST)"));
             }
-
-            ViewBag.ev = SUPVM.EvenemangsNamn;
+            
+            SetViewBag(SUPVM.EvenemangsId);
             
             LogDebug(log, "Användare bekräfta registrering (GET) för " + SUPVM.EvenemangsNamn);
 
             Session["VM"] = SUPVM;
+
+            var reg = ClassMapper.MappaTillRegistrering(SUPVM, smuService);
+            ViewBag.Registrering = reg;
+
             return View(SUPVM);
         }
 
@@ -215,15 +219,19 @@ namespace SignMeUp2.Controllers
             }
             // Payson
             else if (!string.IsNullOrEmpty(Request["betala"]))
-            {
-//#if DEBUG
-//                // Spara i databasen
-//                var reg = smuService.Spara(SUPVM);
-//                Session["VM"] = null;
-//                return RedirectToAction("BekraftelseBetalning", new { id = reg.Id });
-//#else
+            {   
+                // Om anmälan är gratis, spara och visa bekräftelse
+                if (SUPVM.AttBetala == 0)
+                {
+                    var reg = smuService.Spara(SUPVM);
+                    Session["VM"] = null;
+                    reg.HarBetalt = true;
+                    smuService.UpdateraRegistrering(reg);
+                    SkickaRegMail(reg);
+                    return RedirectToAction("BekraftelseBetalning", new { id = reg.Id });
+                }
+
                 return RedirectToAction("Index", "Payson");
-//#endif
             }
             // Faktura
             else if (!string.IsNullOrEmpty(Request["faktura"]))

@@ -27,3 +27,8 @@ textarea {
 .table tbody>tr>td.vert-align{
     vertical-align: middle;
 }
+
+.table tbody > tr > td > a {
+    color: #ebebeb;
+    font-size: 12px;
+}

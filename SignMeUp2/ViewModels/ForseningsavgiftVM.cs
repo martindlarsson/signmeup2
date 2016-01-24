@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 using SignMeUp2.Data;
 
@@ -13,20 +9,22 @@ namespace SignMeUp2.ViewModels
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Namn måste anges")]
         public string Namn { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Från datum måste anges")]
         public DateTime FranDatum { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Till datum måste anges")]
         public DateTime TillDatum { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Avgift/rabatt måste anges")]
         public TypAvgift PlusEllerMinus { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Summa måste anges")]
         public int Summa { get; set; }
+
+        public int EvenemangsId { get; set; }
 
     }
 }

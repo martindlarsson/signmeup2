@@ -14,7 +14,7 @@ namespace SignMeUp2.Services
         protected readonly ILog log;
         private SignMeUpDataModel _context;
 
-        private Evenemang CurrentEvenemang { get; set; }
+        private Data.Evenemang CurrentEvenemang { get; set; }
 
         public SignMeUpService()
         {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SignMeUp2.ViewModels
 {
@@ -11,12 +6,15 @@ namespace SignMeUp2.ViewModels
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Kod måste anges")]
         public string Kod { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Summa måste anges")]
+        [Range(typeof(int), "1", "99999999", ErrorMessage = "Summan måste vara ett positivt heltal")]
         public int Summa { get; set; }
 
         public string Beskrivning { get; set; }
+
+        public int EvenemangsId { get; set; }
     }
 }

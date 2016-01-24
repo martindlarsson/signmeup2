@@ -57,14 +57,17 @@
                 @Html.ValidationMessageFor(model => model.FakturaBetaldSenast, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-2">
                 <input type="submit" value="Spara" class="btn btn-success" />
+            </div>
+            <div class="col-md-offset-3 col-md-2">
+                @Html.ActionLink("Radera", "Delete", new { id = Model.Id}, new {  @class = "btn btn-danger", @onclick = "return confirm('Är du säker på att du vill radera detta evenemang?');" })
             </div>
         </div>
     </div>
 }
+
 
 @{Html.RenderPartial("_footerEntity", Model);}
 

@@ -1,4 +1,4 @@
-﻿@model SignMeUp2.Data.Forseningsavgift
+﻿@model SignMeUp2.ViewModels.ForseningsavgiftVM
 
 @{
     ViewBag.Title = "Lägg till Förseningsavgift";
@@ -24,9 +24,7 @@
     </div>
 }
 
-<div class="row">
-    @Html.ActionLink("Tillbaka till listan", "Index", new { id = ViewBag.Evenemang.Id }, new { @class = "btn btn-primary" })
-</div>
+@{Html.RenderPartial("_footerEntity", Model);}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

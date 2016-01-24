@@ -1,0 +1,11 @@
+﻿
+@{
+    if (TempData["Message"] != null)
+    {
+        <div class="bg-warning col-md-12">
+            <div style="padding: 5px 5px 5px 5px;">
+                @TempData["Message"]
+            </div>
+        </div>
+    }
+}

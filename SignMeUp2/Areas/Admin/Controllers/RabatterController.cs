@@ -6,6 +6,8 @@ using System.Net;
 using System.Web.Mvc;
 using SignMeUp2.Data;
 using SignMeUp2.Controllers;
+using SignMeUp2.ViewModels;
+using SignMeUp2.Helpers;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -66,7 +68,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Kod,Summa,Beskrivning")] Rabatter rabatter, int? id)
+        public ActionResult Create([Bind(Include = "Id,Kod,Summa,Beskrivning")] RabattVM rabatt, int? id)
         {
             if (id == null)
             {
@@ -75,14 +77,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                rabatter.EvenemangsId = id.Value;
-                db.Rabatter.Add(rabatter);
+                Rabatter nyRabatt = ClassMapper.MappaTillRabatt(rabatt);
+                nyRabatt.EvenemangsId = id.Value;
+                db.Rabatter.Add(nyRabatt);
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = id });
+                return RedirectToAction("Oversikt", "Evenemang", new { id = id });
             }
 
             SetViewBag(id);
-            return View(rabatter);
+            return View(rabatt);
         }
 
         // GET: Rabatter/Edit/5
@@ -93,14 +96,17 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Rabatter rabatter = db.Rabatter.Find(id);
+
+            RabattVM rabatt = ClassMapper.MappaTillRabattVM(rabatter);
+
             if (rabatter == null)
             {
                 return HttpNotFound();
             }
 
-            SetViewBag(id);
+            SetViewBag(rabatt.EvenemangsId);
 
-            return View(rabatter);
+            return View(rabatt);
         }
 
         // POST: Rabatter/Edit/5
@@ -108,13 +114,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Kod,Summa,Beskrivning,EvenemangsId")] Rabatter rabatter)
+        public ActionResult Edit([Bind(Include = "Id,Kod,Summa,Beskrivning,EvenemangsId")] RabattVM rabatter)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(rabatter).State = EntityState.Modified;
+                var editeradRabatt = ClassMapper.MappaTillRabatt(rabatter);
+                db.Entry(editeradRabatt).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = rabatter.EvenemangsId });
+                TempData["Message"] = "Sparat ändringar i rabatt med kod " + editeradRabatt.Kod;
+                return RedirectToAction("Oversikt", "Evenemang", new { id = rabatter.EvenemangsId });
             }
 
             SetViewBag(rabatter.EvenemangsId);
@@ -124,19 +132,22 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Rabatter/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Rabatter rabatter = db.Rabatter.Find(id);
-            if (rabatter == null)
+            var evId = rabatter.EvenemangsId;
+            var kod = rabatter.Kod;
+            try
             {
-                return HttpNotFound();
+                db.Rabatter.Remove(rabatter);
+                db.SaveChanges();
+                TempData["Message"] = "Raderat rabatt med kod " + kod;
+                return RedirectToAction("Oversikt", "Evenemang", new { id = evId });
             }
-
-            SetViewBag(rabatter.EvenemangsId);
-
-            return View(rabatter);
+            catch (Exception)
+            {
+                SetViewBag(evId);
+                ViewBag.Error = "Kunde inte ta bort denna rabatt. Det kan vara så att den används i en registrering.";
+                return View(rabatter);
+            }
         }
 
         // POST: Rabatter/Delete/5

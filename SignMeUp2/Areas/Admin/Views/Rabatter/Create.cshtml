@@ -1,4 +1,4 @@
-﻿@model SignMeUp2.Data.Rabatter
+﻿@model SignMeUp2.ViewModels.RabattVM
 
 @{
     ViewBag.Title = "Lägg till rabatt";
@@ -25,10 +25,4 @@
     </div>
 }
 
-<div class="row">
-    @Html.ActionLink("Tillbaka till listan", "Index", new { id = ViewBag.Evenemang.Id }, new { @class = "btn btn-primary" })
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+@{Html.RenderPartial("_footerEntity", Model);}

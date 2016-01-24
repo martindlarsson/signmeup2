@@ -1,21 +1,17 @@
 ﻿@model SignMeUp2.Models.RegisterViewModel
 @{
     ViewBag.Title = "Skapa konto";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Organisation, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Organisation, new { @class = "form-control" })
-        </div>
-    </div>
+    <h4>Användaruppgifter</h4>
+    <hr />
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
@@ -26,12 +22,6 @@
         @Html.LabelFor(m => m.EmailSender, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.EmailSender, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Adress, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Adress, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
@@ -46,9 +36,63 @@
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
         </div>
     </div>
+    <h4>Organisations- eller personuppgifter</h4>
+    <hr/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Organisation, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Organisation, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Adress, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Adress, new { @class = "form-control" })
+        </div>
+    </div>
+    <script>
+        EnableSubmit = function (val) {
+            $('input[type="submit"]').prop('disabled', function (i, v) { return !v; });
+        }
+    </script>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" onclick="EnableSubmit();" /> Jag godkänner <a href="#" data-toggle="modal" data-target="#myModal">villkoren för tjänsten</a>
+                </label>
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Skapa konto" />
+            <input type="submit" class="btn btn-default" value="Skapa konto" disabled="disabled" />
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Villkor för tjänsten</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Tjänsten kan användas i kommersiella syften.</p>
+                    <p>Upphovsmannen för tjänsten tar inget ansvar för innehållet i tjänsten som användarna lägger in.</p>
+                    <p>Upphovsmannen förbehåller sig rätten att ta bort användares data vid givet tillfälle. Detta med största möjliga respekt för användarna.</p>
+                    <p>Upphovsmannen tar inte ansvar för att tjänsten är tillgånglig vid alla tillfällen.</p>
+                    <p>Upphovsmannen tar inte ansvar för att åtgärda fel i tjänsten. Fel kommer att åtgärdas inom rimlig tid med hänsyn till tillgänglig tid för upphovsmannen.</p>
+                    <p>Inga pengar hanteras av denna tjänst. Detta hanteras av en tjänst som heter Payson.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
+                </div>
+            </div>
+
         </div>
     </div>
 }

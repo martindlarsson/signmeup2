@@ -42,6 +42,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClearScript, Version=5.4.1.0, Culture=neutral, PublicKeyToken=935d0c957da47c73, processorArchitecture=MSIL">
+      <HintPath>..\packages\JavaScriptEngineSwitcher.V8.1.2.4\lib\net40\ClearScript.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -55,6 +59,22 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="JavaScriptEngineSwitcher.Core, Version=1.2.4.0, Culture=neutral, PublicKeyToken=c608b2a8cc9e4472, processorArchitecture=MSIL">
+      <HintPath>..\packages\JavaScriptEngineSwitcher.Core.1.2.4\lib\net40\JavaScriptEngineSwitcher.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JavaScriptEngineSwitcher.Msie, Version=1.2.4.0, Culture=neutral, PublicKeyToken=c608b2a8cc9e4472, processorArchitecture=MSIL">
+      <HintPath>..\packages\JavaScriptEngineSwitcher.Msie.1.2.4\lib\net40\JavaScriptEngineSwitcher.Msie.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JavaScriptEngineSwitcher.V8, Version=1.2.4.0, Culture=neutral, PublicKeyToken=c608b2a8cc9e4472, processorArchitecture=MSIL">
+      <HintPath>..\packages\JavaScriptEngineSwitcher.V8.1.2.4\lib\net40\JavaScriptEngineSwitcher.V8.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JSPool, Version=0.3.0.0, Culture=neutral, PublicKeyToken=2fc7775f73072640, processorArchitecture=MSIL">
+      <HintPath>..\packages\JSPool.0.3.1\lib\net40-Client\JSPool.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -107,14 +127,31 @@
     <Reference Include="Microsoft.WindowsAzure.Storage">
       <HintPath>..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
     </Reference>
+    <Reference Include="MsieJavaScriptEngine, Version=1.5.1.0, Culture=neutral, PublicKeyToken=a3a2846a37ac0d3e, processorArchitecture=MSIL">
+      <HintPath>..\packages\MsieJavaScriptEngine.1.5.1\lib\net40\MsieJavaScriptEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MvcContrib">
       <HintPath>..\packages\MvcContrib.2.0.95.0\lib\MvcContrib.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PaysonIntegration, Version=1.31.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PaysonApiIntegrationDotNet.1.31.0\lib\PaysonIntegration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="React.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=9aed67b161f7db78, processorArchitecture=MSIL">
+      <HintPath>..\packages\React.Core.2.1.2\lib\net40\React.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="React.Web, Version=2.1.0.0, Culture=neutral, PublicKeyToken=9aed67b161f7db78, processorArchitecture=MSIL">
+      <HintPath>..\packages\React.Web.2.1.2\lib\net40\React.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="React.Web.Mvc4, Version=2.1.0.0, Culture=neutral, PublicKeyToken=9aed67b161f7db78, processorArchitecture=MSIL">
+      <HintPath>..\packages\React.Web.Mvc4.2.1.2\lib\net40\React.Web.Mvc4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SendGrid.SmtpApi">
@@ -183,6 +220,14 @@
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
+    <Reference Include="VroomJs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9aed67b161f7db78, processorArchitecture=MSIL">
+      <HintPath>..\packages\React.Core.2.1.2\lib\net40\VroomJs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0.5\lib\net40\WebActivatorEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -246,6 +291,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\ReactConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -315,16 +361,14 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
-    <Compile Include="ViewModels\BekraftaRegistreringViewModel.cs" />
     <Compile Include="ViewModels\BetalningsmetoderVM.cs" />
-    <Compile Include="ViewModels\BetalningViewModel.cs" />
+    <Compile Include="ViewModels\EvenemangVM.cs" />
     <Compile Include="ViewModels\FakturaVM.cs" />
     <Compile Include="ViewModels\FaltViewModel.cs" />
     <Compile Include="ViewModels\FormularViewModel.cs" />
     <Compile Include="ViewModels\KontaktuppgifterVM.cs" />
     <Compile Include="ViewModels\TabellViewModel.cs" />
     <Compile Include="ViewModels\RabattVM.cs" />
-    <Compile Include="ViewModels\DeltagareVM.cs" />
     <Compile Include="ViewModels\ForseningsavgiftVM.cs" />
     <Compile Include="ViewModels\InvoiceVM.cs" />
     <Compile Include="ViewModels\PaysonViewModel.cs" />
@@ -340,12 +384,26 @@
   <ItemGroup>
     <Content Include="ApplicationInsights.config" />
     <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="Areas\Admin\Views\Shared\_Message.cshtml" />
+    <None Include="ClearScript.V8\ClearScriptV8-32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ClearScript.V8\ClearScriptV8-64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ClearScript.V8\v8-ia32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ClearScript.V8\v8-x64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.superhero.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -365,10 +423,7 @@
     <Content Include="Areas\Admin\Views\Betalningsmetoder\CreateOrUpdate.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Areas\Admin\Views\Forseningsavgift\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Forseningsavgift\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Forseningsavgift\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Forseningsavgift\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Forseningsavgift\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Evenemang\Oversikt.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EvenemangsValjare.cshtml" />
@@ -456,12 +511,9 @@
     <Content Include="Areas\Admin\Views\Shared\_footerCreate.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_footerIndex.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_headerIndex.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Kanoter.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_footerDelete.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Banor.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Forseningsavgift.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Klasser.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Rabatter.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\ForseningsavgiftVM.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\RabattVM.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_footerEntity.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Invoice.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Boolean.cshtml" />
@@ -524,15 +576,9 @@
     <Content Include="Views\Shared\_SimpleLayoutRedirect.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Evenemang\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Evenemang\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Evenemang\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Evenemang\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Evenemang\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Rabatter\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Rabatter\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Rabatter\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Rabatter\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Rabatter\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Registreringar\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Registreringar\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Registreringar\Details.cshtml" />
@@ -567,6 +613,7 @@
     <Content Include="Views\Shared\_faktura.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Registrering.cshtml" />
     <Content Include="Views\Listor\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

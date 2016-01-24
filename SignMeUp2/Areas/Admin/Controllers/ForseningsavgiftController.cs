@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using SignMeUp2.Data;
 using SignMeUp2.Controllers;
+using SignMeUp2.ViewModels;
+using SignMeUp2.Helpers;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -19,36 +21,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
             return _entity;
         }
 
-        // GET: Admin/Forseningsavgift
-        public ActionResult Index(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            SetViewBag(id);
-
-            var forseningsavgifter = db.Forseningsavgift.Include(f => f.Evenemang).Where(f => f.EvenemangsId == id.Value);
-
-            return View(forseningsavgifter.ToList());
-        }
-
-        // GET: Admin/Forseningsavgift/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Forseningsavgift forseningsavgift = db.Forseningsavgift.Find(id);
-            if (forseningsavgift == null)
-            {
-                return HttpNotFound();
-            }
-            return View(forseningsavgift);
-        }
-
         // GET: Admin/Forseningsavgift/Create
         public ActionResult Create(int? id)
         {
@@ -57,9 +29,9 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(SignMeUp2.Data.TypAvgift));
+            ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(TypAvgift));
             SetViewBag(id);
-
+            
             return View();
         }
 
@@ -68,21 +40,24 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Namn,FranDatum,TillDatum,PlusEllerMinus,Summa")] Forseningsavgift forseningsavgift, int? id)
+        public ActionResult Create([Bind(Include = "Id,Namn,FranDatum,TillDatum,PlusEllerMinus,Summa")] ForseningsavgiftVM forseningsavgift, int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            forseningsavgift.EvenemangsId = id.Value;
+            
             if (ModelState.IsValid)
             {
-                forseningsavgift.EvenemangsId = id;
-                db.Forseningsavgift.Add(forseningsavgift);
+                var nyForseningsavgift = ClassMapper.MappaTillForseningsavgift(forseningsavgift);
+                db.Forseningsavgift.Add(nyForseningsavgift);
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = id });
+                return RedirectToAction("Oversikt", "Evenemang", new { id = id });
             }
 
+            ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(TypAvgift));
             SetViewBag(id);
             return View(forseningsavgift);
         }
@@ -100,10 +75,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(SignMeUp2.Data.TypAvgift));
-            SetViewBag(id);
+            var forseningsavgVM = ClassMapper.MappaTillForseningsavgiftVM(forseningsavgift);
 
-            return View(forseningsavgift);
+            ViewBag.PlusEllerMinus = EnumHelper.GetSelectList(typeof(TypAvgift));
+            SetViewBag(forseningsavgift.EvenemangsId);
+
+            return View(forseningsavgVM);
         }
 
         // POST: Admin/Forseningsavgift/Edit/5
@@ -111,40 +88,22 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Namn,FranDatum,TillDatum,PlusEllerMinus,Summa,EvenemangsId")] Forseningsavgift forseningsavgift)
+        public ActionResult Edit([Bind(Include = "Id,Namn,FranDatum,TillDatum,PlusEllerMinus,Summa,EvenemangsId")] ForseningsavgiftVM forseningsavgiftVM)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(forseningsavgift).State = EntityState.Modified;
+                var forseningsavg = ClassMapper.MappaTillForseningsavgift(forseningsavgiftVM);
+                db.Entry(forseningsavg).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = forseningsavgift.EvenemangsId });
+                TempData["Message"] = "Sparat ändringar i förseningsavgift med namn " + forseningsavgiftVM.Namn;
+                return RedirectToAction("Oversikt", "Evenemang", new { id = forseningsavgiftVM.EvenemangsId });
             }
 
-            return View(forseningsavgift);
+            return View(forseningsavgiftVM);
         }
 
         // GET: Admin/Forseningsavgift/Delete/5
         public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Forseningsavgift forseningsavgift = db.Forseningsavgift.Find(id);
-            if (forseningsavgift == null)
-            {
-                return HttpNotFound();
-            }
-
-            SetViewBag(forseningsavgift.EvenemangsId);
-
-            return View(forseningsavgift);
-        }
-
-        // POST: Admin/Forseningsavgift/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
         {
             Forseningsavgift forseningsavgift = db.Forseningsavgift.Find(id);
             var evId = forseningsavgift.EvenemangsId;
@@ -153,12 +112,13 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 db.Forseningsavgift.Remove(forseningsavgift);
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = evId });
+                TempData["Message"] = "Raderat förseningsavgift med namn " + forseningsavgift.Namn;
+                return RedirectToAction("Oversikt", "Evenemang", new { id = evId });
             }
             catch (Exception)
             {
                 SetViewBag(evId);
-                ViewBag.Error = "Kunde inte ta bort denna förseningsavgift. Det kan vara så att den används i en registrering.";
+                ViewBag.Error = "Kunde inte ta bort denna förseningsavgift.";
                 return View(forseningsavgift);
             }
         }

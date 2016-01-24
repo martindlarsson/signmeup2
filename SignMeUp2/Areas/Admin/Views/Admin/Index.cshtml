@@ -5,56 +5,56 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Välkommen till administrationssidan för SignMeUp2</h2>
+<h1>Välkommen till administrationssidan</h1>
 
-<p>Här kan du administrera dina evenemang och anmälningar mm.</p>
+<p>Här ser du listan över dina evenemang. Skapa ett nytt eller redigera ett befintligt.</p>
 
-<p>
-    @Html.ActionLink("Skapa nytt evenemang", "Create", "Evenemang", null, null)
-</p>
-<table class="table">
-    <tr>
-        @if (ViewBag.IsAdmin)
-        {
-        <th>
-            Arrangör
-        </th>
-        }
-        <th>
-            Evenemang
-        </th>
-        <th>
-            Anmälan öppnar
-        </th>
-        <th>
-            Anmälan stänger
-        </th>
-        <th></th>
-    </tr>
+@{Html.RenderPartial("_Message", null);}
 
-    @foreach (var item in Model)
-    {
+<div class="col-md-12">
+    <h3>
+        @Html.ActionLink("+", "Create", "Evenemang", new { id = ViewBag.Org.Id }, new { @class = "btn btn-sm btn-primary" })
+        Evenemang
+    </h3>
+    <table class="table table-striped">
         <tr>
             @if (ViewBag.IsAdmin)
             {
-            <td class="vert-align">
-                @Html.ActionLink(item.Organisation.Namn, "Edit", "Organisation", new { id = item.OrganisationsId }, null)
-            </td>
+                <th>
+                    Arrangör
+                </th>
             }
-            <td class="vert-align">
-                @item.Namn
-            </td>
-            <td class="vert-align">
-                @item.RegStart.ToString("yyyy-MM-dd HH:mm")
-            </td>
-            <td class="vert-align">
-                @item.RegStop.ToString("yyyy-MM-dd HH:mm")
-            </td>
-            <td class="vert-align">
-                @Html.ActionLink("Redigera", "Oversikt", "Evenemang", new { id = item.Id }, new { @class = "btn btn-primary" })
-                @Html.ActionLink("Radera", "Delete", "Evenemang", new { id = item.Id }, new { @class = "btn btn-danger" })
-            </td>
+            <th>
+                Evenemang
+            </th>
+            <th>
+                Anmälan öppnar
+            </th>
+            <th>
+                Anmälan stänger
+            </th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (ViewBag.IsAdmin)
+                {
+                    <td class="vert-align">
+                        @Html.ActionLink(item.Organisation.Namn, "Edit", "Organisation", new { id = item.OrganisationsId }, new { @class = "btn btn-link" })
+                    </td>
+                }
+                <td class="vert-align">
+                    @Html.ActionLink(item.Namn, "Oversikt", "Evenemang", new { id = item.Id }, null)
+                </td>
+                <td class="vert-align">
+                    @item.RegStart.ToString("yyyy-MM-dd HH:mm")
+                </td>
+                <td class="vert-align">
+                    @item.RegStop.ToString("yyyy-MM-dd HH:mm")
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

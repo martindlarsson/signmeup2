@@ -26,6 +26,11 @@ namespace SignMeUp2
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
+                      //"~/Content/bootstrap-datetimepicker.min.css",
+                      "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/admincss").Include(
+                      "~/Content/bootstrap.superhero.min.css",
                       "~/Content/bootstrap-datetimepicker.min.css",
                       "~/Content/site.css"));
 

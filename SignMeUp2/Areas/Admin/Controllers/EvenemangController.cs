@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Mvc;
 using SignMeUp2.Data;
 using SignMeUp2.Controllers;
+using SignMeUp2.Helpers;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -16,34 +17,13 @@ namespace SignMeUp2.Areas.Admin.Controllers
             return _entity;
         }
 
-        // GET: Evenemang
-        public ActionResult Index()
-        {
-            return View(HamtaEvenemangForAnv());
-        }
-
         public ActionResult Oversikt(int? id)
         {
             var evenemang = db.Evenemang.Include("Rabatter").Include("Forseningsavgifter").Include("Formular").FirstOrDefault(e => e.Id == id.Value);
 
             if (evenemang == null)
-                ShowError(log, "Hittade inte evenemanget", true);
+                return ShowError(log, "Hittade inte evenemanget", true);
 
-            return View(evenemang);
-        }
-
-        // GET: Evenemang/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Evenemang evenemang = db.Evenemang.Find(id);
-            if (evenemang == null)
-            {
-                return HttpNotFound();
-            }
             return View(evenemang);
         }
 
@@ -58,15 +38,19 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Namn,RegStart,RegStop,Fakturabetalning,FakturaBetaldSenast")] Evenemang evenemang)
+        public ActionResult Create([Bind(Include = "Id,Namn,RegStart,RegStop,Fakturabetalning,FakturaBetaldSenast")] ViewModels.EvenemangVM evenemang)
         {
             if (ModelState.IsValid)
             {
                 evenemang.OrganisationsId = HamtaUser().OrganisationsId;
+
+                var nyttEvenemang = ClassMapper.MappaTillEvenemang(evenemang);
+
                 var formular = new Formular
                 {
                     Avgift = 100,
-                    Namn = "Mitt första formulär"
+                    Namn = "Mitt första formulär",
+                    AktivitetsId = 2
                 };
                 var formularSteg1 = new FormularSteg
                 {
@@ -118,12 +102,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 formularSteg2.Falt.Add(falt3);
                 formular.Steg.Add(formularSteg1);
                 formular.Steg.Add(formularSteg2);
-                evenemang.Formular.Add(formular);
+                nyttEvenemang.Formular.Add(formular);
 
-                db.Evenemang.Add(evenemang);
+                db.Evenemang.Add(nyttEvenemang);
                 db.SaveChanges();
-                db.Entry(evenemang).GetDatabaseValues();
-                return RedirectToAction("Oversikt", new { id = evenemang.Id });
+                db.Entry(nyttEvenemang).GetDatabaseValues();
+                return RedirectToAction("Oversikt", new { id = nyttEvenemang.Id });
             }
 
             ViewBag.FelMeddelande = "Det finns valideringsfel i formuläret. Korrigera och försök igen.";
@@ -179,30 +163,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // GET: Evenemang/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Evenemang evenemang = db.Evenemang.Find(id);
-            if (evenemang == null)
-            {
-                return HttpNotFound();
-            }
-            return View(evenemang);
-        }
+            var namn = evenemang.Namn;
 
-        // POST: Evenemang/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Evenemang evenemang = db.Evenemang.Find(id);
-            evenemang.Formular.Clear();
-
-            db.SaveChanges();
             db.Evenemang.Remove(evenemang);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            TempData["Message"] = "Evenemang " + namn + " har tagits bort";
+
+            return RedirectToAction("Index", "Admin", null);
         }
 
         protected override void Dispose(bool disposing)

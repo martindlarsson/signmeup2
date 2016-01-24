@@ -29,7 +29,7 @@ namespace SignMeUp2.Controllers
 
         protected abstract string GetEntitetsNamn();
 
-        protected void SetViewBag(Evenemang evenemang)
+        protected void SetViewBag(Data.Evenemang evenemang)
         {
             ViewBag.Entitet = GetEntitetsNamn();
 
@@ -183,7 +183,7 @@ namespace SignMeUp2.Controllers
             return userManager.FindById(User.Identity.GetUserId());
         }
 
-        protected IList<Evenemang> HamtaEvenemangForAnv()
+        protected IList<Data.Evenemang> HamtaEvenemangForAnv()
         {
             if (User.IsInRole("admin"))
             {
