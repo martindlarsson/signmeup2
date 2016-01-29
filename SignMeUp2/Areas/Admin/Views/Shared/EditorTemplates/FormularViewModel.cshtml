@@ -1,0 +1,72 @@
+﻿@model SignMeUp2.ViewModels.FormularViewModel
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.HiddenFor(m => m.EvenemangsId)
+@Html.HiddenFor(m => m.Id)
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Namn, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Namn, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Namn, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Avgift, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Avgift, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Avgift, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MaxRegistreringar, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.MaxRegistreringar, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.MaxRegistreringar, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Publikt, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Publikt, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Publikt, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Aktivitet, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.AktivitetsId, Model.Aktiviteter, "Välj aktivitet", htmlAttributes: new { @class = "form-control aktivitetsdd" })
+        @Html.ValidationMessageFor(model => model.AktivitetsId, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group" id="annan_aktivitet">
+    @Html.LabelFor(model => model.AnnanAktivitet, "Annan aktivitet", htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.AnnanAktivitet, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.AnnanAktivitet, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var aktivitet = $('.aktivitetsdd').val();
+        if (aktivitet != 1) {
+            $("#annan_aktivitet").hide();
+        }
+
+        $(".aktivitetsdd").change(function aktivitetChanged() {
+            var selectedValue = $('.aktivitetsdd').val();
+            if (selectedValue == 1) {
+                $("#annan_aktivitet").show();
+            }
+            else {
+                $("#annan_aktivitet").hide();
+            }
+        });
+    });
+</script>
