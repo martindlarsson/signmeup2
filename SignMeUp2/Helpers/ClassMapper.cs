@@ -325,7 +325,7 @@ namespace SignMeUp2.Helpers
                 Kravs = falt.Kravs,
                 Namn = falt.Namn,
                 Typ = falt.Typ,
-                Val = falt.Val.Select(val => MappaTillValVM(val)).ToList(),
+                Val = falt.Val.Select(val => MappaTillValVM(val, falt.Namn)).ToList(),
                 FaltId = falt.Id
             };
         }
@@ -343,14 +343,14 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        private static ValViewModel MappaTillValVM(Val val)
+        private static ValViewModel MappaTillValVM(Val val, string typnamn)
         {
             return new ValViewModel
             {
                 Avgift = val.Avgift,
                 Id = val.Id,
                 Namn = val.Namn,
-                TypNamn = val.TypNamn
+                TypNamn = typnamn
             };
         }
         
@@ -360,8 +360,8 @@ namespace SignMeUp2.Helpers
             {
                 Avgift = val.Avgift,
                 Id = val.Id,
-                Namn = val.Namn,
-                TypNamn = val.TypNamn
+                Namn = val.Namn
+                //TypNamn = val.TypNamn
             };
         }
 

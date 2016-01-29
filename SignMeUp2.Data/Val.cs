@@ -8,8 +8,8 @@
     {
         public int Id { get; set; }
 
-        [Required]
-        public string TypNamn { get; set; }
+        //[Required]
+        //public string TypNamn { get; set; }
 
         [Required]
         public string Namn { get; set; }

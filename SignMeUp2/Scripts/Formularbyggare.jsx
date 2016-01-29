@@ -1,6 +1,6 @@
 ﻿var Formularsbyggaren = React.createClass({displayName: 'Formulärsbyggaren',
   render: function() {
-    return (
+      return (
       React.createElement('div', {className: "formularsbyggaren"},
         "Hello, world! I am a F."
       )

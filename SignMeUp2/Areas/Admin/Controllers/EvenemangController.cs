@@ -86,14 +86,12 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 var val1 = new Val
                 {
                     Avgift = 50,
-                    Namn = "Korta banan (5 km)",
-                    TypNamn = "Bana"
+                    Namn = "Korta banan (5 km)"
                 };
                 var val2 = new Val
                 {
                     Avgift = 100,
-                    Namn = "Långa banan (10 km)",
-                    TypNamn = "Bana"
+                    Namn = "Långa banan (10 km)"
                 };
                 falt3.Val.Add(val1);
                 falt3.Val.Add(val2);

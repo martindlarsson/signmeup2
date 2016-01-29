@@ -160,10 +160,10 @@ namespace SignMeUp2.Controllers
             payData.SetTrackingId(SUPVM.RegistreringsId.ToString());
 
             // Skapa poster för betalning
-            var orderItems = new List<PaysonIntegration.Utils.OrderItem>();
+            var orderItems = new List<OrderItem>();
             foreach (ValViewModel post in SUPVM.Betalnignsposter)
             {
-                var oi = new PaysonIntegration.Utils.OrderItem(post.TypNamn + ": " + post.Namn);
+                var oi = new OrderItem(post.TypNamn + ": " + post.Namn);
                 oi.SetOptionalParameters("st", 1, post.Avgift, 0);
                 orderItems.Add(oi);
             }

@@ -359,6 +359,10 @@
     <Compile Include="Migrations\201601211957065_IndexOchAktiviteter.Designer.cs">
       <DependentUpon>201601211957065_IndexOchAktiviteter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601292107331_tabort_val_typnamn.cs" />
+    <Compile Include="Migrations\201601292107331_tabort_val_typnamn.Designer.cs">
+      <DependentUpon>201601292107331_tabort_val_typnamn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\AktivitetViewModel.cs" />
@@ -667,6 +671,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601211957065_IndexOchAktiviteter.resx">
       <DependentUpon>201601211957065_IndexOchAktiviteter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601292107331_tabort_val_typnamn.resx">
+      <DependentUpon>201601292107331_tabort_val_typnamn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
