@@ -5,7 +5,7 @@ namespace SignMeUp2.Migrations
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Data;
-
+    using System.Configuration;
     internal sealed class Configuration : DbMigrationsConfiguration<SignMeUp2.Data.SignMeUpDataModel>
     {
         public Configuration()
@@ -63,7 +63,9 @@ namespace SignMeUp2.Migrations
                     Email = "martin.d.andersson@gmail.com",
                     EmailConfirmed = true
                 };
-                ir = um.Create(user, "a0oa9ia8uAA");
+                var appSettings = ConfigurationManager.AppSettings;
+                string pwd = appSettings["SeedPwd"] ?? "NotFound";
+                ir = um.Create(user, pwd);
                 if (ir.Succeeded == false)
                     return null;
                 ir = um.AddToRole(user.Id, "admin");

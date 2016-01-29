@@ -1,59 +1,34 @@
-﻿@model SignMeUp2.Data.Formular
+﻿@model SignMeUp2.ViewModels.FormularViewModel
 
 @{
-    ViewBag.Title = "Edit";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml"";
+    ViewBag.Title = "Skapa nytt formulär";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Rediger formulär</h2>
 
+@{Html.RenderPartial("_meddelande");}
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Formular</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+
+        @Html.EditorFor(model => model)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EvenemangsId, "EvenemangsId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("EvenemangsId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.EvenemangsId, "", new { @class = "text-danger" })
+            <div class="col-md-2">
+                <input type="submit" value="Spara" class="btn btn-success" />
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Namn, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Namn, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Namn, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Avgift, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Avgift, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Avgift, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="col-md-offset-3 col-md-2">
+                @Html.ActionLink("Radera", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger", @onclick = "return confirm('Är du säker på att du vill radera detta formulär? Det kommer även att radera alla registreringar, listor, fält och val som är assosierade med detta formulär.');" })
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<div class="row help-block">
+    @Html.ActionLink("Formulärsöversikt", "Oversikt", "Formular", new { id = Model.Id }, new { @class = "btn btn-primary" })
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

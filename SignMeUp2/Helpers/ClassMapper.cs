@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using SignMeUp2.Data;
 using SignMeUp2.ViewModels;
-using SignMeUp2.Services;
 
 namespace SignMeUp2.Helpers
 {
     public class ClassMapper
     {
-        public static Registrering MappaTillRegistrering(SignMeUpVM SUPVM, SignMeUpService SMU)
+        public static Registrering MappaTillRegistrering(SignMeUpVM SUPVM)
         {
             // Mappa alla svar
             var faltsvar = new List<FaltSvar>();
@@ -45,10 +44,166 @@ namespace SignMeUp2.Helpers
                 Rabatt = SUPVM.Rabatt != null ? SUPVM.Rabatt.Summa : 0,
                 Rabattkod = SUPVM.Rabatt != null ? SUPVM.Rabatt.Kod : string.Empty,
                 Forseningsavgift = forseningsavgift,
-                Invoice = SUPVM.Fakturaadress != null ? MappTillInvoice(SUPVM.Fakturaadress) : null,
+                Invoice = SUPVM.Fakturaadress != null ? MappatillFakturaadress(SUPVM.Fakturaadress) : null,
                 Registreringstid = DateTime.Now,
                 PaysonToken = SUPVM.PaysonToken,
                 AttBetala = SUPVM.AttBetala
+            };
+        }
+
+        internal static Registrering MappaTillRegistrering(RegistreringVM registreringVM)
+        {
+            return new Registrering
+            {
+                AttBetala = registreringVM.AttBetala,
+                FormularId = registreringVM.FormularId,
+                Forseningsavgift = registreringVM.Forseningsavgift,
+                HarBetalt = registreringVM.HarBetalt,
+                Id = registreringVM.Id,
+                Invoice = MappatillFakturaadress(registreringVM.Invoice), // TODO
+                Kommentar = registreringVM.Kommentar,
+                PaysonToken = registreringVM.PaysonToken,
+                Rabatt = registreringVM.Rabatt,
+                Rabattkod = registreringVM.Rabattkod,
+                Registreringstid = registreringVM.Registreringstid,
+                Svar = registreringVM.Svar.Select(svar => MappatillSvar(svar)).ToList()
+            };
+        }
+
+        internal static RegistreringVM MappaTillRegistreringVM(Registrering registrering)
+        {
+            if (registrering == null) return null;
+
+            return new RegistreringVM
+            {
+                AttBetala = registrering.AttBetala,
+                FormularId = registrering.FormularId,
+                Forseningsavgift = registrering.Forseningsavgift,
+                HarBetalt = registrering.HarBetalt,
+                Id = registrering.Id,
+                Invoice = registrering.Invoice != null ? MappatillFakturaadressVM(registrering.Invoice) : null,
+                Kommentar = registrering.Kommentar,
+                PaysonToken = registrering.PaysonToken,
+                Rabatt = registrering.Rabatt,
+                Rabattkod = registrering.Rabattkod,
+                Registreringstid = registrering.Registreringstid,
+                Svar = registrering.Svar != null ? registrering.Svar.Select(svar => MappatillSvarVM(svar)).ToList() : null
+            };
+        }
+
+        private static FaltSvarVM MappatillSvarVM(FaltSvar svar)
+        {
+            return new FaltSvarVM
+            {
+                Avgift = svar.Avgift,
+                Falt = svar.Falt != null ? MappaTillFaltVM(svar.Falt) : null,
+                FaltId = svar.FaltId,
+                Id = svar.Id,
+                RegistreringsId = svar.RegistreringsId,
+                Varde = svar.Varde
+            };
+        }
+
+        private static FaltSvar MappatillSvar(FaltSvarVM svar)
+        {
+            return new FaltSvar
+            {
+                Avgift = svar.Avgift,
+                Falt = svar.Falt != null ? MappaTillFalt(svar.Falt) : null,
+                FaltId = svar.FaltId,
+                Id = svar.Id,
+                RegistreringsId = svar.RegistreringsId,
+                Varde = svar.Varde
+            };
+        }
+
+        private static InvoiceViewModel MappatillFakturaadressVM(Fakturaadress invoice)
+        {
+            return new InvoiceViewModel
+            {
+                Att = invoice.Att,
+                Box = invoice.Box,
+                Id = invoice.Id,
+                Namn = invoice.Namn,
+                Organisationsnummer = invoice.Organisationsnummer,
+                Postadress = invoice.Postadress,
+                Postnummer = invoice.Postnummer,
+                Postort = invoice.Postort
+            };
+        }
+
+        private static Fakturaadress MappatillFakturaadress(InvoiceViewModel invoice)
+        {
+            return new Fakturaadress
+            {
+                Att = invoice.Att,
+                Box = invoice.Box,
+                Id = invoice.Id,
+                Namn = invoice.Namn,
+                Organisationsnummer = invoice.Organisationsnummer,
+                Postadress = invoice.Postadress,
+                Postnummer = invoice.Postnummer,
+                Postort = invoice.Postort
+            };
+        }
+
+        internal static FormularViewModel MappaTillFormularVM(Formular formular)
+        {
+            return new FormularViewModel
+            {
+                Aktivitet = formular.Aktivitet != null ? MappaTillAktivitetVM(formular.Aktivitet) : null,
+                AktivitetsId = formular.AktivitetsId,
+                Avgift = formular.Avgift,
+                Evenemang = formular.Evenemang,
+                EvenemangsId = formular.EvenemangsId,
+                Listor = formular.Listor,
+                Id = formular.Id,
+                MaxRegistreringar = formular.MaxRegistreringar,
+                Namn = formular.Namn,
+                Publikt = formular.Publikt,
+                Registreringar = formular.Registreringar.Select(reg => MappaTillRegistreringVM(reg)).ToList(),
+                Steg = formular.Steg.Select(steg => MappaTillStegVM(steg, formular.Steg.Count)).ToList()
+            };
+        }
+
+        internal static Formular MappaTillFormular(FormularViewModel formularVM)
+        {
+            return new Formular
+            {
+                AktivitetsId = formularVM.AktivitetsId,
+                Avgift = formularVM.Avgift,
+                EvenemangsId = formularVM.EvenemangsId,
+                Listor = formularVM.Listor,
+                Id = formularVM.Id,
+                MaxRegistreringar = formularVM.MaxRegistreringar,
+                Namn = formularVM.Namn,
+                Publikt = formularVM.Publikt,
+                Registreringar = formularVM.Registreringar.Select(reg => MappaTillRegistrering(reg)).ToList(),
+                Steg = formularVM.Steg.Select(steg => MappaTillSteg(steg)).ToList()
+            };
+        }
+
+        private static FormularSteg MappaTillSteg(FormularStegVM steg)
+        {
+            return new FormularSteg
+            {
+                Falt = steg.FaltLista.Select(falt => MappaTillFalt(falt)).ToList(),
+                //FormularId = steg.FormularId,
+                Id = steg.Id,
+                Index = steg.StepIndex,
+                Namn = steg.Namn
+            };
+        }
+
+        private static FormularStegVM MappaTillStegVM(FormularSteg steg, int count)
+        {
+            return new FormularStegVM
+            {
+                Id = steg.Id,
+                Namn = steg.Namn,
+                StepIndex = steg.Index,
+                StepCount = count,
+                FaltLista = steg.Falt.Select(falt => MappaTillFaltVM(falt)).ToList()
             };
         }
 
@@ -77,6 +232,15 @@ namespace SignMeUp2.Helpers
                 PlusEllerMinus = forseningsavgift.PlusEllerMinus,
                 Summa = forseningsavgift.Summa,
                 TillDatum = forseningsavgift.TillDatum
+            };
+        }
+
+        private static AktivitetViewModel MappaTillAktivitetVM(Aktivitet aktivitet)
+        {
+            return new AktivitetViewModel
+            {
+                Id = aktivitet.Id,
+                Namn = aktivitet.Namn
             };
         }
 
@@ -139,9 +303,9 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        internal static Data.Evenemang MappaTillEvenemang(EvenemangVM evenemang)
+        internal static Evenemang MappaTillEvenemang(EvenemangVM evenemang)
         {
-            return new Data.Evenemang
+            return new Evenemang
             {
                 Id = evenemang.Id,
                 FakturaBetaldSenast = evenemang.FakturaBetaldSenast,
@@ -153,88 +317,51 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        public static FormularViewModel MappaTillFormular(Formular formular)
+        private static FaltViewModel MappaTillFaltVM(Falt falt)
         {
-            return new FormularViewModel
+            return new FaltViewModel
             {
-                Evenemang = formular.Evenemang,
-                EvenemangsId = formular.EvenemangsId,
-                Id = formular.Id,
-                Namn = formular.Namn,
-                Avgift = formular.Avgift,
-                Steg = MappaTillSteg(formular.Steg)
+                Avgiftsbelagd = falt.Avgiftsbelagd,
+                Kravs = falt.Kravs,
+                Namn = falt.Namn,
+                Typ = falt.Typ,
+                Val = falt.Val.Select(val => MappaTillValVM(val)).ToList(),
+                FaltId = falt.Id
             };
         }
 
-        private static List<ViewModels.FormularSteg> MappaTillSteg(ICollection<Data.FormularSteg> stegs)
-{
-            var list = new List<ViewModels.FormularSteg>();
-
-            foreach (var steg in stegs)
+        private static Falt MappaTillFalt(FaltViewModel faltVM)
+        {
+            return new Falt
             {
-                list.Add(new ViewModels.FormularSteg
-                {
-                    Id = steg.Id,
-                    Namn = steg.Namn,
-                    StepIndex = steg.Index,
-                    StepCount = stegs.Count(),
-                    FaltLista = MappaTillFalt(steg.Falt)
-                });
-            }
-
-            return list;
+                Avgiftsbelagd = faltVM.Avgiftsbelagd,
+                Kravs = faltVM.Kravs,
+                Namn = faltVM.Namn,
+                Typ = faltVM.Typ,
+                Val = faltVM.Val.Select(val => MappaTillVal(val)).ToList(),
+                Id = faltVM.FaltId
+            };
         }
 
-        private static ICollection<FaltViewModel> MappaTillFalt(ICollection<Falt> falts)
+        private static ValViewModel MappaTillValVM(Val val)
         {
-            var list = new List<FaltViewModel>();
-
-            foreach (var falt in falts)
+            return new ValViewModel
             {
-                list.Add(new FaltViewModel
-                {
-                    Avgiftsbelagd = falt.Avgiftsbelagd,
-                    Kravs = falt.Kravs,
-                    Namn = falt.Namn,
-                    Typ = falt.Typ,
-                    Val = MappTillVal(falt.Val),
-                    FaltId = falt.Id
-                });
-            }
-
-            return list;
+                Avgift = val.Avgift,
+                Id = val.Id,
+                Namn = val.Namn,
+                TypNamn = val.TypNamn
+            };
         }
-
-        private static IList<ValViewModel> MappTillVal(ICollection<Val> vals)
+        
+        private static Val MappaTillVal(ValViewModel val)
         {
-            var list = new List<ValViewModel>();
-
-            foreach(var val in vals)
+            return new Val
             {
-                list.Add(new ValViewModel
-                {
-                    Avgift = val.Avgift,
-                    Id = val.Id,
-                    Namn = val.Namn,
-                    TypNamn = val.TypNamn
-                });
-            }
-
-            return list;
-        }
-
-        public static Fakturaadress MappTillInvoice(InvoiceViewModel invoiceVM)
-        {
-            return new Fakturaadress
-            {
-                Att = invoiceVM.Att,
-                Box = invoiceVM.Box,
-                Id = invoiceVM.Id,
-                Namn = invoiceVM.Namn,
-                Organisationsnummer = invoiceVM.Organisationsnummer,
-                Postadress = invoiceVM.Postadress,
-                Postnummer = invoiceVM.Postnummer,
-                Postort = invoiceVM.Postort
+                Avgift = val.Avgift,
+                Id = val.Id,
+                Namn = val.Namn,
+                TypNamn = val.TypNamn
             };
         }
 

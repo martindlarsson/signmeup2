@@ -4,8 +4,6 @@ using SignMeUp2.Data;
 
 namespace SignMeUp2.ViewModels
 {
-    //public enum FaltTyp { text_falt = 0, val_falt = 1, epost_falt = 3 }
-
     public class FaltViewModel
     {
         public string Namn { get; set; }

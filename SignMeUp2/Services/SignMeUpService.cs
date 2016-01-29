@@ -6,6 +6,7 @@ using log4net;
 using System.Data.Entity;
 using SignMeUp2.Helpers;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace SignMeUp2.Services
 {
@@ -14,7 +15,7 @@ namespace SignMeUp2.Services
         protected readonly ILog log;
         private SignMeUpDataModel _context;
 
-        private Data.Evenemang CurrentEvenemang { get; set; }
+        private Evenemang CurrentEvenemang { get; set; }
 
         public SignMeUpService()
         {
@@ -60,7 +61,12 @@ namespace SignMeUp2.Services
         public FormularViewModel GetFormular(int formularsId)
         {
             var formular = Db.Formular.Include(r => r.Evenemang).Single(f => f.Id == formularsId);
-            return ClassMapper.MappaTillFormular(formular);
+            return ClassMapper.MappaTillFormularVM(formular);
+        }
+
+        internal SelectList GetAktiviteter()
+        {
+            return new SelectList(Db.Aktiviteter.ToList(), "Id", "Namn");
         }
 
         public Registrering GetRegistrering(int id, bool fill)
@@ -108,7 +114,7 @@ namespace SignMeUp2.Services
 
             try
             {
-                var reg = ClassMapper.MappaTillRegistrering(SUPVM, this);
+                var reg = ClassMapper.MappaTillRegistrering(SUPVM);
                 Db.Registreringar.Add(reg);
                 Db.SaveChanges();
                 Db.Entry(reg).GetDatabaseValues();

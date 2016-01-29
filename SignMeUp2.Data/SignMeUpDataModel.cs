@@ -29,6 +29,7 @@ namespace SignMeUp2.Data
         public virtual DbSet<FaltSvar> Svar { get; set; }
         public virtual DbSet<Lista> Listor { get; set; }
         public virtual DbSet<ListaFalt> ListFalt { get; set; }
+        public virtual DbSet<Aktivitet> Aktiviteter { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

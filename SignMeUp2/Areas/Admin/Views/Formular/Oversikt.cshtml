@@ -1,0 +1,83 @@
+﻿@model SignMeUp2.ViewModels.FormularViewModel
+
+@{
+    ViewBag.Title = "Formulärsöversikt";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Namn</h2>
+
+<div class="col-md-12 bg-success">
+    <p>Avgift: @Model.Avgift</p>
+    <p>Max antal anmälningar: @Model.MaxRegistreringar</p>
+    <p>Publikt formulär: @Html.DisplayFor(m => Model.Publikt)</p>
+    <p>Aktivitet: @Model.Aktivitet.Namn</p>
+    <p>@Html.ActionLink("Redigera formuläret", "Edit", "Formular", new { id = Model.Id }, new { @class = "btn btn-primary" })</p>
+</div>
+
+@{Html.RenderPartial("_footerEntity", Model);}
+
+@{Html.RenderPartial("_Message", null);}
+
+<div class="col-md-12">
+    <h3>
+        @Html.ActionLink("Formulärsbyggaren", "Formularsbyggare", "Formular", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+        Formulärsteg
+    </h3>
+    <table class="table table-striped">
+        <tr>
+            <th>Namn</th>
+            <th>Antal fält</th>
+        </tr>
+        @foreach (var steg in Model.Steg)
+        {
+            <tr>
+                <td>@Html.ActionLink(steg.Namn, "EditStep", "Formular", new { id = steg.Id }, new { @class = "btn btn-link" }) </td>
+                <td>@steg.StepCount</td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div class="col-md-12">
+    <h3>
+        @Html.ActionLink("+", "CreateList", "Formular", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+        Anmälningslistor
+    </h3>
+    <table class="table table-striped">
+        <tr>
+            <th>Namn</th>
+            <th>Länk</th>
+        </tr>
+        @foreach (var lista in Model.Listor)
+        {
+            <tr>
+                <td>@Html.ActionLink(lista.Namn, "EditList", "Formular", new { id = lista.Id }, new { @class = "btn btn-link" }) </td>
+                <td>Länk...</td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div class="col-md-12">
+    <h3>
+        @Html.ActionLink("+", "Create", "Registraringar", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+        Anmälningar
+    </h3>
+    <table class="table table-striped">
+        <tr>
+            <th>Registreringstid</th>
+            <th>Att betala</th>
+            <th>Betalt</th>
+        </tr>
+        @foreach (var reg in Model.Registreringar)
+        {
+            var harBetalt = reg.HarBetalt ? "ja" : "nej";
+            <tr>
+                <td>@Html.ActionLink(reg.Registreringstid.ToString(), "Edit", "Registreringar", new { id = reg.Id }, new { @class = "btn btn-link" }) </td>
+                <td>@reg.AttBetala</td>
+                <td>@harBetalt</td>
+            </tr>
+        }
+    </table>
+</div>

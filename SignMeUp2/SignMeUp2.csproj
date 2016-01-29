@@ -361,20 +361,24 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="ViewModels\AktivitetViewModel.cs" />
     <Compile Include="ViewModels\BetalningsmetoderVM.cs" />
     <Compile Include="ViewModels\EvenemangVM.cs" />
     <Compile Include="ViewModels\FakturaVM.cs" />
+    <Compile Include="ViewModels\FaltSvarVM.cs" />
     <Compile Include="ViewModels\FaltViewModel.cs" />
     <Compile Include="ViewModels\FormularViewModel.cs" />
     <Compile Include="ViewModels\KontaktuppgifterVM.cs" />
+    <Compile Include="ViewModels\ListaFaltViewModel.cs" />
+    <Compile Include="ViewModels\ListaViewModel.cs" />
     <Compile Include="ViewModels\TabellViewModel.cs" />
     <Compile Include="ViewModels\RabattVM.cs" />
     <Compile Include="ViewModels\ForseningsavgiftVM.cs" />
     <Compile Include="ViewModels\InvoiceVM.cs" />
     <Compile Include="ViewModels\PaysonViewModel.cs" />
     <Compile Include="ViewModels\ValViewModel.cs" />
-    <Compile Include="ViewModels\FormularSteg.cs" />
-    <Compile Include="ViewModels\RegistrationVM.cs" />
+    <Compile Include="ViewModels\FormularStegVM.cs" />
+    <Compile Include="ViewModels\RegistreringVM.cs" />
     <Compile Include="ViewModels\SignMeUpVM.cs" />
     <Compile Include="ViewModels\StartlistaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -385,6 +389,11 @@
     <Content Include="ApplicationInsights.config" />
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Areas\Admin\Views\Shared\_Message.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\FormularViewModel.cshtml" />
+    <Content Include="Areas\Admin\Views\Formular\Oversikt.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\Boolean.cshtml" />
+    <Content Include="Areas\Admin\Views\Formular\Formularsbyggare.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_reactjs.cshtml" />
     <None Include="ClearScript.V8\ClearScriptV8-32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -518,15 +527,14 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Invoice.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Boolean.cshtml" />
     <Content Include="Areas\Admin\Views\Formular\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Formular\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Formular\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Formular\Index.cshtml" />
     <None Include="Properties\PublishProfiles\SignMeUp2.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Scripts\Formularbyggare.jsx" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -607,13 +615,15 @@
     <Content Include="Views\SignMeUp\RegNotOpen.cshtml" />
     <Content Include="_EventRegisterUsersGuide.docx" />
     <Content Include="_EventSourceUsersGuide.docx" />
-    <Content Include="Views\Shared\DisplayTemplates\FormularSteg.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\FormularSteg.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\FormularStegVM.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\FormularStegVM.cshtml" />
     <Content Include="Views\Shared\_meddelande.cshtml" />
     <Content Include="Views\Shared\_faktura.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Registrering.cshtml" />
     <Content Include="Views\Listor\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutAccount.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\RegistreringVM.cshtml" />
+    <None Include="Web.SECRETS.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

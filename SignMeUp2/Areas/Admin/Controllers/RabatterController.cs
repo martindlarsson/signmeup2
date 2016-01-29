@@ -20,36 +20,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
             return _entity;
         }
 
-        // GET: Rabatter
-        public ActionResult Index(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            SetViewBag(id);
-
-            var rabatter = db.Rabatter.Where(r => r.EvenemangsId == id.Value);
-
-            return View(rabatter.ToList());
-        }
-
-        // GET: Rabatter/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Rabatter rabatter = db.Rabatter.Find(id);
-            if (rabatter == null)
-            {
-                return HttpNotFound();
-            }
-            return View(rabatter);
-        }
-
         // GET: Rabatter/Create
         public ActionResult Create(int? id)
         {
@@ -141,27 +111,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 db.SaveChanges();
                 TempData["Message"] = "Raderat rabatt med kod " + kod;
                 return RedirectToAction("Oversikt", "Evenemang", new { id = evId });
-            }
-            catch (Exception)
-            {
-                SetViewBag(evId);
-                ViewBag.Error = "Kunde inte ta bort denna rabatt. Det kan vara så att den används i en registrering.";
-                return View(rabatter);
-            }
-        }
-
-        // POST: Rabatter/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Rabatter rabatter = db.Rabatter.Find(id);
-            var evId = rabatter.EvenemangsId;
-            try
-            {
-                db.Rabatter.Remove(rabatter);
-                db.SaveChanges();
-                return RedirectToAction("Index", new { id = evId });
             }
             catch (Exception)
             {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
+using SignMeUp2.Helpers;
 
 namespace SignMeUp2.ViewModels
 {
@@ -16,9 +17,9 @@ namespace SignMeUp2.ViewModels
 
         public FormularViewModel Formular { get; set; }
 
-        public IList<FormularSteg> Steps { get { return Formular.Steg; } }
+        public List<FormularStegVM> Steps { get { return Formular.Steg.ToList(); } }
 
-        public FormularSteg CurrentStep
+        public FormularStegVM CurrentStep
         {
             get { return Steps[CurrentStepIndex]; }
         }

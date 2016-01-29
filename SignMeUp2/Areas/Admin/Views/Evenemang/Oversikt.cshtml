@@ -1,7 +1,4 @@
-﻿@using SignMeUp2.Data;
-@using SignMeUp2.Areas.Admin.Models;
-
-@model SignMeUp2.Data.Evenemang
+﻿@model SignMeUp2.Data.Evenemang
 
 @{
     ViewBag.Title = "Evenemangsöversikt";
@@ -26,6 +23,7 @@
     <table class="table table-striped">
         <tr>
             <th>Namn</th>
+            <th>Aktivitet</th>
             <th>Anmälda</th>
             <th>Max anmälningar</th>
             <th>Avgift</th>
@@ -36,7 +34,8 @@
                 "Obegränsat" :
                 formular.MaxRegistreringar.ToString();
             <tr>
-                <td>@Html.ActionLink(formular.Namn, "Edit", "Formular", new { id = formular.Id }, new { @class = "btn btn-link" }) </td>
+                <td>@Html.ActionLink(formular.Namn, "Oversikt", "Formular", new { id = formular.Id }, new { @class = "btn btn-link" }) </td>
+                <td>@formular.Aktivitet.Namn</td>
                 <td>@formular.Registreringar.Count()</td>
                 <td>@max</td>
                 <td>@formular.Avgift</td>

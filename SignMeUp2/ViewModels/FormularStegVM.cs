@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SignMeUp2.ViewModels
 {
-    public class FormularSteg
+    public class FormularStegVM
     {
         public int Id { get; internal set; }
 

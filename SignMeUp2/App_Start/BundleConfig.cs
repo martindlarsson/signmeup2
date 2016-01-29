@@ -40,6 +40,10 @@ namespace SignMeUp2
                       "~/Scripts/moment-with-locales.min.js",
                     "~/Scripts/bootstrap-datetimepicker.min.js"));
 
+            // För reactjs
+            bundles.Add(new ScriptBundle("~/bundles/reactjs").Include(
+                      "~/Scripts/Formularbyggare.jsx"));
+
             // applicationInsights.js
             bundles.Add(new ScriptBundle("~/bundles/ai").Include(
                     "~/Scripts/applicationInsights.js"));

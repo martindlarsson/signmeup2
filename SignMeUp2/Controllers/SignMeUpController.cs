@@ -186,7 +186,7 @@ namespace SignMeUp2.Controllers
 
             Session["VM"] = SUPVM;
 
-            var reg = ClassMapper.MappaTillRegistrering(SUPVM, smuService);
+            var reg = ClassMapper.MappaTillRegistrering(SUPVM);
             ViewBag.Registrering = reg;
 
             return View(SUPVM);
