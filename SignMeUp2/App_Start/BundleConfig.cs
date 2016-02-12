@@ -26,7 +26,6 @@ namespace SignMeUp2
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
-                      //"~/Content/bootstrap-datetimepicker.min.css",
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
@@ -36,17 +35,23 @@ namespace SignMeUp2
 
             // För datetimepicker
             bundles.Add(new ScriptBundle("~/bundles/bootstrap-datetimepicker").Include(
-                      "~/Scripts/moment.min.js",
-                      "~/Scripts/moment-with-locales.min.js",
-                    "~/Scripts/bootstrap-datetimepicker.min.js"));
+                "~/Scripts/moment.min.js",
+                "~/Scripts/moment-with-locales.min.js",
+                "~/Scripts/bootstrap-datetimepicker.min.js"));
 
-            // För reactjs
-            bundles.Add(new ScriptBundle("~/bundles/reactjs").Include(
-                      "~/Scripts/Formularbyggare.jsx"));
+            bundles.Add(new ScriptBundle("~/bundles/gridster").Include(
+                "~/Scripts/jquery.gridster.js"));
+
+
+            bundles.Add(new StyleBundle("~/Content/gridstercss").Include(
+                      "~/Content/jquery.gridster.css"));
 
             // applicationInsights.js
             bundles.Add(new ScriptBundle("~/bundles/ai").Include(
                     "~/Scripts/applicationInsights.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
+                        "~/Scripts/knockout-{version}.js"));
 
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862

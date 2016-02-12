@@ -1,0 +1,8 @@
+﻿{
+  "version": "2.2.0",
+  "ignore": [
+    "Scripts\\*.js"
+  ],
+  "options": {},
+  "globalVariables": []
+}

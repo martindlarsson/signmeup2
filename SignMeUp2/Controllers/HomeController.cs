@@ -26,6 +26,11 @@ namespace SignMeUp2.Controllers
                 .ToList());
         }
 
+        public ActionResult Test()
+        {
+            return View();
+        }
+
         /// <summary>
         /// Visa startlista
         /// </summary>

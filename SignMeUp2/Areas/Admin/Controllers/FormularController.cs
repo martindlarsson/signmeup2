@@ -6,6 +6,8 @@ using SignMeUp2.Data;
 using SignMeUp2.ViewModels;
 using SignMeUp2.Controllers;
 using SignMeUp2.Helpers;
+using System.Web.Script.Serialization;
+using System.Web.Helpers;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -121,7 +123,10 @@ namespace SignMeUp2.Areas.Admin.Controllers
         public ActionResult Formularsbyggare(int? id)
         {
             // TODO ladda formularet
-            return View();
+            //Formular formular = db.Formular.Find(id);
+            //var json = new JavaScriptSerializer().Serialize(formular);
+            //return View(json);
+            return View(Json(new { formularsId = 1 }));
         }
 
         protected override void Dispose(bool disposing)
