@@ -1,4 +1,5 @@
 ﻿@model SignMeUp2.ViewModels.FormularViewModel
+    @using SignMeUp2.ViewModels
 
 @{
     ViewBag.Title = "Formulärsöversikt";
@@ -70,7 +71,7 @@
             <th>Att betala</th>
             <th>Betalt</th>
         </tr>
-        @foreach (var reg in Model.Registreringar)
+        @foreach (RegistreringVM reg in ViewBag.Registreringar)
         {
             var harBetalt = reg.HarBetalt ? "ja" : "nej";
             <tr>

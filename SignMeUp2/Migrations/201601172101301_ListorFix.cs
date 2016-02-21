@@ -14,7 +14,7 @@ namespace SignMeUp2.Migrations
             RenameColumn(table: "dbo.Listor", name: "Id", newName: "FormularId");
             RenameIndex(table: "dbo.Listor", name: "IX_Id", newName: "IX_FormularId");
             DropPrimaryKey("dbo.Listor");
-            AlterColumn("dbo.Listor", "Id", c => c.Int(nullable: false, identity: true));
+            AddColumn("dbo.Listor", "Id", c => c.Int(nullable: false, identity: true));
             AlterColumn("dbo.Listor", "EvenemangId", c => c.Int());
             AddPrimaryKey("dbo.Listor", "Id");
             CreateIndex("dbo.Listor", "EvenemangId");

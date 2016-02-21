@@ -154,14 +154,14 @@ namespace SignMeUp2.Helpers
                 Aktivitet = formular.Aktivitet != null ? MappaTillAktivitetVM(formular.Aktivitet) : null,
                 AktivitetsId = formular.AktivitetsId,
                 Avgift = formular.Avgift,
-                Evenemang = formular.Evenemang,
+                //Evenemang = formular.Evenemang,
                 EvenemangsId = formular.EvenemangsId,
                 Listor = formular.Listor,
                 Id = formular.Id,
                 MaxRegistreringar = formular.MaxRegistreringar,
                 Namn = formular.Namn,
                 Publikt = formular.Publikt,
-                Registreringar = formular.Registreringar.Select(reg => MappaTillRegistreringVM(reg)).ToList(),
+                //Registreringar = formular.Registreringar.Select(reg => MappaTillRegistreringVM(reg)).ToList(),
                 Steg = formular.Steg.Select(steg => MappaTillStegVM(steg, formular.Steg.Count)).ToList()
             };
         }
@@ -178,7 +178,7 @@ namespace SignMeUp2.Helpers
                 MaxRegistreringar = formularVM.MaxRegistreringar,
                 Namn = formularVM.Namn,
                 Publikt = formularVM.Publikt,
-                Registreringar = formularVM.Registreringar.Select(reg => MappaTillRegistrering(reg)).ToList(),
+                //Registreringar = formularVM.Registreringar.Select(reg => MappaTillRegistrering(reg)).ToList(),
                 Steg = formularVM.Steg.Select(steg => MappaTillSteg(steg)).ToList()
             };
         }

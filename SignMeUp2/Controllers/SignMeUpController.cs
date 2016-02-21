@@ -28,11 +28,12 @@ namespace SignMeUp2.Controllers
                 if (id == null)
                     return ShowError(log, "Inget formulär angivit. Klicka på länken nedan och välj ett formulär.", false);
 
+                var evenemang = smuService.HamtaEvenemang(SUPVM.EvenemangsId);
                 var formular = smuService.GetFormular(id.Value);
 
                 LogDebug(log, "Användare går in på anmälan för: " + formular.Namn);
 
-                var evenemangResult = EvenemangHelper.EvaluateEvenemang(formular.Evenemang);
+                var evenemangResult = EvenemangHelper.EvaluateEvenemang(evenemang);
 
                 if (evenemangResult == EvenemangHelper.EvenemangValidationResult.NotOpen)
                 {
@@ -51,7 +52,7 @@ namespace SignMeUp2.Controllers
                     return ShowError(log, "Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
                 }
 
-                ViewBag.ev = formular.Evenemang.Namn;
+                ViewBag.ev = evenemang.Namn;
 
                 // Förseningsavgift
                 var f = smuService.HamtaForseningsavfigt(formular.EvenemangsId.Value);
@@ -61,7 +62,7 @@ namespace SignMeUp2.Controllers
                     EvenemangsId = formular.EvenemangsId.Value,
                     FormularsId = formular.Id,
                     EvenemangsNamn = formular.Namn,
-                    KanBetalaMedFaktura = formular.Evenemang.Fakturabetalning.HasValue ? formular.Evenemang.Fakturabetalning.Value : false,
+                    KanBetalaMedFaktura = evenemang.Fakturabetalning.HasValue ? evenemang.Fakturabetalning.Value : false,
                     FAVM = f,
                     Formular = formular
                 };

@@ -28,6 +28,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             }
             var formularVM = ClassMapper.MappaTillFormularVM(formular);
             //formularVM.Aktiviteter = smuService.GetAktiviteter();
+            ViewBag.Registreringar = formular.Registreringar.Select(regg => ClassMapper.MappaTillRegistreringVM(regg)).ToList();
             SetViewBag(formularVM.EvenemangsId);
             return View(formularVM);
         }
@@ -123,10 +124,17 @@ namespace SignMeUp2.Areas.Admin.Controllers
         public ActionResult Formularsbyggare(int? id)
         {
             // TODO ladda formularet
-            //Formular formular = db.Formular.Find(id);
-            //var json = new JavaScriptSerializer().Serialize(formular);
+            Formular formular = db.Formular.Find(id);
+            if (formular == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var formularVM = ClassMapper.MappaTillFormularVM(formular);
+            //var fVM = new { id = formular.Id, namn = formular.Namn };
+            var json = new JavaScriptSerializer().Serialize(formularVM);
             //return View(json);
-            return View(Json(new { formularsId = 1 }));
+            TempData["formular"] = json;
+            return View();
         }
 
         protected override void Dispose(bool disposing)

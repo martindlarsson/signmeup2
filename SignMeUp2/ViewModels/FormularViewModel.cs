@@ -9,14 +9,14 @@ namespace SignMeUp2.ViewModels
     {
         public FormularViewModel()
         {
-            Registreringar = new List<RegistreringVM>();
+            //Registreringar = new List<RegistreringVM>();
             Steg = new List<FormularStegVM>();
         }
 
         public int Id { get; set; }
 
         public int? EvenemangsId { get; set; }
-        public Evenemang Evenemang { get; set; }
+        //public Evenemang Evenemang { get; set; }
         
         [Required(ErrorMessage = "Namn måste anges")]
         public string Namn { get; set; }
@@ -37,7 +37,7 @@ namespace SignMeUp2.ViewModels
 
         public string AnnanAktivitet { get; set; }
 
-        public ICollection<RegistreringVM> Registreringar { get; set; }
+        //public ICollection<RegistreringVM> Registreringar { get; set; }
 
         public ICollection<FormularStegVM> Steg { get; set; }
 

@@ -6,7 +6,7 @@ namespace SignMeUp2.Migrations
     using Microsoft.AspNet.Identity.EntityFramework;
     using Data;
     using System.Configuration;
-    internal sealed class Configuration : DbMigrationsConfiguration<SignMeUp2.Data.SignMeUpDataModel>
+    internal sealed class Configuration : DbMigrationsConfiguration<SignMeUpDataModel>
     {
         public Configuration()
         {
