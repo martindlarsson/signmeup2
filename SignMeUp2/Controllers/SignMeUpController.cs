@@ -227,6 +227,19 @@ namespace SignMeUp2.Controllers
                 Session["VM"] = null;
                 return RedirectToAction("BekraftelseBetalning", new { id = reg.Id });
 #else
+
+                // Om det inte ska betalas något
+                if (SUPVM.AttBetala == 0)
+                {   
+                    var reg = smuService.Spara(SUPVM);
+
+                    SkickaRegMail(reg);
+
+                    Session["VM"] = null;
+
+                    return RedirectToAction("BekraftelseBetalning", new { id = reg.Id });
+                }
+
                 return RedirectToAction("Index", "Payson");
 #endif
             }

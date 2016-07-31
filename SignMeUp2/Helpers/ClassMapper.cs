@@ -57,7 +57,8 @@ namespace SignMeUp2.Helpers
                 ForseningsavgiftId = forseningsavgId,
                 Invoice = SUPVM.Fakturaadress != null ? MappTillInvoice(SUPVM.Fakturaadress) : null,
                 Registreringstid = DateTime.Now,
-                PaysonToken = SUPVM.PaysonToken
+                PaysonToken = SUPVM.PaysonToken,
+                HarBetalt = SUPVM.AttBetala == 0 ? true : false
             };
         }
 
