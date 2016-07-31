@@ -82,18 +82,28 @@ function FormViewModel(data) {
 
     self.steps = ko.observableArray();
 
+    self.StepIndex = 0;
+
     if (data != null) {
         self.Namn(data.Namn);
+
+        self.StepIndex = data.StepIndex;
 
         for (j = 0; j < data.Steg.length; j++) {
             self.steps.push(new StepViewModel(data.Steg[j]));
         }
     }
 
-    self.addStep = function () {
-        var newIndex = self.steps().length + 1;
-
-        self.steps.push(new StepViewModel(null, newIndex));
+    self.addStep = function (step) {
+        if (step == null) {
+            var newIndex = self.steps().length + 1;
+            self.steps.push(new StepViewModel(null, newIndex));
+            alert('push index: ' + newIndex);
+        }
+        else {
+            self.steps.splice(step.StepIndex, 0, new StepViewModel(null, step.StepIndex));
+            alert('splice index: ' + step.StepIndex);
+        }
     };
 
     self.removeStep = function (step) {
@@ -103,19 +113,50 @@ function FormViewModel(data) {
 
 // TODO, detta verkar inte funger...
 function initKO() {
-    ko.bindingHandlers.contenteditable = {
-        init: function (element, valueAccessor, allBindingsAccessor) {
-            var value = ko.utils.unwrapObservable(valueAccessor());
-            $(element).html(value);
-            alert('Init!');
-        },
 
-        update: function (element, valueAccessor) {
-            var value = ko.utils.unwrapObservable(valueAccessor());
-            if ((value === null) || (value === undefined)) {
-                value = "";
-            }
-            alert('Update!!');
+    ko.bindingHandlers.inline = {
+        init: function (element, valueAccessor) {
+            var span = $(element);
+            var input = $('<input />', { 'type': 'text', 'style': 'display:none' });
+            span.after(input);
+
+            ko.applyBindingsToNode(input.get(0), { value: valueAccessor() });
+            ko.applyBindingsToNode(span.get(0), { text: valueAccessor() });
+
+            span.click(function () {
+                input.width(span.width());
+                span.hide();
+                input.show();
+                input.focus();
+            });
+
+            input.blur(function () {
+                span.show();
+                input.hide();
+            });
+
+            input.keypress(function (e) {
+                if (e.keyCode == 13) {
+                    span.show();
+                    input.hide();
+                };
+            });
         }
     };
+
+    //ko.bindingHandlers.contenteditable = {
+    //    init: function (element, valueAccessor, allBindingsAccessor) {
+    //        var value = ko.utils.unwrapObservable(valueAccessor());
+    //        $(element).html(value);
+    //        alert('Init!');
+    //    },
+
+    //    update: function (element, valueAccessor) {
+    //        var value = ko.utils.unwrapObservable(valueAccessor());
+    //        if ((value === null) || (value === undefined)) {
+    //            value = "";
+    //        }
+    //        alert('Update!!');
+    //    }
+    //};
 };

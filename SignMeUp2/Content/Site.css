@@ -32,3 +32,10 @@ textarea {
     color: #ebebeb;
     font-size: 12px;
 }
+
+.editable {
+    /*background-color: #485563;*/
+    padding: 5px;
+    color: #EC971F;
+    cursor: text;
+}

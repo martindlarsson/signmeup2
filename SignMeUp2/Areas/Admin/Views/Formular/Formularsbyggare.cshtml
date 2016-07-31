@@ -5,23 +5,63 @@
 }
 
 <h2>Formulärsbyggaren</h2>
+<!-- Formulärets egenskaper -->
+<div class="row clearfix">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">Formulärets egenskaper</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="avgift">Avgift:</label>
+                    <input class="form-control" id="avgift">
+                </div>
+                <div class="form-group">
+                    <label for="max">Max antal anmälningar:</label>
+                    <input class="form-control" id="max">
+                </div>
+                <div class="form-group">
+                    <label for="aktivitet">Aktivitet:</label>
+                    <input class="form-control" id="aktivitet">
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox"> Publikt</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<input type="text" data-bind="value: Namn" placeholder="Formulärets titel..." />
+<div class="row clearfix">
+    <div class="col-md-7">
+        <div class="editable" data-bind="inline: Namn" placeholder="Formulärets titel..."></div>
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-default pull-right" data-bind="click: addStep" title="Lägg till ett formulärssteg"><span class="glyphicon glyphicon-plus"></span></button>
+    </div>
+</div>
+
+<div class="help-block"></div>
+
 
 <!-- Formuläret -->
-<div class="row">
+<div class="row clearfix">
 
     <div class="col-md-8">
 
         <!-- ko template: {foreach: steps, name: 'step-template'} -->
         <!-- /ko -->
 
+        <!-- Lägga-till knapp -->
+        <div class="panel panel-default">
+            <button type="button" class="btn btn-default btn-sm center-block" data-bind="click: addStep">Lägg till steg här</button>
+        </div>
+
         <button class="btn btn-default" data-bind="click: addStep"><span class="glyphicon glyphicon-plus"></span> Nytt steg</button>
         <button class="btn btn-default">Förhandsgranska</button>
     </div>
 
     <!-- Editeringsrutan -->
-    <div class="col-md-4">
+    @*<div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">Informationstext</div>
             <div class="panel-body">
@@ -35,25 +75,22 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 
 </div>
 
 <!-- Steg template -->
 <script type="text/html" id="step-template">
+    <!-- Lägga-till knapp -->
+    <div class="panel panel-default">
+        <button type="button" class="btn btn-default btn-sm center-block" data-bind="click: $parent.addStep">Lägg till steg här</button>
+    </div>
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="clearfix" style="margin-bottom: 30px;">
                 <!-- panel head -->
-                <div class="pull-left"><span contenteditable="true" data-bind="text: namn"></span></div>
+                <div class="pull-left"><span contenteditable="true" data-bind="contenteditable: namn"></span></div>
                 <div class="pull-right">
-                    <button type="button" class="btn btn-default btn-sm" data-bind="click: $parent.removeStep">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </button>
-
-                    <button type="button" class="btn btn-default btn-sm">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </button>
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -61,9 +98,14 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li><a href="#" data-bind="click: addField.bind($data, 'information')">Informationstext</a></li>
-                            <li><a href="#" data-bind="click: addField.bind($data, 'text')">Textinmatning</a></li>
+                            <li><a href="#" data-bind="click: addField.bind($data, 'text')">Textfråga</a></li>
+                            <li><a href="#" data-bind="click: addField.bind($data, 'val')">Flervalsfråga</a></li>
                         </ul>
                     </div>
+
+                    <button type="button" class="btn btn-default btn-sm" data-bind="click: $parent.removeStep">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
 
                     <button type="button" class="btn btn-default btn-sm">
                         <span class="glyphicon glyphicon-align-justify"></span>
@@ -81,7 +123,7 @@
 <script type="text/html" id="field-template">
     <div class="panel panel-default">
         <div class="panel-body">
-            <div class="pull-left" data-bind="text: title()"></div>
+            <div class="pull-left editable" data-bind="inline: title()"></div>
 
             <div class="pull-right">
                 <button type="button" class="btn btn-default btn-sm">

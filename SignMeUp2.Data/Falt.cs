@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SignMeUp2.Data
 {
-    public enum FaltTyp { text_falt = 0, val_falt = 1, epost_falt = 2 }
+    public enum FaltTyp { text_falt = 0, val_falt = 1, epost_falt = 2, info_falt = 3 }
 
     [Table("Falt")]
     public partial class Falt
