@@ -1,7 +1,8 @@
 ﻿@using Microsoft.Web.Mvc
 @using SignMeUp2.ViewModels;
+@using LangResources
 
-@model FormularSteg
+@model FormularStegVM
 
 @{
     Layout = "~/Views/Shared/_LayoutSimple.cshtml";
@@ -21,12 +22,12 @@ $(document).keypress(function (e) {
 @if (ViewBag.PaymentErrorMessage != null)
 {
     <div class="row top-buffer">
-        <div class="alert alert-danger col-md-5" role="alert">Betalningen misslyckades. Felmeddelande: <strong>@ViewBag.PaymentErrorMessage</strong><br />
+        <div class="alert alert-danger col-md-5" role="alert">@Language.PaymentError @Language.ErrorMessage: <strong>@ViewBag.PaymentErrorMessage</strong><br />
         Parameter: <strong>@ViewBag.PaymentErrorParameter</strong></div>
     </div>
 }
 
-<span class="badge alert-info top-buffer">Steg @(Model.StepIndex + 1) av @Model.StepCount</span>
+<span class="badge alert-info top-buffer">@Language.Step @(Model.StepIndex + 1) @Language.Of @Model.StepCount</span>
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "signMeUpForm" }))
 {
@@ -40,27 +41,27 @@ $(document).keypress(function (e) {
             @if (Model.StepIndex == 0)
             {   
                 <div class="col-md-2 col-md-offset-3 col-xs-4">
-                    <input type="submit" value="Nästa" name="ok" data="send" class="btn btn-default" />
+                    <input type="submit" value="@Language.Next" name="ok" data="send" class="btn btn-default">
                 </div>
             }
             else if (Model.StepIndex == Model.StepCount)
             {
                 <div class="col-md-1 col-xs-4">
-                    <input type="submit" value="Föregående" name="prev" class="btn btn-default cancel" />
+                    <input type="submit" value="@Language.Previous" name="prev" class="btn btn-default cancel" />
                 </div>
 
                 <div class="col-md-1 col-xs-4 col-md-offset-2">
-                    <input type="submit" value="Slutför" name="ok" data="send" class="btn btn-default" />
+                    <input type="submit" value="@Language.Submit" name="ok" data="send" class="btn btn-default" />
                 </div>
             }
             else
             {
                 <div class="col-md-1 col-xs-4">
-                    <input type="submit" value="Föregående" name="prev" class="btn btn-default cancel" />
+                    <input type="submit" value="@Language.Previous" name="prev" class="btn btn-default cancel" />
                 </div>
 
                 <div class="col-md-5 col-xs-4 col-md-offset-2">
-                    <input type="submit" value="Nästa" name="ok" data="send" class="btn btn-default" />
+                    <input type="submit" value="@Language.Next" name="ok" data="send" class="btn btn-default" />
                 </div>
             }
         </div>

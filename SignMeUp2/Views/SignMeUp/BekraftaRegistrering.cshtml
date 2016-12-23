@@ -1,13 +1,14 @@
 ﻿@using SignMeUp2.ViewModels;
+@using LangResources
 
 @{
-    ViewBag.Title = "Bekräfta registrering";
+    ViewBag.Title = Language.ConfirmRegistration;
     Layout = "~/Views/Shared/_LayoutSimple.cshtml";
 }
 
 @model SignMeUpVM
 
-<h2>Bekräfta registrering</h2>
+<h2>@Language.ConfirmRegistration</h2>
 
 @using (Html.BeginForm())
 {
@@ -24,7 +25,7 @@
     
     <div class="grid form-group">
         <div class="col-md-12">
-            <h3>Att betala</h3>
+            <h3>@Language.ToPay</h3>
         </div>
 
         <div class="col-md-12">
@@ -32,13 +33,13 @@
                 <table class="table">
                     <tr>
                         <th>
-                            Art
+                            @Language.Item
                         </th>
                         <th>
-                            Beskrivning
+                            @Language.Description
                         </th>
                         <th>
-                            Avgift
+                            @Language.Amount
                         </th>
                     </tr>
                     @foreach (ValViewModel post in Model.Betalnignsposter)
@@ -58,7 +59,7 @@
                     <tr>
                         <td></td>
                         <td>
-                            <strong>Summa</strong>
+                            <strong>@Language.Sum</strong>
                         </td>
                         <td>
                             <strong>@Model.AttBetala</strong>
@@ -89,10 +90,10 @@
                     @Html.LabelFor(model => model.Rabattkod, htmlAttributes: new { @class = "control-label col-md-1 hidden-xs vert-align" })
                 </div>
                 <div class="col-md-2 col-xs-6">
-                    @Html.EditorFor(model => model.Rabattkod, new { htmlAttributes = new { @class = "form-control", @placeholder = "Rabattkod" } })
+                    @Html.EditorFor(model => model.Rabattkod, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.DiscountCode } })
                 </div>
                 <div class="col-md-1 col-xs-6">
-                    <input type="submit" value="Använd rabattkod" name="rabatt" class="btn btn-default cancel" />
+                    <input type="submit" value="@Language.UseDiscountCode" name="rabatt" class="btn btn-default cancel" />
                 </div>
             </div>
     }
@@ -103,25 +104,25 @@
         {
         <div class="form-group row">
             <div class="col-md-5 col-xs-12">
-                <div class="alert alert-warning" role="alert">Vi tillåter enbart företag att betala mot faktura.</div>
+                <div class="alert alert-warning" role="alert">@Language.OnlyCompInvoice</div>
             </div>
         </div>
         }
 
         <div class="form-group row">
             <div class="col-md-1 col-xs-4">
-                <input type="submit" value="Korrigera" name="korrigera" class="btn btn-default cancel" />
+                <input type="submit" value=@Language.Correct name="korrigera" class="btn btn-default cancel" />
             </div>
 
             @if (Model.KanBetalaMedFaktura)
             {
             <div class="col-md-offset-1 col-md-1 col-xs-4">
-                <input type="submit" value="Faktura" name="faktura" class="btn btn-default" />
+                <input type="submit" value=@Language.Invoice name="faktura" class="btn btn-default" />
             </div>
             }
 
             <div class="col-md-1 col-xs-4">
-                <input type="submit" value="Betala" name="betala" class="btn btn-default" />
+                <input type="submit" value=@Language.Pay name="betala" class="btn btn-default" />
             </div>
         </div>
     </div>

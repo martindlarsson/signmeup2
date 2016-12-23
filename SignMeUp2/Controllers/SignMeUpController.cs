@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using SignMeUp2.ViewModels;
 using SignMeUp2.Helpers;
+using LangResources;
 
 namespace SignMeUp2.Controllers
 {
@@ -15,6 +16,7 @@ namespace SignMeUp2.Controllers
 
         public ActionResult Index(int? id)
         {
+
             SignMeUpVM SUPVM = (SignMeUpVM)Session["VM"];
 
             // Om view model innehåller ett formulärsid som inte stämmer med inkommande id, nolla wizard
@@ -27,11 +29,22 @@ namespace SignMeUp2.Controllers
             {
                 if (id == null)
                     return ShowError(log, "Inget formulär angivit. Klicka på länken nedan och välj ett formulär.", false);
-
-                var evenemang = smuService.HamtaEvenemang(SUPVM.EvenemangsId);
+                
                 var formular = smuService.GetFormular(id.Value);
 
+                if (formular == null)
+                    return ShowError(log, "Inget formulär hittat med det it. Klicka på länken nedan för att komma tillbaka till listan med evenemang.", false);
+
                 LogDebug(log, "Användare går in på anmälan för: " + formular.Namn);
+
+                var evenemang = smuService.HamtaEvenemang(formular.EvenemangsId.Value);
+
+                EvenemangHelper.UpdateLanguage(evenemang.Språk);
+                //if (evenemang.Språk == Data.Språk.Engelska)
+                //{
+                //    Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en");
+                //    Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+                //}
 
                 var evenemangResult = EvenemangHelper.EvaluateEvenemang(evenemang);
 
@@ -62,6 +75,7 @@ namespace SignMeUp2.Controllers
                     EvenemangsId = formular.EvenemangsId.Value,
                     FormularsId = formular.Id,
                     EvenemangsNamn = formular.Namn,
+                    EvenemangsSpråk = evenemang.Språk,
                     KanBetalaMedFaktura = evenemang.Fakturabetalning.HasValue ? evenemang.Fakturabetalning.Value : false,
                     FAVM = f,
                     Formular = formular
@@ -94,6 +108,7 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Ett oväntat fel inträffade, var god försök igen.", true, new Exception("Ingen wizard i Session"));
 
             ViewBag.ev = SUPVM.EvenemangsNamn;
+            EvenemangHelper.UpdateLanguage(SUPVM.EvenemangsSpråk);
 
             LogDebug(log, "Användare är i steg " + SUPVM.CurrentStepIndex + " av anmälan till " + SUPVM.EvenemangsNamn);
 
@@ -138,31 +153,6 @@ namespace SignMeUp2.Controllers
                 SUPVM.CurrentStepIndex--;
             }
 
-            // Om deltagarsteget, hämta antal deltagare och
-            // krav på personnummer från steget innan
-            //if (SUPVM.Steps[SUPVM.CurrentStepIndex].Namn == "Deltagare")
-            //{
-            //    var registrationStep = SUPVM.Steps.FirstOrDefault(stepps => stepps.Namn == "Registrering");
-            //    if (registrationStep != null)
-            //    {
-            //        var valBana = registrationStep.FaltLista.FirstOrDefault(val => val.Namn == "Bana");
-            //        var banId = int.Parse(valBana.Varde);
-            //        var bana = smuService.Db.Banor.FirstOrDefault(b => b.Id == banId);
-            //        // Om listan av deltagarfält är tom eller om antalet deltagare inte stämmer skapar vi en ny lista
-            //        if (SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista == null ||
-            //            SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista.Count != (bana.AntalDeltagare * 2))
-            //        {
-            //            var lista = new List<FaltViewModel>();
-            //            for (int i = 0; i < bana.AntalDeltagare; i++)
-            //            {
-            //                lista.Add(new FaltViewModel { Namn = "Förnamn " + (i + 1), Kravs = true });
-            //                lista.Add(new FaltViewModel { Namn = "Efternamn " + (i + 1), Kravs = true });
-            //            }
-            //            SUPVM.Steps[SUPVM.CurrentStepIndex].FaltLista = lista;
-            //        }
-            //    }
-            //}
-
             Session["VM"] = SUPVM;
 
             return View(SUPVM.CurrentStep);
@@ -182,7 +172,8 @@ namespace SignMeUp2.Controllers
             }
             
             SetViewBag(SUPVM.EvenemangsId);
-            
+            EvenemangHelper.UpdateLanguage(SUPVM.EvenemangsSpråk);
+
             LogDebug(log, "Användare bekräfta registrering (GET) för " + SUPVM.EvenemangsNamn);
 
             Session["VM"] = SUPVM;
@@ -208,6 +199,7 @@ namespace SignMeUp2.Controllers
             }
 
             ViewBag.ev = SUPVM.EvenemangsNamn;
+            EvenemangHelper.UpdateLanguage(SUPVM.EvenemangsSpråk);
 
             LogDebug(log, "Användare bekräfta registrering (POST) för " + SUPVM.EvenemangsNamn);
 
@@ -257,12 +249,12 @@ namespace SignMeUp2.Controllers
                     }
                     else
                     {
-                        ViewBag.RabattError = "Rabattkoden är inte giltig eller felaktig";
+                        ViewBag.RabattError = Language.FieldValErrorDiscountCodeNotValid; // "Rabattkoden är inte giltig eller felaktig";
                     }
                 }
                 else
                 {
-                    ViewBag.RabattError = "Ingen rabattkod angiven";
+                    ViewBag.RabattError = Language.FieldValErrorNoDiscountCode; // "Ingen rabattkod angiven";
                 }
             }
 
@@ -287,6 +279,7 @@ namespace SignMeUp2.Controllers
                 SUPVM.Fakturaadress = new InvoiceViewModel();
 
             ViewBag.ev = SUPVM.EvenemangsNamn;
+            EvenemangHelper.UpdateLanguage(SUPVM.EvenemangsSpråk);
 
             LogDebug(log, "Användare valt faktura (GET) för " + SUPVM.EvenemangsNamn);
 
@@ -310,6 +303,7 @@ namespace SignMeUp2.Controllers
             }
 
             ViewBag.ev = SUPVM.EvenemangsNamn;
+            EvenemangHelper.UpdateLanguage(SUPVM.EvenemangsSpråk);
 
             LogDebug(log, "Användare valt faktura (POST) för " + SUPVM.EvenemangsNamn);
 
@@ -355,6 +349,7 @@ namespace SignMeUp2.Controllers
 
             ViewBag.ev = reg.Formular.Evenemang.Namn;
             ViewBag.org = reg.Formular.Evenemang.Organisation.Namn;
+            EvenemangHelper.UpdateLanguage(reg.Formular.Evenemang.Språk);
 
             LogDebug(log, "Användare bekräftelse betalning (GET) för " + reg.Formular.Evenemang.Namn);
 
@@ -373,7 +368,12 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Ingen anmälan med id " + id.Value + " hittades.", false);
             }
 
-            var reg = smuService.GetRegistrering(id.Value, true); // Db.Registreringar.Include("Evenemang.Organisation").SingleOrDefault(r => r.Id == id);
+            var reg = smuService.GetRegistrering(id.Value, true);
+
+            if (reg != null && reg.Formular != null && reg.Formular.Evenemang != null)
+            {
+                EvenemangHelper.UpdateLanguage(reg.Formular.Evenemang.Språk);
+            }
 
             LogDebug(log, "Skicka mail igen för " + reg.Formular.Evenemang.Namn + " regid: " + reg.Id);
 

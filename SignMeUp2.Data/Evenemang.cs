@@ -5,6 +5,8 @@ namespace SignMeUp2.Data
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    public enum Språk { Svenska, Engelska }
+
     [Table("Evenemang")]
     public partial class Evenemang
     {
@@ -19,6 +21,9 @@ namespace SignMeUp2.Data
 
         [Required]
         public string Namn { get; set; }
+
+        [Required]
+        public Språk Språk { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]

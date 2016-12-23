@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40418.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignMeUp2", "SignMeUp2\SignMeUp2.csproj", "{062ECE74-DC8F-4462-8059-7A87D6855992}"
 EndProject
@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{83F467
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangResources", "LangResources\LangResources.csproj", "{8EA13340-B1B0-40DE-A9BD-3E0B361017C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,8 +28,15 @@ Global
 		{017F4EB5-C8D6-42CE-833F-83E2098BBB33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{017F4EB5-C8D6-42CE-833F-83E2098BBB33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{017F4EB5-C8D6-42CE-833F-83E2098BBB33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EA13340-B1B0-40DE-A9BD-3E0B361017C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EA13340-B1B0-40DE-A9BD-3E0B361017C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EA13340-B1B0-40DE-A9BD-3E0B361017C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EA13340-B1B0-40DE-A9BD-3E0B361017C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_NeutralResourcesLanguage = sv-SE
 	EndGlobalSection
 EndGlobal

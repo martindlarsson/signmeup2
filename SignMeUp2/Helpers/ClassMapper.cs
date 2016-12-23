@@ -313,7 +313,8 @@ namespace SignMeUp2.Helpers
                 Namn = evenemang.Namn,
                 OrganisationsId = evenemang.OrganisationsId,
                 RegStart = evenemang.RegStart,
-                RegStop = evenemang.RegStop
+                RegStop = evenemang.RegStop,
+                Språk = evenemang.Språk == ViewModels.Språk.Svenska ? Data.Språk.Svenska : Data.Språk.Engelska
             };
         }
 

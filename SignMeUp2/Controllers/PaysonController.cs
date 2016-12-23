@@ -76,7 +76,7 @@ namespace SignMeUp2.Controllers
                     LogDebug(log, string.Format("Payment: Lagnamn: {0}", SUPVM.GetFaltvarde("Lagnamn")));
 
                     var evenemang = smuService.HamtaEvenemang(SUPVM.EvenemangsId);
-                    var org = evenemang.Organisation;
+                    var org = smuService.HamtaOrganisation(evenemang.OrganisationsId);
 
                     // Spara temporärt i databasen
                     var reg = smuService.Spara(SUPVM);

@@ -3,12 +3,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SignMeUp2.ViewModels
 {
+    public enum Språk { Svenska, Engelska }
+
     public class EvenemangVM
     {
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Namn måste anges")]
         public string Namn { get; set; }
+
+        [Required(ErrorMessage = "Språk måste anges")]
+        public Språk Språk { get; set; }
 
         [Required(ErrorMessage = "Datum måste anges")]
         [DataType(DataType.DateTime)]

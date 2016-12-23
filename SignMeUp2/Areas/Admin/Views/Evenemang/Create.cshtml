@@ -25,6 +25,15 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Språk, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Språk, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.EnumDropDownListFor(m => m.Språk, "Välj språk", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Språk, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.RegStart, "Anmälan öppnar", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.RegStart, new { htmlAttributes = new { @class = "form-control datetimepicker" } })

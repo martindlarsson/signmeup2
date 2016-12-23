@@ -347,6 +347,10 @@
     <Compile Include="Migrations\201601292107331_tabort_val_typnamn.Designer.cs">
       <DependentUpon>201601292107331_tabort_val_typnamn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612212031314_språk.cs" />
+    <Compile Include="Migrations\201612212031314_språk.Designer.cs">
+      <DependentUpon>201612212031314_språk.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\AktivitetViewModel.cs" />
@@ -634,6 +638,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LangResources\LangResources.csproj">
+      <Project>{8ea13340-b1b0-40de-a9bd-3e0b361017c9}</Project>
+      <Name>LangResources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SignMeUp2.Data\SignMeUp2.Data.csproj">
       <Project>{017f4eb5-c8d6-42ce-833f-83e2098bbb33}</Project>
       <Name>SignMeUp2.Data</Name>
@@ -669,6 +677,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601292107331_tabort_val_typnamn.resx">
       <DependentUpon>201601292107331_tabort_val_typnamn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612212031314_språk.resx">
+      <DependentUpon>201612212031314_språk.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

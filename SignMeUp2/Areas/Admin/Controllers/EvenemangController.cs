@@ -38,7 +38,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Namn,RegStart,RegStop,Fakturabetalning,FakturaBetaldSenast")] ViewModels.EvenemangVM evenemang)
+        public ActionResult Create([Bind(Include = "Id,Namn,RegStart,RegStop,Fakturabetalning,FakturaBetaldSenast,Språk")] ViewModels.EvenemangVM evenemang)
         {
             if (ModelState.IsValid)
             {

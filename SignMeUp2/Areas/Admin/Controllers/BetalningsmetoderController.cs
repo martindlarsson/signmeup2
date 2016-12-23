@@ -25,25 +25,30 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateOrUpdate([Bind(Include = "ID,GiroTyp,Gironummer,PaysonUserId,PaysonUserKey,HarPayson,KanTaEmotIntBetalningar,IBAN,BIC")] Betalningsmetoder betalningsmetoder)
+        public ActionResult CreateOrUpdate([Bind(Include = "GiroTyp,Gironummer,PaysonUserId,PaysonUserKey,HarPayson,KanTaEmotIntBetalningar,IBAN,BIC")] Betalningsmetoder betalningsmetoder)
         {
             if (ModelState.IsValid)
             {
-                // Edit
-                if (betalningsmetoder.Id != 0)
+                var orgId = HamtaUser().OrganisationsId;
+                var org = db.Organisationer.Find(orgId);
+
+                var orgBetMetod = org.Betalningsmetoder;
+
+                if (orgBetMetod != null)
                 {
-                    db.Entry(betalningsmetoder).State = EntityState.Modified;
+                    betalningsmetoder.Id = orgBetMetod.Id;
                 }
-                // Create
-                else
-                {
-                    var orgId = HamtaUser().OrganisationsId;
-                    var org = db.Organisationer.Find(orgId);
-                    org.Betalningsmetoder = betalningsmetoder;
-                }
+
+                org.Betalningsmetoder = betalningsmetoder;
+                
                 db.SaveChanges();
 
-                // TODO sätt en flagga i ViewBag att ändringarna är sparade
+                TempData["Message"] = "Ändringarna är sparade";
+            }
+
+            else
+            {
+                ShowError(log, "Det gick inte att spara ändringen.", false);
             }
 
 

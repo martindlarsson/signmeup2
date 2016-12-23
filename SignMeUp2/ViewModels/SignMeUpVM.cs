@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using LangResources;
 using System.ComponentModel.DataAnnotations;
-using SignMeUp2.Helpers;
 
 namespace SignMeUp2.ViewModels
 {
@@ -30,11 +30,14 @@ namespace SignMeUp2.ViewModels
 
         public string EvenemangsNamn { get; set; }
 
+        public Data.Språk EvenemangsSpråk { get; set; }
+
         public int RegistreringsId { get; set; }
 
         // Förseningsavgift eller kanpanj
         public ForseningsavgiftVM FAVM { get; set; }
 
+        [Display(Name = "DiscountCode", ResourceType = typeof(Language))]
         public string Rabattkod { get; set; }
 
         public RabattVM Rabatt { get; set; }

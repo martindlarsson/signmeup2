@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Threading;
 using SignMeUp2.Data;
 
 namespace SignMeUp2.Helpers
@@ -35,6 +36,15 @@ namespace SignMeUp2.Helpers
                 return EvenemangValidationResult.DoesNotExist;
 
             return EvenemangValidationResult.OK;
+        }
+
+        public static void UpdateLanguage(Språk språk)
+        {
+            if (språk == Språk.Engelska)
+            {
+                Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en");
+                Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+            }
         }
     }
 }

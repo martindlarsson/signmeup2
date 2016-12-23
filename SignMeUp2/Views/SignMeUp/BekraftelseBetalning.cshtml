@@ -1,13 +1,15 @@
 ﻿@using SignMeUp2.Data;
+@using LangResources;
+
 @{
-    ViewBag.Title = "Bekräfta registrering";
+    ViewBag.Title = Language.ConfirmationOfPayment;
     Layout = "~/Views/Shared/_LayoutSimple.cshtml";
 }
 
 @model Registrering
 
-<h2>Tack för din anmälan till @ViewBag.ev</h2>
+<h2>@Language.ThankYou @ViewBag.ev</h2>
    
-<h4>Arrangör är @ViewBag.org</h4>
+<h4>@Language.Organizer @ViewBag.org</h4>
 
 @Html.DisplayFor(m => Model)

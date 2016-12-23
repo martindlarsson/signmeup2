@@ -1,9 +1,11 @@
-﻿@model SignMeUp2.Data.Registrering
+﻿@using LangResources;
+
+@model SignMeUp2.Data.Registrering
 
 <table class="table table-striped">
     <thead>
         <tr>
-            <th colspan="2"><h3>Anmälan</h3></th>
+            <th colspan="2"><h3>@Language.Registration</h3></th>
         </tr>
     </thead>
 
@@ -40,14 +42,14 @@
     @if (Model.Invoice != null)
     {
         <tr>
-            <th colspan="2"><h3>Fakturaadress</h3></th>
+            <th colspan="2"><h3>@Language.InvoiceAddress</h3></th>
         </tr>
         <tr>
             <th>Länk</th>
-            <td>@Html.ActionLink("Visa faktura för anmälan", "Faktura", "SignMeUp", new { id = Model.Invoice.Id }, null)</td>
+            <td>@Html.ActionLink(Language.ShowInvoice, "Faktura", "SignMeUp", new { id = Model.Invoice.Id }, null)</td>
         </tr>
         <tr>
-            <th colspan="2"><h3>Fakturaadress</h3></th>
+            <th colspan="2"><h3>@Language.InvoiceAddress</h3></th>
         </tr>
         <tr>
             <th>@Html.DisplayNameFor(model => model.Invoice.Namn)</th>

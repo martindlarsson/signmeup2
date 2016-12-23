@@ -200,7 +200,10 @@ namespace SignMeUp2.Controllers
         protected Organisation HamtaOrganisation()
         {
             var user = HamtaUser();
-            return db.Organisationer.Find(user.OrganisationsId);
+            if (user != null)
+                return db.Organisationer.Find(user.OrganisationsId);
+
+            return null;
         }
         
     }

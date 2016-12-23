@@ -60,8 +60,15 @@ namespace SignMeUp2.Services
 
         public FormularViewModel GetFormular(int formularsId)
         {
-            var formular = Db.Formular.Include(r => r.Evenemang).Single(f => f.Id == formularsId);
-            return ClassMapper.MappaTillFormularVM(formular);
+            try
+            {
+                var formular = Db.Formular.Single(f => f.Id == formularsId);
+                return ClassMapper.MappaTillFormularVM(formular);
+            } catch (Exception exc)
+            {
+                log.Error("Hittade inte formulär med id: " + formularsId, exc);
+                return null;
+            }
         }
 
         internal SelectList GetAktiviteter()
