@@ -61,6 +61,15 @@ namespace LangResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Postadress.
+        /// </summary>
+        public static string Address {
+            get {
+                return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Avgift.
         /// </summary>
         public static string Amount {
@@ -75,6 +84,24 @@ namespace LangResources {
         public static string Choose {
             get {
                 return ResourceManager.GetString("Choose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Postort.
+        /// </summary>
+        public static string City {
+            get {
+                return ResourceManager.GetString("City", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Företagsnamn.
+        /// </summary>
+        public static string CompanyName {
+            get {
+                return ResourceManager.GetString("CompanyName", resourceCulture);
             }
         }
         
@@ -124,11 +151,38 @@ namespace LangResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Epost.
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oväntat fel inträffade. Var god försök senare.
+        /// </summary>
+        public static string ErrorGeneral {
+            get {
+                return ResourceManager.GetString("ErrorGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Felmeddelande.
         /// </summary>
         public static string ErrorMessage {
             get {
                 return ResourceManager.GetString("ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inget evenemang med det id hittades.
+        /// </summary>
+        public static string ErrorNoEvent {
+            get {
+                return ResourceManager.GetString("ErrorNoEvent", resourceCulture);
             }
         }
         
@@ -156,6 +210,15 @@ namespace LangResources {
         public static string FieldValErrorPositiveNumber {
             get {
                 return ResourceManager.GetString("FieldValErrorPositiveNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förnamn.
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
             }
         }
         
@@ -205,6 +268,15 @@ namespace LangResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gå vidare till betalning.
+        /// </summary>
+        public static string NextPayson {
+            get {
+                return ResourceManager.GetString("NextPayson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to av.
         /// </summary>
         public static string Of {
@@ -232,6 +304,15 @@ namespace LangResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Organisationsnummer.
+        /// </summary>
+        public static string OrgNumber {
+            get {
+                return ResourceManager.GetString("OrgNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Betala.
         /// </summary>
         public static string Pay {
@@ -246,6 +327,33 @@ namespace LangResources {
         public static string PaymentError {
             get {
                 return ResourceManager.GetString("PaymentError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kontaktinformation för betalning.
+        /// </summary>
+        public static string PaysonContactInfo {
+            get {
+                return ResourceManager.GetString("PaysonContactInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Betalningen hanteras av Payson.
+        /// </summary>
+        public static string PaysonDisclaimer {
+            get {
+                return ResourceManager.GetString("PaysonDisclaimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ett fel inträffade vid kontakt med Payson.
+        /// </summary>
+        public static string PaysonSendError {
+            get {
+                return ResourceManager.GetString("PaysonSendError", resourceCulture);
             }
         }
         
@@ -282,6 +390,15 @@ namespace LangResources {
         public static string ShowInvoice {
             get {
                 return ResourceManager.GetString("ShowInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efternamn.
+        /// </summary>
+        public static string SirName {
+            get {
+                return ResourceManager.GetString("SirName", resourceCulture);
             }
         }
         
@@ -336,6 +453,24 @@ namespace LangResources {
         public static string UseDiscountCode {
             get {
                 return ResourceManager.GetString("UseDiscountCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obligatoriskt fält.
+        /// </summary>
+        public static string ValidationRequiredField {
+            get {
+                return ResourceManager.GetString("ValidationRequiredField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Postnummer.
+        /// </summary>
+        public static string ZipCode {
+            get {
+                return ResourceManager.GetString("ZipCode", resourceCulture);
             }
         }
     }

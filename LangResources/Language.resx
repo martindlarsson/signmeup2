@@ -210,4 +210,49 @@
   <data name="UseDiscountCode" xml:space="preserve">
     <value>Använd rabattkod</value>
   </data>
+  <data name="PaysonContactInfo" xml:space="preserve">
+    <value>Kontaktinformation för betalning</value>
+  <comment>Kontaktinformation för betalning</comment></data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Förnamn</value>
+  </data>
+  <data name="SirName" xml:space="preserve">
+    <value>Efternamn</value>
+  </data>
+  <data name="ValidationRequiredField" xml:space="preserve">
+    <value>Obligatoriskt fält</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Epost</value>
+  </data>
+  <data name="PaysonDisclaimer" xml:space="preserve">
+    <value>Betalningen hanteras av Payson</value>
+  </data>
+  <data name="NextPayson" xml:space="preserve">
+    <value>Gå vidare till betalning</value>
+  </data>
+  <data name="ErrorGeneral" xml:space="preserve">
+    <value>Oväntat fel inträffade. Var god försök senare</value>
+  </data>
+  <data name="PaysonSendError" xml:space="preserve">
+    <value>Ett fel inträffade vid kontakt med Payson</value>
+  </data>
+  <data name="ErrorNoEvent" xml:space="preserve">
+    <value>Inget evenemang med det id hittades</value>
+  </data>
+  <data name="ZipCode" xml:space="preserve">
+    <value>Postnummer</value>
+  </data>
+  <data name="OrgNumber" xml:space="preserve">
+    <value>Organisationsnummer</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>Postort</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Postadress</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Företagsnamn</value>
+  </data>
 </root>

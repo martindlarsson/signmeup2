@@ -351,6 +351,10 @@
     <Compile Include="Migrations\201612212031314_språk.Designer.cs">
       <DependentUpon>201612212031314_språk.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612271300142_FaltSvar_Varde_Null.cs" />
+    <Compile Include="Migrations\201612271300142_FaltSvar_Varde_Null.Designer.cs">
+      <DependentUpon>201612271300142_FaltSvar_Varde_Null.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\AktivitetViewModel.cs" />
@@ -680,6 +684,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612212031314_språk.resx">
       <DependentUpon>201612212031314_språk.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612271300142_FaltSvar_Varde_Null.resx">
+      <DependentUpon>201612271300142_FaltSvar_Varde_Null.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

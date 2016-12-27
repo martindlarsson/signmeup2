@@ -10,6 +10,7 @@ using SignMeUp2.Data;
 using PaysonIntegration;
 using PaysonIntegration.Data;
 using PaysonIntegration.Utils;
+using LangResources;
 
 namespace SignMeUp2.Controllers
 {
@@ -31,20 +32,12 @@ namespace SignMeUp2.Controllers
             // felmeddelande
             if (SUPVM == null)
             {
-                return ShowError(log, "Oväntat fel inträffade. Var god försök senare.", true);
-                //return View(SUPVM.Kontaktinformation);
+                return ShowError(log, Language.ErrorGeneral, true);
             }
 
             ViewBag.ev = SUPVM.EvenemangsNamn;
+            EvenemangHelper.UpdateLanguage(SUPVM.EvenemangsSpråk);
 
-            //LogDebug(log, "Paysonbetalning påbörjad för lag " + SUPVM.GetFaltvarde("Lagnamn"));
-
-            //var paysonKontaktinfo = new PaysonKontaktViewModel
-            //{
-            //    SenderEmail = SUPVM.GetFaltvarde("Epost"),
-            //    SenderFirstName = SUPVM.GetFaltvarde("Förnamn 1"),
-            //    SenderLastName = SUPVM.GetFaltvarde("Efternamn 1")
-            //};
             SUPVM.Kontaktinformation = new PaysonKontaktViewModel();
 
             Session["VM"] = SUPVM;
@@ -68,7 +61,7 @@ namespace SignMeUp2.Controllers
                 {
                     if (SUPVM == null)
                     {
-                        return ShowError(log, "Oväntat fel. Var god försök senare", true, new Exception("Ingen paysonViewModel i Session."));
+                        return ShowError(log, Language.ErrorGeneral, true, new Exception("Ingen paysonViewModel i Session."));
                     }
 
                     SUPVM.Kontaktinformation = kontaktInfo;
@@ -112,18 +105,21 @@ namespace SignMeUp2.Controllers
 
                     Session["VM"] = SUPVM;
 
-                    return ShowPaymentError("Error when sending payment to payson.", response.NvpContent, SUPVM.EvenemangsId);
+                    EvenemangHelper.UpdateLanguage(SUPVM.EvenemangsSpråk);
+
+                    return ShowPaymentError(Language.PaysonSendError, response.NvpContent, SUPVM.EvenemangsId);
                 }
                 catch (Exception exception)
                 {
                     var exc = new Exception("Ett fel inträffade i PaysonController Index metod.", exception);
                     LogError(log, "Exception in Index.", exception);
-                    return ShowError(log, "Oväntat fel vid betalning. Var god försök igen.", true, exc);
+                    return ShowError(log, Language.ErrorGeneral, true, exc);
                 }
             }
             
             Session["VM"] = SUPVM;
             ViewBag.ev = SUPVM.EvenemangsNamn;
+            EvenemangHelper.UpdateLanguage(SUPVM.EvenemangsSpråk);
             return View(kontaktInfo);
         }
 

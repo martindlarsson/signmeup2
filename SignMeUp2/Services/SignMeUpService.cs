@@ -31,6 +31,15 @@ namespace SignMeUp2.Services
             return formularQuery.ToList();
         }
 
+        public Evenemang GetEvenemangForFormular(int formalrsId)
+        {
+            var evenemangQuery = from evenemang in Db.Evenemang
+                                join formualr in Db.Formular on evenemang.Id equals formualr.EvenemangsId
+                                select evenemang;
+
+            return evenemangQuery.First<Evenemang>();
+        }
+
         public SignMeUpDataModel Db
         {
             get

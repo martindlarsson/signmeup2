@@ -82,7 +82,7 @@ namespace SignMeUp2.Controllers
 
         protected FakturaVM SkapaFakturaVM(Registrering reg)
         {
-            var evenemang = smuService.HamtaEvenemang(reg.Formular.EvenemangsId.Value);
+            var evenemang = smuService.GetEvenemangForFormular(reg.FormularId.Value);
             var arrangor = smuService.HamtaOrganisation(evenemang.OrganisationsId);
 
             if (reg.Invoice == null)

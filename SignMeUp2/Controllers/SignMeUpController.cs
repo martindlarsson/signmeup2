@@ -39,13 +39,6 @@ namespace SignMeUp2.Controllers
 
                 var evenemang = smuService.HamtaEvenemang(formular.EvenemangsId.Value);
 
-                EvenemangHelper.UpdateLanguage(evenemang.Språk);
-                //if (evenemang.Språk == Data.Språk.Engelska)
-                //{
-                //    Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en");
-                //    Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-                //}
-
                 var evenemangResult = EvenemangHelper.EvaluateEvenemang(evenemang);
 
                 if (evenemangResult == EvenemangHelper.EvenemangValidationResult.NotOpen)
@@ -62,7 +55,7 @@ namespace SignMeUp2.Controllers
                 }
                 else if (evenemangResult == EvenemangHelper.EvenemangValidationResult.DoesNotExist)
                 {
-                    return ShowError(log, "Evenemang med id " + id.Value + " är antingen borttaget ur databasen eller felaktigt angivet.", false);
+                    return ShowError(log, Language.ErrorNoEvent, false);
                 }
 
                 ViewBag.ev = evenemang.Namn;
@@ -81,6 +74,8 @@ namespace SignMeUp2.Controllers
                     Formular = formular
                 };
             }
+
+            EvenemangHelper.UpdateLanguage(SUPVM.EvenemangsSpråk);
 
             HanteraPaymentError();
 
@@ -105,7 +100,7 @@ namespace SignMeUp2.Controllers
             var SUPVM = (SignMeUpVM)Session["VM"];
 
             if (SUPVM == null)
-                return ShowError(log, "Ett oväntat fel inträffade, var god försök igen.", true, new Exception("Ingen wizard i Session"));
+                return ShowError(log, Language.ErrorGeneral, true, new Exception("Ingen wizard i Session"));
 
             ViewBag.ev = SUPVM.EvenemangsNamn;
             EvenemangHelper.UpdateLanguage(SUPVM.EvenemangsSpråk);

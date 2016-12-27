@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using LangResources;
 
 namespace SignMeUp2.ViewModels
 {
@@ -8,20 +9,24 @@ namespace SignMeUp2.ViewModels
 
         public string Box { get; set; }
 
-        [Required(ErrorMessage = "Postnummer måste anges")]
+        [Required(ErrorMessageResourceName = "RequeiredFieldValError", ErrorMessageResourceType = typeof(Language))]
+        [Display(Name = "ZipCode", ResourceType = typeof(Language))]
         public string Postnummer { get; set; }
 
-        [Required(ErrorMessage = "Organisationsnummer måste anges")]
+        [Required(ErrorMessageResourceName = "RequeiredFieldValError", ErrorMessageResourceType = typeof(Language))]
+        [Display(Name = "OrgNumber", ResourceType = typeof(Language))]
         public string Organisationsnummer { get; set; }
 
-        [Required(ErrorMessage = "Postort måste anges")]
+        [Required(ErrorMessageResourceName = "RequeiredFieldValError", ErrorMessageResourceType = typeof(Language))]
+        [Display(Name = "City", ResourceType = typeof(Language))]
         public string Postort { get; set; }
-
-        [Required(ErrorMessage = "Postadress måste anges")]
+        
+        [Required(ErrorMessageResourceName = "RequeiredFieldValError", ErrorMessageResourceType = typeof(Language))]
+        [Display(Name = "Address", ResourceType = typeof(Language))]
         public string Postadress { get; set; }
 
-        [Required(ErrorMessage = "Företagsnamn måste anges")]
-        [Display(Name = "Företagsnamn")]
+        [Required(ErrorMessageResourceName = "RequeiredFieldValError", ErrorMessageResourceType = typeof(Language))]
+        [Display(Name = "CompanyName", ResourceType = typeof(Language))]
         public string Namn { get; set; }
 
         public string Att { get; set; }

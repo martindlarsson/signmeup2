@@ -169,7 +169,7 @@
     <value>of</value>
   </data>
   <data name="OnlyCompInvoice" xml:space="preserve">
-    <value>We only allow companies to request invoice</value>
+    <value>We only allow companies to pay by invoice</value>
   </data>
   <data name="Organizer" xml:space="preserve">
     <value>Organized by</value>
@@ -209,5 +209,50 @@
   </data>
   <data name="UseDiscountCode" xml:space="preserve">
     <value>Use discount code</value>
+  </data>
+  <data name="PaysonContactInfo" xml:space="preserve">
+    <value>Contact information for payment</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First name</value>
+  </data>
+  <data name="SirName" xml:space="preserve">
+    <value>Sir name</value>
+  </data>
+  <data name="ValidationRequiredField" xml:space="preserve">
+    <value>Required field</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="PaysonDisclaimer" xml:space="preserve">
+    <value>The payment is handled by Payson</value>
+  </data>
+  <data name="NextPayson" xml:space="preserve">
+    <value>To payment</value>
+  </data>
+  <data name="ErrorGeneral" xml:space="preserve">
+    <value>Unexpected errer occured, pleas try again later</value>
+  </data>
+  <data name="PaysonSendError" xml:space="preserve">
+    <value>An error occured when connecting to Payson</value>
+  </data>
+  <data name="ErrorNoEvent" xml:space="preserve">
+    <value>No event with that id was found</value>
+  </data>
+  <data name="ZipCode" xml:space="preserve">
+    <value>Zip code</value>
+  </data>
+  <data name="OrgNumber" xml:space="preserve">
+    <value>Organisation Id</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Company</value>
   </data>
 </root>

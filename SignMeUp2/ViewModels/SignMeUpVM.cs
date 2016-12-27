@@ -21,7 +21,15 @@ namespace SignMeUp2.ViewModels
 
         public FormularStegVM CurrentStep
         {
-            get { return Steps[CurrentStepIndex]; }
+            
+            get {
+                if (CurrentStepIndex < 0)
+                {
+                    CurrentStepIndex = 0;
+                    return Steps[0];
+                }
+                return Steps[CurrentStepIndex];
+            }
         }
 
         public int FormularsId { get; set; }
@@ -130,17 +138,17 @@ namespace SignMeUp2.ViewModels
 
     public class PaysonKontaktViewModel
     {
-        [Display(Name = "Förnamn")]
-        [Required(ErrorMessage = "Måste anges")]
+        [Display(Name = "FirstName", ResourceType = typeof(Language))]
+        [Required(ErrorMessageResourceName = "ValidationRequiredField", ErrorMessageResourceType = typeof(Language))]
         public string SenderFirstName { get; set; }
-
-        [Display(Name = "Efternamn")]
-        [Required(ErrorMessage = "Måste anges")]
+        
+        [Display(Name = "SirName", ResourceType = typeof(Language))]
+        [Required(ErrorMessageResourceName = "ValidationRequiredField", ErrorMessageResourceType = typeof(Language))]
         public string SenderLastName { get; set; }
 
         [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessage = "Detta är inte en välformad epostadress")]
-        [Required(ErrorMessage = "Måste anges")]
-        [Display(Name = "Epost")]
+        [Required(ErrorMessageResourceName = "ValidationRequiredField", ErrorMessageResourceType = typeof(Language))]
+        [Display(Name = "Email", ResourceType = typeof(Language))]
         [DataType(DataType.EmailAddress)]
         public string SenderEmail { get; set; }
     }

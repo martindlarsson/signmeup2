@@ -1,7 +1,9 @@
-﻿@model SignMeUp2.ViewModels.InvoiceViewModel
+﻿@using LangResources
+
+@model SignMeUp2.ViewModels.InvoiceViewModel
 
 @{
-    ViewBag.Title = "Fakturaadress";
+    ViewBag.Title = Language.InvoiceAddress;
     Layout = "~/Views/Shared/_LayoutSimple.cshtml";
 }
 
@@ -15,7 +17,7 @@
     });
 </script>
 
-<h2>Ange fakturaadress</h2>
+<h2>@Language.InvoiceAddress</h2>
 
 @using (Html.BeginForm())
 {
@@ -83,10 +85,10 @@
 
         <div class="form-group">
             <div class="col-md-1">
-                <input type="submit" value="Backa" name="cancel" class="btn btn-default cancel" />
+                <input type="submit" value=@Language.Previous name="cancel" class="btn btn-default cancel" />
             </div>
             <div class="col-md-offset-3 col-md-1">
-                <input type="submit" value="Slutför" data="send" class="btn btn-default" />
+                <input type="submit" value=@Language.Next data="send" class="btn btn-default pull-right" />
             </div>
         </div>
     </div>

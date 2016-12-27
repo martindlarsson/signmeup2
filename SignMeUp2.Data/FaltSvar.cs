@@ -12,8 +12,7 @@ namespace SignMeUp2.Data
         public int FaltId { get; set; }
 
         public Falt Falt { get; set; }
-
-        [Required]
+        
         public string Varde { get; set; }
 
         [Required]
