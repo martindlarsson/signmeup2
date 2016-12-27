@@ -255,4 +255,7 @@
   <data name="CompanyName" xml:space="preserve">
     <value>Company</value>
   </data>
+  <data name="Discount" xml:space="preserve">
+    <value>Discount</value>
+  </data>
 </root>

@@ -314,7 +314,9 @@ namespace SignMeUp2.Controllers
                 SUPVM.Fakturaadress = fakturaadress;
                 // Spara i databasen
                 var reg = smuService.Spara(SUPVM);
-                
+
+                reg = smuService.GetRegistrering(reg.Id, true);
+
                 SkickaRegMail(reg);
                 SkickaFaktura(reg);
 

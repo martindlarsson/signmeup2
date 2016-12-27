@@ -142,6 +142,15 @@ namespace LangResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rabatt.
+        /// </summary>
+        public static string Discount {
+            get {
+                return ResourceManager.GetString("Discount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rabattkod.
         /// </summary>
         public static string DiscountCode {

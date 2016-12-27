@@ -6,12 +6,14 @@ using SendGrid;
 using SignMeUp2.Data;
 using SignMeUp2.ViewModels;
 using log4net;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace SignMeUp2.Helpers
 {
     public class SendMail
     {
-        public static void SendRegistration(string message, string hostAddress, string link, Registrering reg)
+        public static async void SendRegistration(string message, string hostAddress, string link, Registrering reg)
         {
             try
             {
@@ -21,7 +23,8 @@ namespace SignMeUp2.Helpers
 
                 // Create the email object first, then add the properties.
                 SendGridMessage myMessage = new SendGridMessage();
-                myMessage.AddTo("jag@hemma.se");
+                myMessage.AddTo("martin.d.andersson@gmail.com");
+                myMessage.AddTo(GetEmailAddresses(reg.Svar));
                 myMessage.From = new MailAddress(reg.Formular.Evenemang.Organisation.Epost, reg.Formular.Evenemang.Organisation.Namn);
                 myMessage.Subject = string.Format("Bekräftelse anmälan till " + reg.Formular.Evenemang.Namn);
                 myMessage.Html = message;
@@ -35,7 +38,7 @@ namespace SignMeUp2.Helpers
 
                 // Send the email.
                 // You can also use the **DeliverAsync** method, which returns an awaitable task.
-                transportWeb.DeliverAsync(myMessage);
+                await transportWeb.DeliverAsync(myMessage);
             }
             catch (Exception exc)
             {
@@ -44,7 +47,22 @@ namespace SignMeUp2.Helpers
             }
         }
 
-        public static void SkickaFaktura(string message, string hostAddress, string link, FakturaVM fakturaVm)
+        private static IEnumerable<String> GetEmailAddresses(ICollection<FaltSvar> svarslista)
+        {
+            var newCollection = new List<String>();
+
+            foreach(var svar in svarslista)
+            {
+                if (svar.Falt.Typ == FaltTyp.epost_falt)
+                {
+                    newCollection.Add(svar.Varde);
+                }
+            }
+
+            return newCollection;
+        }
+
+        public static async void SkickaFaktura(string message, string hostAddress, string link, FakturaVM fakturaVm)
         {
             try
             {
@@ -55,7 +73,8 @@ namespace SignMeUp2.Helpers
                 var arrEpost = new MailAddress(fakturaVm.Arrangor.Epost, fakturaVm.Arrangor.Namn);
                 // Create the email object first, then add the properties.
                 SendGridMessage myMessage = new SendGridMessage();
-                myMessage.AddTo("jag@hemma.se");
+                //myMessage.AddTo("jag@hemma.se");
+                myMessage.AddTo(GetEmailAddresses(fakturaVm.Registrering.Svar));
                 myMessage.AddCc(arrEpost);
                 myMessage.From = arrEpost;
                 myMessage.Subject = string.Format("Faktura för anmälan till " + fakturaVm.Evenemangsnamn);
@@ -70,7 +89,7 @@ namespace SignMeUp2.Helpers
 
                 // Send the email.
                 // You can also use the **DeliverAsync** method, which returns an awaitable task.
-                transportWeb.DeliverAsync(myMessage);
+                await transportWeb.DeliverAsync(myMessage);
             }
             catch (Exception exc)
             {
@@ -79,7 +98,7 @@ namespace SignMeUp2.Helpers
             }
         }
 
-        public static void SendErrorMessage(string errorMessage, string host)
+        public static async void SendErrorMessage(string errorMessage, string host)
         {
 #if DEBUG
             return;
@@ -105,7 +124,7 @@ namespace SignMeUp2.Helpers
 
                 // Send the email.
                 // You can also use the **DeliverAsync** method, which returns an awaitable task.
-                transportWeb.DeliverAsync(myMessage);
+                await transportWeb.DeliverAsync(myMessage);
             }
             catch (Exception exc)
             {

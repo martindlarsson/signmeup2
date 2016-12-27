@@ -8,25 +8,13 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @*@Scripts.Render("~/bundles/ai")*@
 </head>
 <body>
-    @*<div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                @{
-                    string linkText = string.IsNullOrEmpty(ViewBag.ev) ? "SignMeUp2" : ViewBag.ev;
-                }
-
-                @Html.ActionLink(linkText, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-        </div>
-    </div>*@
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - SignMeUp2</p>
+            <div class="top-buffer">&copy; @DateTime.Now.Year - SignMeUp2</div>
         </footer>
     </div>
 

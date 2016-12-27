@@ -16,13 +16,6 @@
     
     <p>Anmälan gjordes @Model.Registrering.Registreringstid.Value.ToString("yyyy-MM-dd HH:mm")</p>
 
-    <h4>Deltagare</h4>
-
-    @foreach (var deltagare in Model.Registrering.Deltagare)
-    {
-        <p>@deltagare.Förnamn @deltagare.Efternamn</p>
-    }
-
     <div class="col-lg-12 top-buffer">
         <div class="col-lg-6">
             <table class="table">

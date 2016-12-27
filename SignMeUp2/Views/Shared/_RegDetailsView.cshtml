@@ -80,38 +80,38 @@
     </tr>
     <tr>
         <th>Länk</th>
-        <td>@Html.ActionLink("Visa faktura för anmälan", "Faktura", "SignMeUp", new { id = Model.Invoice.Id }, null)</td>
+        <td>@Html.ActionLink("Visa faktura för anmälan", "Faktura", "SignMeUp", new { id = model.Id }, null)</td>
     </tr>
     <tr>
         <th colspan="2"><h3>Fakturaadress</h3></th>
     </tr>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.Invoice.Namn)</th>
-        <td>@Html.DisplayFor(model => model.Invoice.Namn)</td>
+        <th>@Html.DisplayNameFor(model => model.Namn)</th>
+        <td>@Html.DisplayFor(model => model.Namn)</td>
     </tr>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.Invoice.Organisationsnummer)</th>
-        <td>@Html.DisplayFor(model => model.Invoice.Organisationsnummer)</td>
+        <th>@Html.DisplayNameFor(model => model.Organisationsnummer)</th>
+        <td>@Html.DisplayFor(model => model.Organisationsnummer)</td>
     </tr>
     <tr>
         <th>Attesteras</th>
-        <td>@Html.DisplayFor(model => model.Invoice.Att)</td>
+        <td>@Html.DisplayFor(model => model.Att)</td>
     </tr>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.Invoice.Postadress)</th>
-        <td>@Html.DisplayFor(model => model.Invoice.Postadress)</td>
+        <th>@Html.DisplayNameFor(model => model.Postadress)</th>
+        <td>@Html.DisplayFor(model => model.Postadress)</td>
     </tr>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.Invoice.Postnummer)</th>
-        <td>@Html.DisplayFor(model => model.Invoice.Postnummer)</td>
+        <th>@Html.DisplayNameFor(model => model.Postnummer)</th>
+        <td>@Html.DisplayFor(model => model.Postnummer)</td>
     </tr>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.Invoice.Postort)</th>
-        <td>@Html.DisplayFor(model => model.Invoice.Postort)</td>
+        <th>@Html.DisplayNameFor(model => model.Postort)</th>
+        <td>@Html.DisplayFor(model => model.Postort)</td>
     </tr>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.Invoice.Box)</th>
-        <td>@Html.DisplayFor(model => model.Invoice.Box)</td>
+        <th>@Html.DisplayNameFor(model => model.Box)</th>
+        <td>@Html.DisplayFor(model => model.Box)</td>
     </tr>
     }
 </table>

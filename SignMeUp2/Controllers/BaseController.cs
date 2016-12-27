@@ -71,8 +71,8 @@ namespace SignMeUp2.Controllers
                 //smuService.FillRegistrering(reg);
                 var appUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
                 var link = appUrl + "signmeup/bekraftelsebetalning/" + reg.Id;
-                SendMail.SendRegistration(RenderRazorViewToString("BekraftelseMail", reg), appUrl, link, reg);
-                log.Debug("Skickat epost till ?"); // lagnamn: " + reg.Lagnamn);
+                SendMail.SendRegistration(RenderRazorViewToString("BekraftelseBetalning", reg), appUrl, link, reg);
+                log.Debug("Skickat epost till ?");
             }
             catch (Exception exc)
             {
@@ -120,7 +120,7 @@ namespace SignMeUp2.Controllers
                 var appUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
                 var link = appUrl + "signmeup/faktura/" + reg.Id;
                 SendMail.SkickaFaktura(RenderRazorViewToString("_faktura", fakturaVm), appUrl, link, fakturaVm);
-                log.Debug("Skickat epost till ?"); // lagnamn: " + reg.Lagnamn);
+                log.Debug("Skickat epost till ?");
                 return true;
             }
             catch (Exception exc)

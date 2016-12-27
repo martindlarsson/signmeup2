@@ -2,19 +2,14 @@
 
 @model SignMeUp2.Data.Registrering
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th colspan="2"><h3>@Language.Registration</h3></th>
-        </tr>
-    </thead>
+<div class="grid">
+
+    <h3>@Language.Registration</h3>
 
     @foreach (var steg in Model.Formular.Steg)
     {
-        <tr>
-            <th colspan="2"><h4>@steg.Namn</h4></th>
-        </tr>
-        
+        <div class="col-lg-12 top-buffer"><h4>@steg.Namn</h4></div>
+
         foreach (var falt in steg.Falt)
         {
             var svar = Model.Svar.Single(s => s.FaltId == falt.Id);
@@ -32,52 +27,35 @@
                 text = svar.Varde;
             }
 
-            <tr>
-                <th>@svar.Falt.Namn</th>
-                <td>@text</td>
-            </tr>
-            }
+            <div class="col-lg-12">
+                <div class="col-lg-2"><b>@svar.Falt.Namn</b></div>
+                <div class="col-lg-8">@text</div>
+            </div>
         }
+    }
 
     @if (Model.Invoice != null)
     {
-        <tr>
-            <th colspan="2"><h3>@Language.InvoiceAddress</h3></th>
-        </tr>
-        <tr>
-            <th>Länk</th>
-            <td>@Html.ActionLink(Language.ShowInvoice, "Faktura", "SignMeUp", new { id = Model.Invoice.Id }, null)</td>
-        </tr>
-        <tr>
-            <th colspan="2"><h3>@Language.InvoiceAddress</h3></th>
-        </tr>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Invoice.Namn)</th>
-            <td>@Html.DisplayFor(model => model.Invoice.Namn)</td>
-        </tr>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Invoice.Organisationsnummer)</th>
-            <td>@Html.DisplayFor(model => model.Invoice.Organisationsnummer)</td>
-        </tr>
-        <tr>
-            <th>Attesteras</th>
-            <td>@Html.DisplayFor(model => model.Invoice.Att)</td>
-        </tr>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Invoice.Postadress)</th>
-            <td>@Html.DisplayFor(model => model.Invoice.Postadress)</td>
-        </tr>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Invoice.Postnummer)</th>
-            <td>@Html.DisplayFor(model => model.Invoice.Postnummer)</td>
-        </tr>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Invoice.Postort)</th>
-            <td>@Html.DisplayFor(model => model.Invoice.Postort)</td>
-        </tr>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Invoice.Box)</th>
-            <td>@Html.DisplayFor(model => model.Invoice.Box)</td>
-        </tr>
+        <div class="col-lg-12 top-buffer">
+            @Html.DisplayFor(model => model.Invoice)
+        </div>
+        <div class="col-lg-12 top-buffer"><h4>Bekräftelse på er anmälan och fakturan kommer att skickas till följande adress(er):</h4></div>
     }
-</table>
+    else
+    {
+        <div class="col-lg-12 top-buffer"><h3>Bekräftelse på er anmälan kommer att skickas till följande adress(er):</h3></div>
+    }
+
+    @foreach(var steg in Model.Formular.Steg)
+    {
+        foreach(var falt in steg.Falt)
+        {
+            if (falt.Typ == SignMeUp2.Data.FaltTyp.epost_falt)
+            {
+                var svar = Model.Svar.Single(s => s.FaltId == falt.Id);
+                <div class="col-lg-12">@svar.Varde</div>
+            }
+        }
+
+    }
+</div>

@@ -1,0 +1,45 @@
+﻿@using LangResources;
+
+@model SignMeUp2.Data.Fakturaadress
+
+<h4>@Language.InvoiceAddress</h4>
+
+<div class="col-lg-12">
+    <div class="col-lg-2"><b>Länk till fakturan</b></div>
+    <div class="col-lg-8">@Html.ActionLink(Language.ShowInvoice, "Faktura", "SignMeUp", new { id = Model.Id }, null)</div>
+</div>
+
+<div class="col-lg-12">
+    <div class="col-lg-2"><b>@Html.DisplayNameFor(model => model.Namn)</b></div>
+    <div class="col-lg-8">@Html.DisplayFor(model => model.Namn)</div>
+</div>
+
+<div class="col-lg-12">
+    <div class="col-lg-2"><b>@Html.DisplayNameFor(model => model.Organisationsnummer)</b></div>
+    <div class="col-lg-8">@Html.DisplayFor(model => model.Organisationsnummer)</div>
+</div>
+
+<div class="col-lg-12">
+    <div class="col-lg-2"><b>Attesteras</b></div>
+    <div class="col-lg-8">@Html.DisplayFor(model => model.Att)</div>
+</div>
+
+<div class="col-lg-12">
+    <div class="col-lg-2"><b>@Html.DisplayNameFor(model => model.Postadress)</b></div>
+    <div class="col-lg-8">@Html.DisplayFor(model => model.Postadress)</div>
+</div>
+
+<div class="col-lg-12">
+    <div class="col-lg-2"><b>@Html.DisplayNameFor(model => model.Postnummer)</b></div>
+    <div class="col-lg-8">@Html.DisplayFor(model => model.Postnummer)</div>
+</div>
+
+<div class="col-lg-12">
+    <div class="col-lg-2"><b>@Html.DisplayNameFor(model => model.Postort)</b></div>
+    <div class="col-lg-8">@Html.DisplayFor(model => model.Postort)</div>
+</div>
+
+<div class="col-lg-12">
+    <div class="col-lg-2"><b>@Html.DisplayNameFor(model => model.Box)</b></div>
+    <div class="col-lg-8">@Html.DisplayFor(model => model.Box)</div>
+</div>

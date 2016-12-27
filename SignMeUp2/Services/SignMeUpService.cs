@@ -35,9 +35,10 @@ namespace SignMeUp2.Services
         {
             var evenemangQuery = from evenemang in Db.Evenemang
                                 join formualr in Db.Formular on evenemang.Id equals formualr.EvenemangsId
-                                select evenemang;
+                                where formualr.Id == formalrsId
+                                 select evenemang;
 
-            return evenemangQuery.First<Evenemang>();
+            return evenemangQuery.First();
         }
 
         public SignMeUpDataModel Db
@@ -94,6 +95,8 @@ namespace SignMeUp2.Services
                         .Include(r => r.Formular.Evenemang)
                         .Include(r => r.Formular.Evenemang.Organisation)
                         .Include(r => r.Invoice)
+                        .Include(r => r.Svar)
+                        .Include(r => r.Svar.Select(s => s.Falt)) // För att få med fälten också
                         .Where(r => r.Id == id)
                         .FirstOrDefault();
             }

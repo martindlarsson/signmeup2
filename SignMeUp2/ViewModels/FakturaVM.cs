@@ -23,6 +23,11 @@ namespace SignMeUp2.ViewModels
             get
             {
                 var list = new List<ValViewModel>();
+
+                if (Registrering.Formular.Avgift > 0)
+                {
+                    list.Add(new ValViewModel { TypNamn = "Grundavgift", Namn = "Anmälan", Avgift = Registrering.Formular.Avgift });
+                }
                 
                 foreach (var svar in Registrering.Svar)
                 {
@@ -56,6 +61,7 @@ namespace SignMeUp2.ViewModels
                 {
                     summa += val.Avgift;
                 }
+
                 return summa < 0 ? 0 : summa;
             }
         }
