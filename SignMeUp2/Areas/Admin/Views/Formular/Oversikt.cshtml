@@ -60,7 +60,7 @@
     </table>
 </div>
 
-<div class="col-md-12">
+@*<div class="col-md-12">
     <h3>
         @Html.ActionLink("+", "Create", "Registraringar", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
         Anmälningar
@@ -68,16 +68,46 @@
     <table class="table table-striped">
         <tr>
             <th>Registreringstid</th>
+            <th>Betalningsmetod</th>
             <th>Att betala</th>
             <th>Betalt</th>
         </tr>
         @foreach (RegistreringVM reg in ViewBag.Registreringar)
         {
             var harBetalt = reg.HarBetalt ? "ja" : "nej";
+            var betModetod = reg.Invoice == null ? "Payson" : "Faktura";
             <tr>
-                <td>@Html.ActionLink(reg.Registreringstid.ToString(), "Edit", "Registreringar", new { id = reg.Id }, new { @class = "btn btn-link" }) </td>
+                <td>@Html.ActionLink(reg.Registreringstid.ToString(), "Details", "Registreringar", new { id = reg.Id }, new { @class = "btn btn-link" }) </td>
+                <td>@betModetod</td>
                 <td>@reg.AttBetala</td>
                 <td>@harBetalt</td>
+            </tr>
+        }
+    </table>
+</div>*@
+
+
+<div class="col-md-12">
+    <h3>Registreringar</h3>
+
+    <table class="table table-striped">
+        <tr>
+            @foreach (var kolumn in ViewBag.RegTable.Kolumner)
+            {
+                <th>
+                    @kolumn.Rubrik
+                </th>
+            }
+        </tr>
+        @foreach (var rad in ViewBag.RegTable.Rader)
+        {
+            <tr>
+                @foreach (var varde in rad.Varden)
+                {
+                    <td>
+                        @Html.Raw(varde)
+                    </td>
+                }
             </tr>
         }
     </table>

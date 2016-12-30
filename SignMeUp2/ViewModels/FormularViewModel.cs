@@ -16,8 +16,9 @@ namespace SignMeUp2.ViewModels
         public int Id { get; set; }
 
         public int? EvenemangsId { get; set; }
-        //public Evenemang Evenemang { get; set; }
-        
+
+        public EvenemangVM Evenemang { get; internal set; }
+
         [Required(ErrorMessage = "Namn måste anges")]
         public string Namn { get; set; }
         

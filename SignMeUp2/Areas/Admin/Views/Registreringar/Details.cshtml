@@ -1,155 +1,56 @@
-﻿@model SignMeUp2.Data.Registreringar
+﻿@model SignMeUp2.ViewModels.RegistreringVM
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Registrering";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+@{Html.RenderPartial("_formularOversikt");}
 
-<div>
-    <h4>Registreringar</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Bana.Namn)
-        </dt>
+@{Html.RenderPartial("_Message", null);}
 
-        <dd>
-            @Html.DisplayFor(model => model.Bana.Namn)
-        </dd>
+@* TODO redigera och radera *@
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Evenemang.Namn)
-        </dt>
+<div class="col-md-12">
+    <h3>
+        Registrering
+    </h3>
 
-        <dd>
-            @Html.DisplayFor(model => model.Evenemang.Namn)
-        </dd>
+    <table class="table table-striped">
+        <tr>
+            <td>
+                <p>Att betala: @Model.AttBetala</p>
+                <p>Registreringstid: @Model.Registreringstid</p>
+                <p>Rabatt: @Model.Rabatt</p>
+                <p>Rabattkod: @Model.Rabattkod</p>
+                <p>Förseningsavgift: @Model.Forseningsavgift</p>
+                @if (Model.Invoice != null)
+                {
+                    <p>@Html.ActionLink("Fakturaadress", "Details", "Invoice", new { id = Model.Invoice.Id}, null)</p>
+                }
+                <p>Kommentar: @Model.Kommentar</p>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        @foreach (var steg in Model.Formular.Steg)
+        {
+            <tr>
+                <td><h3>@steg.Namn</h3></td>
+                <td></td>
+                <td></td>
+            </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Kanot.Namn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Kanot.Namn)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Klass.Namn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Klass.Namn)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Adress)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Adress)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Telefon)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Telefon)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Epost)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Epost)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Startnummer)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Startnummer)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Lagnamn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Lagnamn)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Klubb)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Klubb)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.HarBetalt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.HarBetalt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Forseningsavgift)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Forseningsavgift)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Registreringstid)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Registreringstid)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Kommentar)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Kommentar)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Rabatt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Rabatt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PaysonToken)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PaysonToken)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Invoice)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Invoice)
-        </dd>
-
-    </dl>
+            foreach (var falt in steg.FaltLista)
+            {
+                var svar = Model.Svar.Single(s => s.FaltId == falt.FaltId);
+                var avgift = @svar.Avgift != 0 ? svar.Avgift.ToString() : "";
+                <tr>
+                    <td>@falt.Namn</td>
+                    <td>@svar.Varde</td>
+                    <td>@avgift</td>
+                </tr>
+            }
+        }
+    </table>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

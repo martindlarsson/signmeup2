@@ -271,7 +271,7 @@ namespace SignMeUp2.Controllers
             }
 
             if (SUPVM.Fakturaadress == null)
-                SUPVM.Fakturaadress = new InvoiceViewModel();
+                SUPVM.Fakturaadress = new FakturaadressVM();
 
             ViewBag.ev = SUPVM.EvenemangsNamn;
             EvenemangHelper.UpdateLanguage(SUPVM.EvenemangsSpråk);
@@ -288,7 +288,7 @@ namespace SignMeUp2.Controllers
         /// <param name="fakturaadress"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Fakturaadress(InvoiceViewModel fakturaadress)
+        public ActionResult Fakturaadress(FakturaadressVM fakturaadress)
         {
             var SUPVM = (SignMeUpVM)Session["VM"];
 

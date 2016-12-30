@@ -10,7 +10,7 @@ namespace SignMeUp2.ViewModels
 
         public Registrering Registrering { get; set; }
 
-        public InvoiceViewModel Fakturaadress { get; set; }
+        public FakturaadressVM Fakturaadress { get; set; }
 
         public DateTime? BetalaSenast { get; set; }
 

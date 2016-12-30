@@ -92,6 +92,8 @@ namespace SignMeUp2.Services
             {
                 return Db.Registreringar
                         .Include(r => r.Formular)
+                        .Include(r => r.Formular.Steg)
+                        .Include(r => r.Formular.Steg.Select(s => s.Falt))
                         .Include(r => r.Formular.Evenemang)
                         .Include(r => r.Formular.Evenemang.Organisation)
                         .Include(r => r.Invoice)

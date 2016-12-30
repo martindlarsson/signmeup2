@@ -2,18 +2,26 @@
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using SignMeUp2.Data;
 using SignMeUp2.ViewModels;
 using SignMeUp2.Controllers;
 using SignMeUp2.Helpers;
 using System.Web.Script.Serialization;
-using System.Web.Helpers;
+using System.Collections.Generic;
+using System;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
     [Authorize]
     public class FormularController : BaseController
     {
+        private static string _entity = "Formulär";
+        protected override string GetEntitetsNamn()
+        {
+            return _entity;
+        }
+
         // GET: Admin/Formular/Oversikt
         public ActionResult Oversikt(int? id)
         {
@@ -21,16 +29,58 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Formular formular = db.Formular.Include("Aktivitet").Single(f => f.Id == id.Value);
+            Formular formular = db.Formular.Include("Aktivitet").Include("Registreringar.Invoice").Single(f => f.Id == id.Value);
             if (formular == null)
             {
                 return HttpNotFound();
             }
             var formularVM = ClassMapper.MappaTillFormularVM(formular);
             //formularVM.Aktiviteter = smuService.GetAktiviteter();
-            ViewBag.Registreringar = formular.Registreringar.Select(regg => ClassMapper.MappaTillRegistreringVM(regg)).ToList();
+            //ViewBag.Registreringar = formular.Registreringar.Select(regg => ClassMapper.MappaTillRegistreringVM(regg)).ToList();
+
+            ViewBag.RegTable = GenerateRegistrationsTable(formular);
+
             SetViewBag(formularVM.EvenemangsId);
             return View(formularVM);
+        }
+
+        internal TabellViewModel GenerateRegistrationsTable(Formular formular)
+        {
+            var table = new TabellViewModel();
+            table.Kolumner = new List<Kolumn>();
+            table.Kolumner.Add(new Kolumn { Rubrik = "Registreringstid" });
+            table.Kolumner.Add(new Kolumn { Rubrik = "E-post" });
+            table.Kolumner.Add(new Kolumn { Rubrik = "Betalningsmetod" });
+            table.Kolumner.Add(new Kolumn { Rubrik = "Att betala" });
+            table.Kolumner.Add(new Kolumn { Rubrik = "Betalt" });
+
+            table.Rader = new List<Rad>();
+            foreach(var reg in formular.Registreringar)
+            {
+                var varden = new List<String>();
+                varden.Add("<a href=\"" + Url.Action("Details", "Registreringar", new { id = reg.Id }) + "\">" + reg.Registreringstid.ToString() + "</a>");
+                var epost = "";
+                foreach(var steg in reg.Formular.Steg)
+                {
+                    foreach(var falt in steg.Falt)
+                    {
+                        if (falt.Typ == FaltTyp.epost_falt)
+                        {
+                            var svar = reg.Svar.Single(s => s.FaltId == falt.Id);
+                            epost += svar.Varde + " ";
+                        }
+                    }
+                }
+                varden.Add(epost);
+                varden.Add(reg.Invoice == null ? "Payson" : "Faktura");
+                varden.Add(reg.AttBetala.ToString());
+                varden.Add(reg.HarBetalt ? "Ja" : "Nej");
+                // TODO epost
+
+                table.Rader.Add(new Rad { Varden = varden });
+            }
+
+            return table;
         }
 
         // GET: Admin/Formular/Create
@@ -144,11 +194,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        protected override string GetEntitetsNamn()
-        {
-            return "Formulär";
         }
     }
 }

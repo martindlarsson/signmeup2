@@ -113,7 +113,7 @@ namespace SignMeUp2.ViewModels
             }
         }
 
-        public InvoiceViewModel Fakturaadress { get; set; }
+        public FakturaadressVM Fakturaadress { get; set; }
 
         public PaysonKontaktViewModel Kontaktinformation { get; set; }
 

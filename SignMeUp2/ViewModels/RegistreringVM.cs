@@ -32,6 +32,6 @@ namespace SignMeUp2.ViewModels
         public int Rabatt { get; set; }
         public string Rabattkod { get; set; }
 
-        public InvoiceViewModel Invoice { get; set; }
+        public FakturaadressVM Invoice { get; set; }
     }
 }

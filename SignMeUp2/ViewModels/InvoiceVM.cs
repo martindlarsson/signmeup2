@@ -3,7 +3,7 @@ using LangResources;
 
 namespace SignMeUp2.ViewModels
 {
-    public class InvoiceViewModel
+    public class FakturaadressVM
     {
         public int Id { get; set; }
 

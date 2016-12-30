@@ -94,7 +94,7 @@ namespace SignMeUp2.Controllers
                 Arrangor = arrangor,
                 Evenemangsnamn = evenemang.Namn,
                 BetalaSenast = evenemang.FakturaBetaldSenast,
-                Fakturaadress = ClassMapper.MappTillInvoiceVM(reg.Invoice),
+                Fakturaadress = ClassMapper.MappTillFakturaadressVM(reg.Invoice),
                 Betalningsmetoder = ClassMapper.MappaTillBetalningsmetoderVM(arrangor.Betalningsmetoder)
             };
         }

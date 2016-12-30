@@ -281,7 +281,6 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\FormularController.cs" />
-    <Compile Include="Areas\Admin\Controllers\FormularWebApiController.cs" />
     <Compile Include="Areas\Admin\Controllers\ForseningsavgiftController.cs" />
     <Compile Include="Areas\Admin\Controllers\BetalningsmetoderController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrganisationController.cs" />
@@ -389,7 +388,7 @@
     <Content Include="Areas\Admin\Views\Formular\Oversikt.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\Boolean.cshtml" />
     <Content Include="Areas\Admin\Views\Formular\Formularsbyggare.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_reactjs.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_formularOversikt.cshtml" />
     <None Include="ClearScript.V8\ClearScriptV8-32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -522,7 +521,7 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\ForseningsavgiftVM.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\RabattVM.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_footerEntity.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Invoice.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Fakturaadress.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Boolean.cshtml" />
     <Content Include="Areas\Admin\Views\Formular\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Formular\Edit.cshtml" />

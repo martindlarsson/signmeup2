@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using SignMeUp2.Data;
 using System.Web.Mvc.Html;
 using SignMeUp2.Controllers;
+using SignMeUp2.Helpers;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -66,7 +67,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
             if (lyckatsSkicka)
             {
-                TempData["Meddelande"] = "Faktura skickad till användaren."; // + registreringar.Epost;
+                TempData["Meddelande"] = "Faktura skickad till användaren.";
             }
 
             return RedirectToAction("Index", new { id = registreringar.FormularId });
@@ -79,12 +80,18 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Registrering registreringar = db.Registreringar.Find(id);
-            if (registreringar == null)
+
+            Registrering registrering = smuService.GetRegistrering(id.Value, true);
+            var reg = ClassMapper.MappaTillRegistreringVM(registrering);
+
+            if (registrering == null)
             {
                 return HttpNotFound();
             }
-            return View(registreringar);
+
+            ViewBag.FormularsId = reg.FormularId.Value;
+
+            return View(reg);
         }
 
         // GET: Registreringar/Create
@@ -113,8 +120,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            //SetViewBag(registreringar, registreringar.EvenemangsId.Value);
-            //SetViewBag(registreringar.EvenemangsId);
+            //SetViewBag(registrering, registrering.EvenemangsId.Value);
+            //SetViewBag(registrering.EvenemangsId);
             return View(registreringar);
         }
 
@@ -131,8 +138,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-            //SetViewBag(registreringar, registreringar.EvenemangsId.Value);
-            //SetViewBag(registreringar.EvenemangsId);
+            //SetViewBag(registrering, registrering.EvenemangsId.Value);
+            //SetViewBag(registrering.EvenemangsId);
             return View(registreringar);
         }
 
@@ -147,7 +154,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 db.Entry(registreringar).State = EntityState.Modified;
 
-                //var origReg = smuService.Db.Registreringar.Include(r => r.Deltagare).First(r => r.Id == registreringar.Id);
+                //var origReg = smuService.Db.Registreringar.Include(r => r.Deltagare).First(r => r.Id == registrering.Id);
                 
                 //foreach (var deltagare in origReg.Deltagare)
                 //{
@@ -171,8 +178,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 return RedirectToAction("Index", new { id = registreringar.FormularId });
             }
 
-            //SetViewBag(registreringar, registreringar.EvenemangsId.Value);
-            //SetViewBag(registreringar.EvenemangsId);
+            //SetViewBag(registrering, registrering.EvenemangsId.Value);
+            //SetViewBag(registrering.EvenemangsId);
             return View(registreringar);
         }
 

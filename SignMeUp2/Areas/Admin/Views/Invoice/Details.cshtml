@@ -1,14 +1,15 @@
-﻿@model SignMeUp2.Data.Invoice
+﻿@model SignMeUp2.ViewModels.FakturaadressVM
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Fakturaadress";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Fakturaadress</h2>
 
+@* TODO redigera och (radera) *@
+
 <div>
-    <h4>Invoice</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -69,7 +70,3 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

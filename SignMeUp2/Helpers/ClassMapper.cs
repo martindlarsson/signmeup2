@@ -78,6 +78,7 @@ namespace SignMeUp2.Helpers
             {
                 AttBetala = registrering.AttBetala,
                 FormularId = registrering.FormularId,
+                Formular = registrering.Formular != null ? MappaTillFormularVM(registrering.Formular) : null,
                 Forseningsavgift = registrering.Forseningsavgift,
                 HarBetalt = registrering.HarBetalt,
                 Id = registrering.Id,
@@ -117,9 +118,9 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        private static InvoiceViewModel MappatillFakturaadressVM(Fakturaadress invoice)
+        private static FakturaadressVM MappatillFakturaadressVM(Fakturaadress invoice)
         {
-            return new InvoiceViewModel
+            return new FakturaadressVM
             {
                 Att = invoice.Att,
                 Box = invoice.Box,
@@ -132,7 +133,7 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        private static Fakturaadress MappatillFakturaadress(InvoiceViewModel invoice)
+        private static Fakturaadress MappatillFakturaadress(FakturaadressVM invoice)
         {
             return new Fakturaadress
             {
@@ -154,7 +155,7 @@ namespace SignMeUp2.Helpers
                 Aktivitet = formular.Aktivitet != null ? MappaTillAktivitetVM(formular.Aktivitet) : null,
                 AktivitetsId = formular.AktivitetsId,
                 Avgift = formular.Avgift,
-                //Evenemang = formular.Evenemang,
+                Evenemang = formular.Evenemang != null ? MappaTillEvenemangVM(formular.Evenemang) : null,
                 EvenemangsId = formular.EvenemangsId,
                 Listor = formular.Listor,
                 Id = formular.Id,
@@ -318,6 +319,21 @@ namespace SignMeUp2.Helpers
             };
         }
 
+        private static EvenemangVM MappaTillEvenemangVM(Evenemang evenemang)
+        {
+            return new EvenemangVM
+            {
+                Id = evenemang.Id,
+                FakturaBetaldSenast = evenemang.FakturaBetaldSenast,
+                Fakturabetalning = evenemang.Fakturabetalning,
+                Namn = evenemang.Namn,
+                OrganisationsId = evenemang.OrganisationsId,
+                RegStart = evenemang.RegStart,
+                RegStop = evenemang.RegStop,
+                Språk = evenemang.Språk == Data.Språk.Svenska ? ViewModels.Språk.Svenska : ViewModels.Språk.Engelska
+            };
+        }
+
         private static FaltViewModel MappaTillFaltVM(Falt falt)
         {
             return new FaltViewModel
@@ -366,9 +382,9 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        public static InvoiceViewModel MappTillInvoiceVM(Fakturaadress invoice)
+        public static FakturaadressVM MappTillFakturaadressVM(Fakturaadress invoice)
         {
-            return new InvoiceViewModel
+            return new FakturaadressVM
             {
                 Organisationsnummer = invoice.Organisationsnummer,
                 Namn = invoice.Namn,

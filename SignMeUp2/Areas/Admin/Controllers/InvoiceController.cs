@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Mvc;
 using SignMeUp2.Data;
 using SignMeUp2.Controllers;
+using SignMeUp2.Helpers;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -33,7 +34,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            return View(invoice);
+            return View(ClassMapper.MappTillFakturaadressVM(invoice));
         }
 
         // GET: Invoice/Create

@@ -1,4 +1,4 @@
-﻿@model SignMeUp2.Data.Invoice
+﻿@model SignMeUp2.Data.Fakturaadress
 
 @{
     ViewBag.Title = "Edit";
@@ -7,7 +7,9 @@
 
 <h2>Redigera fakturaadress</h2>
 
-@using (Html.BeginForm())
+@Html.EditorFor(Model)
+
+@*@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
@@ -87,4 +89,4 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-}
+}*@
