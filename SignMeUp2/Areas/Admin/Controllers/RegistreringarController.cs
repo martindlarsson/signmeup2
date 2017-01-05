@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using SignMeUp2.Data;
-using System.Web.Mvc.Html;
 using SignMeUp2.Controllers;
 using SignMeUp2.Helpers;
 

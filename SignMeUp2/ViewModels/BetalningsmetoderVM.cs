@@ -12,9 +12,9 @@ namespace SignMeUp2.ViewModels
 
         public bool HarPayson { get; set; }
 
-        public string PaysonUserId { get; set; }
+        //public string PaysonUserId { get; set; }
 
-        public string PaysonUserKey { get; set; }
+        //public string PaysonUserKey { get; set; }
 
         // Kan ta emot internationella betalningar
         public bool KanTaEmotIntBetalningar { get; set; }

@@ -58,13 +58,15 @@ namespace SignMeUp2.Services
             }
         }
 
-        internal TabellViewModel GetLista(int value)
+        internal TabellViewModel GetLista(int listId)
         {
-            var listan = Db.Listor.Include(l => l.Falt).Include(l => l.Formular).Include(l => l.Formular.Registreringar).Single(l => l.Id == value);
+            var listan = Db.Listor.Single(l => l.Id == listId);
+            
             if (listan == null)
                 return null;
+
+            listan.Falt = listan.Falt.OrderBy(f => f.Index).ToList();
             
-            // TODO mappa till en view model
             return ClassMapper.MappaTillTabell(listan);
         }
 
@@ -227,7 +229,7 @@ namespace SignMeUp2.Services
             };
         }
 
-        public Organisation HamtaOrganisation(int formularsId)
+        public Organisation HamtaOrganisatioFromFormular(int formularsId)
         {
             var formular = Db.Formular.Include(f => f.Evenemang).Single(f => f.Id == formularsId);
 

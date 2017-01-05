@@ -409,8 +409,8 @@ namespace SignMeUp2.Helpers
                 Id = bm.Id,
                 KanTaEmotIntBetalningar = bm.KanTaEmotIntBetalningar,
                 OrganisationsId = bm.Organisation.Id,
-                PaysonUserId = bm.PaysonUserId,
-                PaysonUserKey = bm.PaysonUserKey
+                //PaysonUserId = bm.PaysonUserId,
+                //PaysonUserKey = bm.PaysonUserKey
             };
         }
     }

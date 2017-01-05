@@ -83,7 +83,7 @@ namespace SignMeUp2.Controllers
         protected FakturaVM SkapaFakturaVM(Registrering reg)
         {
             var evenemang = smuService.GetEvenemangForFormular(reg.FormularId.Value);
-            var arrangor = smuService.HamtaOrganisation(evenemang.OrganisationsId);
+            var arrangor = smuService.HamtaOrganisatioFromFormular(reg.FormularId.Value);
 
             if (reg.Invoice == null)
                 throw new Exception("Registreringen har ingen faktureringsadress.");

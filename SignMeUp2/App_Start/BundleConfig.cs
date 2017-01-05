@@ -39,19 +39,15 @@ namespace SignMeUp2
                 "~/Scripts/moment-with-locales.min.js",
                 "~/Scripts/bootstrap-datetimepicker.min.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/gridster").Include(
-                "~/Scripts/jquery.gridster.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/gridster").Include(
+            //    "~/Scripts/jquery.gridster.js"));
 
 
-            bundles.Add(new StyleBundle("~/Content/gridstercss").Include(
-                      "~/Content/jquery.gridster.css"));
+            //bundles.Add(new StyleBundle("~/Content/gridstercss").Include(
+            //          "~/Content/jquery.gridster.css"));
 
-            // applicationInsights.js
-            bundles.Add(new ScriptBundle("~/bundles/ai").Include(
-                    "~/Scripts/applicationInsights.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
-                        "~/Scripts/knockout-{version}.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
+            //            "~/Scripts/knockout-{version}.js"));
 
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862

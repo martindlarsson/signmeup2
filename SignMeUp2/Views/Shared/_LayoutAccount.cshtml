@@ -6,20 +6,8 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/admincss")
     @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/ai")
 </head>
 <body>
-    @*<div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                @{
-                    string linkText = string.IsNullOrEmpty(ViewBag.ev) ? "SignMeUp2" : ViewBag.ev;
-                }
-
-                @Html.ActionLink(linkText, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-        </div>
-    </div>*@
     <div class="container body-content">
         @RenderBody()
         <hr />

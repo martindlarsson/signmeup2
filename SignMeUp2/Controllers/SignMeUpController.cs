@@ -16,7 +16,6 @@ namespace SignMeUp2.Controllers
 
         public ActionResult Index(int? id)
         {
-
             SignMeUpVM SUPVM = (SignMeUpVM)Session["VM"];
 
             // Om view model innehåller ett formulärsid som inte stämmer med inkommande id, nolla wizard

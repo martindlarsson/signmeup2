@@ -11,6 +11,7 @@ using PaysonIntegration;
 using PaysonIntegration.Data;
 using PaysonIntegration.Utils;
 using LangResources;
+using System.Configuration;
 
 namespace SignMeUp2.Controllers
 {
@@ -69,7 +70,7 @@ namespace SignMeUp2.Controllers
                     LogDebug(log, string.Format("Payment: Lagnamn: {0}", SUPVM.GetFaltvarde("Lagnamn")));
 
                     var evenemang = smuService.HamtaEvenemang(SUPVM.EvenemangsId);
-                    var org = smuService.HamtaOrganisation(evenemang.OrganisationsId);
+                    var org = smuService.HamtaOrganisatioFromFormular(SUPVM.FormularsId);
 
                     // Spara temporärt i databasen
                     var reg = smuService.Spara(SUPVM);
@@ -78,8 +79,8 @@ namespace SignMeUp2.Controllers
                     PayData payData = SkapaPaysonPayData(SUPVM, org);
 
                     var testMode = false;
-                    var paysonUserId = org.Betalningsmetoder.PaysonUserId;
-                    var paysonUserKey  = org.Betalningsmetoder.PaysonUserKey;
+                    var paysonUserId = ConfigurationManager.AppSettings["PAYSON-SECURITY-USERID"]; // org.Betalningsmetoder.PaysonUserId;
+                    var paysonUserKey  = ConfigurationManager.AppSettings["PAYSON-SECURITY-PASSWORD"]; //org.Betalningsmetoder.PaysonUserKey;
 #if DEBUG
                     testMode = true;
                     paysonUserId = "4";
@@ -197,9 +198,12 @@ namespace SignMeUp2.Controllers
             // If no payment message has been sent (IPN)
             if (!registration.HarBetalt)
             {
-                var org = smuService.HamtaOrganisation(registration.FormularId.Value);
+                var org = smuService.HamtaOrganisatioFromFormular(registration.FormularId.Value);
 
-                var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
+                var paysonUserId = ConfigurationManager.AppSettings["PAYSON-SECURITY-USERID"]; // org.Betalningsmetoder.PaysonUserId;
+                var paysonUserKey = ConfigurationManager.AppSettings["PAYSON-SECURITY-PASSWORD"]; //org.Betalningsmetoder.PaysonUserKey;
+
+                var api = new PaysonApi(paysonUserId, paysonUserKey, ApplicationId, false);
 
                 var response = api.MakePaymentDetailsRequest(new PaymentDetailsData(registration.PaysonToken));
 
@@ -246,9 +250,12 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Betalningen avbröts av okänd anledning", true, new Exception("Payson betalning avbruten och ingen registrering i Session hittades."));
             }
 
-            var org = smuService.HamtaOrganisation(registrering.FormularId.Value);
+            var org = smuService.HamtaOrganisatioFromFormular(registrering.FormularId.Value);
 
-            var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
+            var paysonUserId = ConfigurationManager.AppSettings["PAYSON-SECURITY-USERID"]; // org.Betalningsmetoder.PaysonUserId;
+            var paysonUserKey = ConfigurationManager.AppSettings["PAYSON-SECURITY-PASSWORD"]; //org.Betalningsmetoder.PaysonUserKey;
+
+            var api = new PaysonApi(paysonUserId, paysonUserKey, ApplicationId, false);
 
             var response = api.MakePaymentDetailsRequest(new PaymentDetailsData(registrering.PaysonToken));
 
@@ -284,8 +291,12 @@ namespace SignMeUp2.Controllers
                     Request.InputStream.Position = 0;
                     var content = new StreamReader(Request.InputStream).ReadToEnd();
 
-                    var org = smuService.HamtaOrganisation(registrering.Formular.Evenemang.OrganisationsId);
-                    var api = new PaysonApi(org.Betalningsmetoder.PaysonUserId, org.Betalningsmetoder.PaysonUserKey, ApplicationId, false);
+                    var org = smuService.HamtaOrganisatioFromFormular(registrering.FormularId.Value);
+
+                    var paysonUserId = ConfigurationManager.AppSettings["PAYSON-SECURITY-USERID"]; // org.Betalningsmetoder.PaysonUserId;
+                    var paysonUserKey = ConfigurationManager.AppSettings["PAYSON-SECURITY-PASSWORD"]; //org.Betalningsmetoder.PaysonUserKey;
+
+                    var api = new PaysonApi(paysonUserId, paysonUserKey, ApplicationId, false);
 
                     var response = api.MakeValidateIpnContentRequest(content);
                     var statusText = response.ProcessedIpnMessage.PaymentStatus.HasValue
