@@ -207,24 +207,27 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Registrering registreringar = db.Registreringar.Find(id);
-            if (registreringar == null)
-            {
-                return HttpNotFound();
-            }
-            return View(registreringar);
+            var formularsId = registreringar.FormularId.Value;
+            db.Registreringar.Remove(registreringar);
+            db.SaveChanges();
+
+            TempData["Message"] = "Registreringen har tagits bort";
+            
+            return RedirectToAction("Oversikt", "Formular", new { id = formularsId });
         }
 
         // POST: Registreringar/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Registrering registreringar = db.Registreringar.Find(id);
-            db.Registreringar.Remove(registreringar);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Registrering registreringar = db.Registreringar.Find(id);
+        //    db.Registreringar.Remove(registreringar);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {

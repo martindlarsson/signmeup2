@@ -42,20 +42,27 @@
                 @Html.ValidationMessageFor(model => model.Organisationsnummer, "", new { @class = "text-danger" })
             </div>
         </div>
+        
+        <div class="form-group">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+                <div class="alert alert-warning" role="alert">@Language.InvoiceSentTo</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Epost, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Epost, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Epost, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Postort, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Postort, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Postort, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Box, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Box, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Box, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -76,19 +83,11 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Att, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Att, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Att, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             <div class="col-md-1">
                 <input type="submit" value=@Language.Previous name="cancel" class="btn btn-default cancel" />
             </div>
             <div class="col-md-offset-3 col-md-1">
-                <input type="submit" value=@Language.Next data="send" class="btn btn-default pull-right" />
+                <input type="submit" value=@Language.Submit data="send" class="btn btn-default pull-right" />
             </div>
         </div>
     </div>

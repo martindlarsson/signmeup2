@@ -34,7 +34,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ClassMapper.MappTillFakturaadressVM(invoice));
+            return View(ClassMapper.MappatillFakturaadressVM(invoice));
         }
 
         // GET: Invoice/Create

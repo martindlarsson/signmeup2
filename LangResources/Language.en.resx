@@ -258,4 +258,10 @@
   <data name="Discount" xml:space="preserve">
     <value>Discount</value>
   </data>
+  <data name="InvoiceSentTo" xml:space="preserve">
+    <value>The invoice will be sent to this address</value>
+  </data>
+  <data name="EmailNotValid" xml:space="preserve">
+    <value>Invalid email address</value>
+  </data>
 </root>

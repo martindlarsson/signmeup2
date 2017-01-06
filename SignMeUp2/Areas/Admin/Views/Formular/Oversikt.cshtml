@@ -6,19 +6,19 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
+@{Html.RenderPartial("_footerEntity", Model);}
+
 <h2>@Model.Namn</h2>
 
-<div class="col-md-12 bg-success">
+@{Html.RenderPartial("_Message", null);}
+
+<div class="col-md-12 bg-success top-buffer" style="padding-top: 5px;">
     <p>Avgift: @Model.Avgift</p>
     <p>Max antal anmälningar: @Model.MaxRegistreringar</p>
     <p>Publikt formulär: @Html.DisplayFor(m => Model.Publikt)</p>
     <p>Aktivitet: @Model.Aktivitet.Namn</p>
     <p>@Html.ActionLink("Redigera formuläret", "Edit", "Formular", new { id = Model.Id }, new { @class = "btn btn-primary" })</p>
 </div>
-
-@{Html.RenderPartial("_footerEntity", Model);}
-
-@{Html.RenderPartial("_Message", null);}
 
 <div class="col-md-12">
     <h3>

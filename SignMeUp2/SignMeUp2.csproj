@@ -342,6 +342,10 @@
     <Compile Include="Migrations\201701012129422_tagit-bort-paysonfalt.Designer.cs">
       <DependentUpon>201701012129422_tagit-bort-paysonfalt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701052342288_fakturaadress_andringar.cs" />
+    <Compile Include="Migrations\201701052342288_fakturaadress_andringar.Designer.cs">
+      <DependentUpon>201701052342288_fakturaadress_andringar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\AktivitetViewModel.cs" />
@@ -357,7 +361,7 @@
     <Compile Include="ViewModels\TabellViewModel.cs" />
     <Compile Include="ViewModels\RabattVM.cs" />
     <Compile Include="ViewModels\ForseningsavgiftVM.cs" />
-    <Compile Include="ViewModels\InvoiceVM.cs" />
+    <Compile Include="ViewModels\FakturaadressVM.cs" />
     <Compile Include="ViewModels\PaysonViewModel.cs" />
     <Compile Include="ViewModels\ValViewModel.cs" />
     <Compile Include="ViewModels\FormularStegVM.cs" />
@@ -668,6 +672,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701012129422_tagit-bort-paysonfalt.resx">
       <DependentUpon>201701012129422_tagit-bort-paysonfalt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701052342288_fakturaadress_andringar.resx">
+      <DependentUpon>201701052342288_fakturaadress_andringar.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -33,6 +33,17 @@
             <td></td>
             <td></td>
         </tr>
+        <tr>
+            <td>
+                <div class="col-lg-2"> @*TODO, flytta in denna knapp i Edit vyn?*@
+                    @Html.ActionLink("Radera", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger", @onclick = "return confirm('Är du säker på att du vill radera denna registrering?');" })
+                </div>
+                <div class="col-lg-2">
+                    @Html.ActionLink("Redigera", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+                </div>
+                
+            </td>
+        </tr>
         @foreach (var steg in Model.Formular.Steg)
         {
             <tr>

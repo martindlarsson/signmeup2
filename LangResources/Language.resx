@@ -258,4 +258,10 @@
   <data name="Discount" xml:space="preserve">
     <value>Rabatt</value>
   </data>
+  <data name="InvoiceSentTo" xml:space="preserve">
+    <value>Fakturan kommer att skickas till angiven epostadress</value>
+  </data>
+  <data name="EmailNotValid" xml:space="preserve">
+    <value>Ange en giltig epostadress</value>
+  </data>
 </root>

@@ -7,8 +7,6 @@ namespace SignMeUp2.ViewModels
     {
         public int Id { get; set; }
 
-        public string Box { get; set; }
-
         [Required(ErrorMessageResourceName = "RequeiredFieldValError", ErrorMessageResourceType = typeof(Language))]
         [Display(Name = "ZipCode", ResourceType = typeof(Language))]
         public string Postnummer { get; set; }
@@ -29,6 +27,9 @@ namespace SignMeUp2.ViewModels
         [Display(Name = "CompanyName", ResourceType = typeof(Language))]
         public string Namn { get; set; }
 
-        public string Att { get; set; }
+        [Required(ErrorMessageResourceName = "RequeiredFieldValError", ErrorMessageResourceType = typeof(Language))]
+        [EmailAddress(ErrorMessageResourceName = "EmailNotValid", ErrorMessageResourceType = typeof(Language))]
+        [Display(Name = "Email", ResourceType = typeof(Language))]
+        public string Epost { get; set; }
     }
 }

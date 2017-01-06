@@ -8,8 +8,6 @@ namespace SignMeUp2.Data
     {
         public int Id { get; set; }
 
-        public string Box { get; set; }
-
         [Required]
         public string Postnummer { get; set; }
 
@@ -25,7 +23,8 @@ namespace SignMeUp2.Data
         [Required]
         public string Namn { get; set; }
 
-        public string Att { get; set; }
+        [Required]
+        public string Epost { get; set; }
 
         public Registrering Registrering { get; set; }
     }

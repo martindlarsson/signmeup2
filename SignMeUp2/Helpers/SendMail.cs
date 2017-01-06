@@ -83,7 +83,8 @@ namespace SignMeUp2.Helpers
                 mail.AddContent(new Content("text/plain", "Följ länken för faktura på din anmälan: " + link));
                 mail.AddContent(new Content("text/html", message));
                 mail.Subject = string.Format("Faktura för anmälan till " + fakturaVm.Evenemangsnamn);
-                var personalization = AddToAddresses(new Personalization(), fakturaVm.Registrering.Svar);
+                var personalization = new Personalization();
+                personalization.AddTo(new Email(fakturaVm.Fakturaadress.Epost));
                 personalization.AddCc(arrEpost);
                 mail.AddPersonalization(personalization);
 

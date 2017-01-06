@@ -169,6 +169,15 @@ namespace LangResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ange en giltig epostadress.
+        /// </summary>
+        public static string EmailNotValid {
+            get {
+                return ResourceManager.GetString("EmailNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Oväntat fel inträffade. Var god försök senare.
         /// </summary>
         public static string ErrorGeneral {
@@ -246,6 +255,15 @@ namespace LangResources {
         public static string InvoiceAddress {
             get {
                 return ResourceManager.GetString("InvoiceAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fakturan kommer att skickas till angiven epostadress.
+        /// </summary>
+        public static string InvoiceSentTo {
+            get {
+                return ResourceManager.GetString("InvoiceSentTo", resourceCulture);
             }
         }
         

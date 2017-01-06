@@ -118,33 +118,31 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        private static FakturaadressVM MappatillFakturaadressVM(Fakturaadress invoice)
+        public static FakturaadressVM MappatillFakturaadressVM(Fakturaadress invoice)
         {
             return new FakturaadressVM
             {
-                Att = invoice.Att,
-                Box = invoice.Box,
                 Id = invoice.Id,
                 Namn = invoice.Namn,
                 Organisationsnummer = invoice.Organisationsnummer,
                 Postadress = invoice.Postadress,
                 Postnummer = invoice.Postnummer,
-                Postort = invoice.Postort
+                Postort = invoice.Postort,
+                Epost = invoice.Epost
             };
         }
 
-        private static Fakturaadress MappatillFakturaadress(FakturaadressVM invoice)
+        public static Fakturaadress MappatillFakturaadress(FakturaadressVM invoice)
         {
             return new Fakturaadress
             {
-                Att = invoice.Att,
-                Box = invoice.Box,
                 Id = invoice.Id,
                 Namn = invoice.Namn,
                 Organisationsnummer = invoice.Organisationsnummer,
                 Postadress = invoice.Postadress,
                 Postnummer = invoice.Postnummer,
-                Postort = invoice.Postort
+                Postort = invoice.Postort,
+                Epost = invoice.Epost
             };
         }
 
@@ -382,20 +380,18 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        public static FakturaadressVM MappTillFakturaadressVM(Fakturaadress invoice)
-        {
-            return new FakturaadressVM
-            {
-                Organisationsnummer = invoice.Organisationsnummer,
-                Namn = invoice.Namn,
-                Att = invoice.Att,
-                Box = invoice.Box,
-                Id = invoice.Id,
-                Postadress = invoice.Postadress,
-                Postnummer = invoice.Postnummer,
-                Postort = invoice.Postort
-            };
-        }
+        //public static FakturaadressVM MappTillFakturaadressVM(Fakturaadress invoice)
+        //{
+        //    return new FakturaadressVM
+        //    {
+        //        Organisationsnummer = invoice.Organisationsnummer,
+        //        Namn = invoice.Namn,
+        //        Id = invoice.Id,
+        //        Postadress = invoice.Postadress,
+        //        Postnummer = invoice.Postnummer,
+        //        Postort = invoice.Postort
+        //    };
+        //}
 
         internal static BetalningsmetoderVM MappaTillBetalningsmetoderVM(Betalningsmetoder bm)
         {
