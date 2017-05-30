@@ -14,6 +14,8 @@
         public int? FaltId { get; set; }
         public virtual Falt Falt { get; set; }
 
+        public string Alias { get; set; }
+
         public int? ListaId { get; set; }
         public virtual Lista Lista { get; set; }
     }

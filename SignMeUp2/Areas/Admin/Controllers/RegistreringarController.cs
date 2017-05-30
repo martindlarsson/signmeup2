@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using SignMeUp2.Data;
 using SignMeUp2.Controllers;
 using SignMeUp2.Helpers;
+using SignMeUp2.ViewModels;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -93,6 +94,42 @@ namespace SignMeUp2.Areas.Admin.Controllers
             return View(reg);
         }
 
+        // POST: Registreringar/Details/5
+        [HttpPost]
+        public ActionResult Details(int? id, string sendInvoice, string sendReg)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Registrering registrering = smuService.GetRegistrering(id.Value, true);
+            var reg = ClassMapper.MappaTillRegistreringVM(registrering);
+
+            if (registrering == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.FormularsId = reg.FormularId.Value;
+
+            if (!string.IsNullOrEmpty(sendInvoice)) // TODO testa!!
+            {
+                SkickaFaktura(registrering);
+                log.Debug("Skickat fakturan för reg: " + reg.Id);
+                TempData["Message"] = "Fakturan är skickad";
+            }
+
+            if (!string.IsNullOrEmpty(sendReg)) // TODO testa!!
+            {
+                SkickaRegMail(registrering);
+                log.Debug("Skickat bekräftelse för reg: " + reg.Id);
+                TempData["Message"] = "Bekräftelse är skickad";
+            }
+
+            return View(reg);
+        }
+
         // GET: Registreringar/Create
         public ActionResult Create(int? id)
         {
@@ -131,15 +168,16 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Registrering registreringar = smuService.GetRegistrering(id.Value, true);
-            if (registreringar == null)
+            Registrering registrering = smuService.GetRegistrering(id.Value, true);
+            var reg = ClassMapper.MappaTillRegistreringVM(registrering);
+            if (registrering == null)
             {
                 return HttpNotFound();
             }
 
             //SetViewBag(registrering, registrering.EvenemangsId.Value);
             //SetViewBag(registrering.EvenemangsId);
-            return View(registreringar);
+            return View(reg);
         }
 
         // POST: Registreringar/Edit/5
@@ -147,39 +185,76 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Adress,Telefon,Epost,Startnummer,Lagnamn,Kanot_Id,Klubb,Klass_Id,HarBetalt,ForseningsavgiftId,Registreringstid,Kommentar,Bana_Id,RabattId,PaysonToken,EvenemangsId,Invoice")] Registrering registreringar)
+        public ActionResult Edit(FormCollection form)
         {
-            if (ModelState.IsValid)
+            var regId = form.Get("Id");
+            int regIdInt;
+            if(!int.TryParse(regId, out regIdInt))
             {
-                db.Entry(registreringar).State = EntityState.Modified;
-
-                //var origReg = smuService.Db.Registreringar.Include(r => r.Deltagare).First(r => r.Id == registrering.Id);
-                
-                //foreach (var deltagare in origReg.Deltagare)
-                //{
-                //    var nyttFornamn = Request.Form["deltagare_f_" + deltagare.Id];
-                //    var nyttEfternamn = Request.Form["deltagare_e_" + deltagare.Id];
-
-                //    if (!deltagare.Förnamn.Equals(nyttFornamn) || !deltagare.Efternamn.Equals(nyttEfternamn))
-                //    {
-                //        deltagare.Förnamn = nyttFornamn;
-                //        deltagare.Efternamn = nyttEfternamn;
-                //        db.Entry(deltagare).State = EntityState.Modified;
-                //    }
-                //}
-
-                if (registreringar.Invoice != null)
-                {
-                    db.Entry(registreringar.Invoice).State = EntityState.Modified;
-                }
-
-                db.SaveChanges();
-                return RedirectToAction("Index", new { id = registreringar.FormularId });
+                return ShowError(log, "Fel vid sparande av registrering. Kunde inte parsa regId: " + regId, false);
             }
+
+            var reg = smuService.GetRegistrering(regIdInt, true);
+
+            reg.AttBetala = int.Parse(form.Get("AttBetala"));
+            reg.Forseningsavgift = int.Parse(form.Get("Forseningsavgift"));
+            reg.HarBetalt = bool.Parse(form.Get("HarBetalt"));
+
+            foreach(var steg in reg.Formular.Steg)
+            {
+                foreach(var falt in steg.Falt)
+                {
+                    var varde = form.Get(falt.Id.ToString());
+                    var svar = reg.Svar.SingleOrDefault(s => s.FaltId == falt.Id);
+                    if (svar != null)
+                    {
+                        svar.Varde = varde;
+                    }
+                }
+            }
+
+            // TODO invoice!
+
+            db.SaveChanges();
+
+            TempData["Message"] = "Ändringarna är sparade";
+
+            return RedirectToAction("Details", new { id = regIdInt });
+
+            //if (ModelState.IsValid)
+            //{
+            //    var reg = ClassMapper.MappaTillRegistrering(registrering);
+            //    db.Entry(reg).State = EntityState.Modified;
+
+            //    //var origReg = smuService.Db.Registreringar.Include(r => r.Deltagare).First(r => r.Id == registrering.Id);
+
+            //    //foreach (var deltagare in origReg.Deltagare)
+            //    //{
+            //    //    var nyttFornamn = Request.Form["deltagare_f_" + deltagare.Id];
+            //    //    var nyttEfternamn = Request.Form["deltagare_e_" + deltagare.Id];
+
+            //    //    if (!deltagare.Förnamn.Equals(nyttFornamn) || !deltagare.Efternamn.Equals(nyttEfternamn))
+            //    //    {
+            //    //        deltagare.Förnamn = nyttFornamn;
+            //    //        deltagare.Efternamn = nyttEfternamn;
+            //    //        db.Entry(deltagare).State = EntityState.Modified;
+            //    //    }
+            //    //}
+
+            //    if (reg.Invoice != null)
+            //    {
+            //        db.Entry(reg.Invoice).State = EntityState.Modified;
+            //    }
+
+            //    db.SaveChanges();
+
+            //    TempData["Message"] = "Ändringarna är sparade";
+            
+            //}
 
             //SetViewBag(registrering, registrering.EvenemangsId.Value);
             //SetViewBag(registrering.EvenemangsId);
-            return View(registreringar);
+            //return View();
         }
 
         //protected void SetViewBag(Registreringar reg, int evenemangsId)

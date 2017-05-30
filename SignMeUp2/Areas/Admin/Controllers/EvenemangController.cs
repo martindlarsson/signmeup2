@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using SignMeUp2.Data;
 using SignMeUp2.Controllers;
 using SignMeUp2.Helpers;
+using System.Collections.Generic;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -48,63 +49,172 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
                 var formular = new Formular
                 {
-                    Avgift = 100,
-                    Namn = "Mitt första formulär",
+                    Avgift = 0,
+                    Namn = "Anmälan till " + evenemang.Namn,
                     AktivitetsId = 2
                 };
+
                 var formularSteg1 = new FormularSteg
                 {
                     Index = 0,
-                    Namn = "Kontaktuppgifter"
+                    Namn = "Kontaktuppgifter målsman"
                 };
-                var formularSteg2 = new FormularSteg
-                {
-                    Index = 1,
-                    Namn = "Tävling"
-                };
-                var falt1 = new Falt
+                formular.Steg.Add(formularSteg1);
+
+                var faltMålsman = new Falt
                 {
                     Avgiftsbelagd = false,
                     Kravs = true,
                     Namn = "För och efternamn",
                     Typ = FaltTyp.text_falt
                 };
-                var falt2 = new Falt
+                formularSteg1.Falt.Add(faltMålsman);
+
+                var faltPerNummer = new Falt
                 {
                     Avgiftsbelagd = false,
                     Kravs = true,
+                    Namn = "Personnummer",
+                    Typ = FaltTyp.text_falt
+                };
+                formularSteg1.Falt.Add(faltPerNummer);
+
+                var faltAdress =new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "Adress",
+                    Typ = FaltTyp.text_falt
+                };
+                formularSteg1.Falt.Add(faltAdress);
+
+                var faltEpost = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = false,
                     Namn = "Epost",
                     Typ = FaltTyp.epost_falt
                 };
-                var falt3 = new Falt
+                formularSteg1.Falt.Add(faltEpost);
+
+                var faltMobil = new Falt
                 {
-                    Avgiftsbelagd = true,
+                    Avgiftsbelagd = false,
                     Kravs = true,
-                    Namn = "Bana",
-                    Typ = FaltTyp.val_falt
+                    Namn = "Mobilnummer",
+                    Typ = FaltTyp.text_falt
                 };
-                var val1 = new Val
+                formularSteg1.Falt.Add(faltMobil);
+                
+
+                var formularSteg2 = new FormularSteg
                 {
-                    Avgift = 50,
-                    Namn = "Korta banan (5 km)"
+                    Index = 1,
+                    Namn = "Deltagare"
                 };
-                var val2 = new Val
-                {
-                    Avgift = 100,
-                    Namn = "Långa banan (10 km)"
-                };
-                falt3.Val.Add(val1);
-                falt3.Val.Add(val2);
-                formularSteg1.Falt.Add(falt1);
-                formularSteg1.Falt.Add(falt2);
-                formularSteg2.Falt.Add(falt3);
-                formular.Steg.Add(formularSteg1);
                 formular.Steg.Add(formularSteg2);
+
+                var faltJ1Namn = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "Junior 1 namn",
+                    Typ = FaltTyp.text_falt
+                };
+                formularSteg2.Falt.Add(faltJ1Namn);
+
+                var faltJ1Pers = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "Junior 1 personnummer",
+                    Typ = FaltTyp.text_falt
+                };
+                formularSteg2.Falt.Add(faltJ1Pers);
+
+                var faltJ2Namn = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = false,
+                    Namn = "Junior 2 namn",
+                    Typ = FaltTyp.text_falt
+                };
+                formularSteg2.Falt.Add(faltJ2Namn);
+
+                var faltJ2Pers = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = false,
+                    Namn = "Junior 2 personnummer",
+                    Typ = FaltTyp.text_falt
+                };
+                formularSteg2.Falt.Add(faltJ2Pers);
+
+                var faltJ3Namn = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = false,
+                    Namn = "Junior 3 namn",
+                    Typ = FaltTyp.text_falt
+                };
+                formularSteg2.Falt.Add(faltJ3Namn);
+
+                var faltJ3Pers = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = false,
+                    Namn = "Junior 3 personnummer",
+                    Typ = FaltTyp.text_falt
+                };
+                formularSteg2.Falt.Add(faltJ3Pers);
+
+                var faltJ4Namn = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = false,
+                    Namn = "Junior 4 namn",
+                    Typ = FaltTyp.text_falt
+                };
+                formularSteg2.Falt.Add(faltJ4Namn);
+
+                var faltJ4Pers = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = false,
+                    Namn = "Junior 4 personnummer",
+                    Typ = FaltTyp.text_falt
+                };
+                formularSteg2.Falt.Add(faltJ4Pers);
+
+                
+
                 nyttEvenemang.Formular.Add(formular);
 
                 db.Evenemang.Add(nyttEvenemang);
                 db.SaveChanges();
                 db.Entry(nyttEvenemang).GetDatabaseValues();
+
+
+                var startlista = new Lista
+                {
+                    Namn = "Anmälda till " + evenemang.Namn
+                };
+
+                startlista.Falt = new List<ListaFalt>();
+
+                startlista.Falt.Add(new ListaFalt { Falt = faltMålsman, Index = 0, Alias = "Målsman" });
+                startlista.Falt.Add(new ListaFalt { Falt = faltEpost, Index = 1, Alias = "Epost" });
+                startlista.Falt.Add(new ListaFalt { Falt = faltJ1Namn, Index = 2, Alias = "J1" });
+                startlista.Falt.Add(new ListaFalt { Falt = faltJ2Namn, Index = 3, Alias = "J2" });
+                startlista.Falt.Add(new ListaFalt { Falt = faltJ3Namn, Index = 4, Alias = "J3" });
+                startlista.Falt.Add(new ListaFalt { Falt = faltJ4Namn, Index = 5, Alias = "J4" });
+
+                formular.Listor = new List<Lista>();
+                formular.Listor.Add(startlista);
+
+                db.SaveChanges();
+
+
                 return RedirectToAction("Oversikt", new { id = nyttEvenemang.Id });
             }
 

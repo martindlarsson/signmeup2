@@ -54,7 +54,7 @@
         {
             <tr>
                 <td>@Html.ActionLink(lista.Namn, "EditList", "Formular", new { id = lista.Id }, new { @class = "btn btn-link" }) </td>
-                <td>Länk...</td>
+                <td>@Html.ActionLink("Länk", "Index", "Listor", new { id = lista.Id, area = "" }, new { @class = "btn btn-link" })</td>
             </tr>
         }
     </table>

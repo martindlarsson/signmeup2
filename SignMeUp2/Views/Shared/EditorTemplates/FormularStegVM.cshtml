@@ -20,6 +20,15 @@
             </div>
         </div>
     }
+    // Om det är ett infofält
+    else if (falt.Typ == FaltTyp.info_falt)
+    {
+        <div class="form-group">
+            <div class="col-md-10">
+                @falt.Namn
+            </div>
+        </div>
+    }
     // Om det är ett textfält
     else if (falt.Typ == FaltTyp.text_falt || falt.Typ == FaltTyp.epost_falt)
     {

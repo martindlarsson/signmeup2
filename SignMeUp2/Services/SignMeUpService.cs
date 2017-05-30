@@ -141,6 +141,7 @@ namespace SignMeUp2.Services
                 Db.Registreringar.Add(reg);
                 Db.SaveChanges();
                 Db.Entry(reg).GetDatabaseValues();
+                reg = GetRegistrering(reg.Id, true);
                 return reg;
             }
             catch (Exception exc)

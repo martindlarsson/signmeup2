@@ -6,6 +6,10 @@ namespace SignMeUp2.ViewModels
     {
         public int Id { get; internal set; }
 
+        public string Evenemang { get; set; }
+
+        public string Formularsnamn { get; set; }
+
         public string Namn { get; set; }
 
         public int StepIndex { get; set; }

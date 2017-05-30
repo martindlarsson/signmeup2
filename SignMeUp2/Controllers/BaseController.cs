@@ -70,8 +70,9 @@ namespace SignMeUp2.Controllers
             {
                 //smuService.FillRegistrering(reg);
                 var appUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
-                var link = appUrl + "signmeup/bekraftelsebetalning/" + reg.Id;
-                SendMail.SendRegistration(RenderRazorViewToString("BekraftelseBetalning", reg), appUrl, link, reg);
+                var regLink = appUrl + "signmeup/bekraftelsebetalning/" + reg.Id;
+                var incoiceLink = appUrl + "signmeup/faktura/" + reg.Id;
+                SendMail.SendRegistration(RenderRazorViewToString("BekraftelseBetalning", reg), appUrl, regLink, incoiceLink, reg);
                 log.Debug("Skickat epost till ?");
             }
             catch (Exception exc)

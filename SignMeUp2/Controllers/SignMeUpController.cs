@@ -85,6 +85,9 @@ namespace SignMeUp2.Controllers
 
             Session["VM"] = SUPVM;
 
+            var org = HamtaOrganisation();
+            ViewBag.OrgBild = org.BildUrl;
+
             return View(SUPVM.CurrentStep);
         }
 
@@ -149,6 +152,9 @@ namespace SignMeUp2.Controllers
 
             Session["VM"] = SUPVM;
 
+            var org = HamtaOrganisation();
+            ViewBag.OrgBild = org.BildUrl;
+
             return View(SUPVM.CurrentStep);
         }
 
@@ -174,6 +180,9 @@ namespace SignMeUp2.Controllers
 
             var reg = ClassMapper.MappaTillRegistrering(SUPVM);
             ViewBag.Registrering = reg;
+
+            var org = HamtaOrganisation();
+            ViewBag.OrgBild = org.BildUrl;
 
             return View(SUPVM);
         }
@@ -212,9 +221,15 @@ namespace SignMeUp2.Controllers
                 {
                     var reg = smuService.Spara(SUPVM);
                     Session["VM"] = null;
+
                     reg.HarBetalt = true;
                     smuService.UpdateraRegistrering(reg);
+
+                    ViewBag.ev = reg.Formular.Evenemang.Namn;
+                    ViewBag.org = reg.Formular.Evenemang.Organisation.Namn;
+                    ViewBag.OrgBild = reg.Formular.Evenemang.Organisation.BildUrl;
                     SkickaRegMail(reg);
+
                     return RedirectToAction("BekraftelseBetalning", new { id = reg.Id });
                 }
 
@@ -345,6 +360,7 @@ namespace SignMeUp2.Controllers
 
             ViewBag.ev = reg.Formular.Evenemang.Namn;
             ViewBag.org = reg.Formular.Evenemang.Organisation.Namn;
+            ViewBag.OrgBild = reg.Formular.Evenemang.Organisation.BildUrl;
             EvenemangHelper.UpdateLanguage(reg.Formular.Evenemang.Språk);
 
             LogDebug(log, "Användare bekräftelse betalning (GET) för " + reg.Formular.Evenemang.Namn);
@@ -352,31 +368,31 @@ namespace SignMeUp2.Controllers
             return View(reg);
         }
 
-        /// <summary>
-        /// Skicka mail till den som registrerat sig igen
-        /// </summary>
-        /// <param name="id">Id på registrering</param>
-        /// <returns></returns>
-        public ActionResult SkickaMailIgen(int? id)
-        {
-            if (id == null)
-            {
-                return ShowError(log, "Ingen anmälan med id " + id.Value + " hittades.", false);
-            }
+        ///// <summary>
+        ///// Skicka mail till den som registrerat sig igen
+        ///// </summary>
+        ///// <param name="id">Id på registrering</param>
+        ///// <returns></returns>
+        //public ActionResult SkickaMailIgen(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return ShowError(log, "Ingen anmälan med id " + id.Value + " hittades.", false);
+        //    }
 
-            var reg = smuService.GetRegistrering(id.Value, true);
+        //    var reg = smuService.GetRegistrering(id.Value, true);
 
-            if (reg != null && reg.Formular != null && reg.Formular.Evenemang != null)
-            {
-                EvenemangHelper.UpdateLanguage(reg.Formular.Evenemang.Språk);
-            }
+        //    if (reg != null && reg.Formular != null && reg.Formular.Evenemang != null)
+        //    {
+        //        EvenemangHelper.UpdateLanguage(reg.Formular.Evenemang.Språk);
+        //    }
 
-            LogDebug(log, "Skicka mail igen för " + reg.Formular.Evenemang.Namn + " regid: " + reg.Id);
+        //    LogDebug(log, "Skicka mail igen för " + reg.Formular.Evenemang.Namn + " regid: " + reg.Id);
 
-            SkickaRegMail(reg);
+        //    SkickaRegMail(reg);
 
-            return View();
-        }
+        //    return View();
+        //}
 
         private void HanteraPaymentError()
         {

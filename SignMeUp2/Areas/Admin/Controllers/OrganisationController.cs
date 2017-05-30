@@ -54,7 +54,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Namn,Epost,Adress,AnvändareId")] Organisation organisation)
+        public ActionResult Create([Bind(Include = "ID,Namn,Epost,Adress,AnvändareId,BildUrl")] Organisation organisation)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Namn,Epost,Adress,AnvändareId")] Organisation organisation)
+        public ActionResult Edit([Bind(Include = "ID,Namn,Epost,Adress,AnvändareId,BildUrl")] Organisation organisation)
         {
             if (ModelState.IsValid)
             {

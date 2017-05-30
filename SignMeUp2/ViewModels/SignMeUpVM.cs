@@ -64,7 +64,7 @@ namespace SignMeUp2.ViewModels
                     list.Add(new ValViewModel
                     {
                         Avgift = Formular.Avgift,
-                        Id = Formular.Id,
+                        Id = Formular.Id.ToString(),
                         Namn = Formular.Namn,
                         TypNamn = "Grundavgift"
                     });
@@ -78,7 +78,7 @@ namespace SignMeUp2.ViewModels
                         {
                             if (falt.Avgiftsbelagd && falt.Typ == Data.FaltTyp.val_falt)
                             {
-                                list.Add(falt.Val.FirstOrDefault(v => v.Id == int.Parse(falt.Varde)));
+                                list.Add(falt.Val.FirstOrDefault(v => v.Id == falt.Varde));
                             }
                         }
                     }

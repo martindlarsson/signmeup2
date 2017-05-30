@@ -7,17 +7,18 @@
 
 <h2>Fakturaadress</h2>
 
-@* TODO redigera och (radera) *@
+@{Html.RenderPartial("_Message", null);}
 
 <div>
     <hr />
     <dl class="dl-horizontal">
+
         <dt>
-            @Html.DisplayNameFor(model => model.Box)
+            @Html.DisplayNameFor(model => model.Epost)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Box)
+            @Html.DisplayFor(model => model.Epost)
         </dd>
 
         <dt>
@@ -60,13 +61,17 @@
             @Html.DisplayFor(model => model.Namn)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Att)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Att)
-        </dd>
-
     </dl>
+</div>
+
+<div class="row top-buffer">
+    @*<div class="col-lg-2">
+        @Html.ActionLink("Radera", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger", @onclick = "return confirm('Är du säker på att du vill radera denna registrering?');" })
+    </div>*@
+    <div class="col-lg-2">
+        @Html.ActionLink("Tillbaka", "Details", "Registreringar", new { id = Model.RegistreringsId }, new { @class = "btn btn-primary" })
+    </div>
+    <div class="col-lg-2">
+        @Html.ActionLink("Redigera", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    </div>
 </div>

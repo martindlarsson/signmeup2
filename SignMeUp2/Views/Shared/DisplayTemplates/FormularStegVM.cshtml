@@ -1,4 +1,6 @@
-﻿@model SignMeUp2.ViewModels.FormularStegVM
+﻿@using SignMeUp2.Data
+
+@model SignMeUp2.ViewModels.FormularStegVM
 
 <div>
     <h4>@Model.Namn</h4>
@@ -6,23 +8,30 @@
     <dl class="dl-horizontal">
 
         @foreach (var falt in Model.FaltLista)
-        {
-            <dt>
-                @falt.Namn
-            </dt>
+         {
+            // Om det är ett infofält
+            if (falt.Typ == FaltTyp.info_falt) {
+                <dt></dt>
+                <dd>@falt.Namn</dd>
+            }
+            else
+            {
+                <dt>
+                    @falt.Namn
+                </dt>
 
-            <dd>
-                @if (falt.Typ == SignMeUp2.Data.FaltTyp.val_falt)
-                {
-                    var id = int.Parse(falt.Varde);
-                    var val = falt.Val.FirstOrDefault(f => f.Id == id);
-                    @val.Namn
-                }
-                else
-                {
-                    @falt.Varde
-                }
-            </dd>
+                <dd>
+                    @if (falt.Typ == SignMeUp2.Data.FaltTyp.val_falt)
+                    {
+                        var val = falt.Val.FirstOrDefault(v => v.Id == falt.Varde);
+                        @val.Namn
+                    }
+                    else
+                    {
+                        @falt.Varde
+                    }
+                </dd>
+            }
         }
     </dl>
 </div>

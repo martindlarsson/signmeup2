@@ -9,6 +9,8 @@
         public int? FaltId { get; set; }
         public FaltViewModel Falt { get; set; }
 
+        public string Alias { get; set; }
+
         public int? ListaId { get; set; }
         public ListaViewModel Lista { get; set; }
     }

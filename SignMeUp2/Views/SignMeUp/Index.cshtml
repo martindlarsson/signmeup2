@@ -27,6 +27,13 @@ $(document).keypress(function (e) {
     </div>
 }
 
+@if(ViewBag.OrgBild != null)
+{
+    <img src="@ViewBag.OrgBild" class="img-fluid" style="max-height: 200px" />
+}
+
+<h1>@Model.Formularsnamn</h1>
+
 <span class="badge alert-info top-buffer">@Language.Step @(Model.StepIndex + 1) @Language.Of @Model.StepCount</span>
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "signMeUpForm" }))

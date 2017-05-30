@@ -31,5 +31,7 @@ namespace SignMeUp2.ViewModels
         [EmailAddress(ErrorMessageResourceName = "EmailNotValid", ErrorMessageResourceType = typeof(Language))]
         [Display(Name = "Email", ResourceType = typeof(Language))]
         public string Epost { get; set; }
+
+        public int RegistreringsId { get; set; }
     }
 }

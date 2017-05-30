@@ -346,6 +346,10 @@
     <Compile Include="Migrations\201701052342288_fakturaadress_andringar.Designer.cs">
       <DependentUpon>201701052342288_fakturaadress_andringar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701072018434_ListFalt_Alias.cs" />
+    <Compile Include="Migrations\201701072018434_ListFalt_Alias.Designer.cs">
+      <DependentUpon>201701072018434_ListFalt_Alias.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\AktivitetViewModel.cs" />
@@ -405,6 +409,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Icon.png" />
+    <Content Include="Migrations\201701072018434_ListFalt_Alias.sql" />
     <Content Include="Payson.txt" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\web.config" />
@@ -509,7 +514,7 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\ForseningsavgiftVM.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\RabattVM.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_footerEntity.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Fakturaadress.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\FakturaadressVM.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Boolean.cshtml" />
     <Content Include="Areas\Admin\Views\Formular\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Formular\Edit.cshtml" />
@@ -591,7 +596,6 @@
     <Content Include="Views\SignMeUp\Index.cshtml" />
     <Content Include="Views\SignMeUp\BekraftaRegistrering.cshtml" />
     <Content Include="Views\SignMeUp\Fakturaadress.cshtml" />
-    <Content Include="Views\SignMeUp\BekraftelseBetalning.cshtml" />
     <Content Include="Views\Home\Startlista.cshtml" />
     <Content Include="Views\Payson\Index.cshtml" />
     <Content Include="Views\Home\RegistrationDone.cshtml" />
@@ -612,7 +616,10 @@
     <Content Include="Views\Shared\EditorTemplates\RegistreringVM.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Fakturaadress.cshtml" />
-    <None Include="Web.SECRETS.config" />
+    <Content Include="Views\Shared\BekraftelseBetalning.cshtml" />
+    <None Include="Web.SECRETS.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -676,9 +683,15 @@
     <EmbeddedResource Include="Migrations\201701052342288_fakturaadress_andringar.resx">
       <DependentUpon>201701052342288_fakturaadress_andringar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701072018434_ListFalt_Alias.resx">
+      <DependentUpon>201701072018434_ListFalt_Alias.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

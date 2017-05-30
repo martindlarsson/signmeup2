@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using SignMeUp2.Data;
 using SignMeUp2.Controllers;
 using SignMeUp2.Helpers;
+using SignMeUp2.ViewModels;
 
 namespace SignMeUp2.Areas.Admin.Controllers
 {
@@ -29,36 +30,39 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Fakturaadress invoice = db.Invoice.Find(id);
+
+            Fakturaadress invoice = db.Invoice.Include("Registrering").FirstOrDefault(i => i.Id == id.Value);
+
             if (invoice == null)
             {
                 return HttpNotFound();
             }
+
             return View(ClassMapper.MappatillFakturaadressVM(invoice));
         }
 
-        // GET: Invoice/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        //// GET: Invoice/Create
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        // POST: Invoice/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Box,Postnummer,Organisationsnummer,Postort,Postadress,Namn,Att")] Fakturaadress invoice)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Invoice.Add(invoice);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+        //// POST: Invoice/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "Id,Box,Postnummer,Organisationsnummer,Postort,Postadress,Namn,Att")] Fakturaadress invoice)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Invoice.Add(invoice);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
 
-            return View(invoice);
-        }
+        //    return View(invoice);
+        //}
 
         // GET: Invoice/Edit/5
         public ActionResult Edit(int? id)
@@ -67,12 +71,14 @@ namespace SignMeUp2.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Fakturaadress invoice = db.Invoice.Find(id);
+
+            Fakturaadress invoice = db.Invoice.Include("Registrering").FirstOrDefault(i => i.Id == id.Value);
+
             if (invoice == null)
             {
                 return HttpNotFound();
             }
-            return View(invoice);
+            return View(ClassMapper.MappatillFakturaadressVM(invoice));
         }
 
         // POST: Invoice/Edit/5
@@ -80,13 +86,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Box,Postnummer,Organisationsnummer,Postort,Postadress,Namn,Att")] Fakturaadress invoice)
+        public ActionResult Edit([Bind(Include = "Id,Postnummer,Epost,Organisationsnummer,Postort,Postadress,Namn")] FakturaadressVM invoice)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(invoice).State = EntityState.Modified;
+                var inv = ClassMapper.MappatillFakturaadress(invoice);
+                db.Entry(inv).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["Message"] = "Ändringarna är sparade";
+                return RedirectToAction("Details", new { Id = invoice.Id });
             }
             return View(invoice);
         }

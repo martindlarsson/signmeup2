@@ -8,6 +8,11 @@
 
 @model Registrering
 
+@if (ViewBag.OrgBild != null)
+{
+    <img src="@ViewBag.OrgBild" class="img-fluid" style="max-height: 200px" />
+}
+
 <h2>@Language.ThankYou @ViewBag.ev</h2>
    
 <h4>@Language.Organizer @ViewBag.org</h4>

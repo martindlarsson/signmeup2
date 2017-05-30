@@ -19,7 +19,7 @@ namespace SignMeUp2.Helpers
                     ValViewModel val = null;
                     if (falt.Avgiftsbelagd && falt.Typ == FaltTyp.val_falt)
                     {
-                        val = falt.Val.FirstOrDefault(v => v.Id == int.Parse(falt.Varde));
+                        val = falt.Val.FirstOrDefault(v => v.Id == falt.Varde);
                     }
 
                     faltsvar.Add(new FaltSvar
@@ -78,7 +78,7 @@ namespace SignMeUp2.Helpers
             {
                 AttBetala = registrering.AttBetala,
                 FormularId = registrering.FormularId,
-                Formular = registrering.Formular != null ? MappaTillFormularVM(registrering.Formular) : null,
+                Formular = registrering.Formular != null ? MappaTillFormularVM(registrering.Formular, registrering.Svar) : null,
                 Forseningsavgift = registrering.Forseningsavgift,
                 HarBetalt = registrering.HarBetalt,
                 Id = registrering.Id,
@@ -97,7 +97,7 @@ namespace SignMeUp2.Helpers
             return new FaltSvarVM
             {
                 Avgift = svar.Avgift,
-                Falt = svar.Falt != null ? MappaTillFaltVM(svar.Falt) : null,
+                Falt = svar.Falt != null ? MappaTillFaltVM(svar.Falt, svar) : null,
                 FaltId = svar.FaltId,
                 Id = svar.Id,
                 RegistreringsId = svar.RegistreringsId,
@@ -128,7 +128,8 @@ namespace SignMeUp2.Helpers
                 Postadress = invoice.Postadress,
                 Postnummer = invoice.Postnummer,
                 Postort = invoice.Postort,
-                Epost = invoice.Epost
+                Epost = invoice.Epost,
+                RegistreringsId = invoice.Registrering.Id
             };
         }
 
@@ -146,7 +147,7 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        internal static FormularViewModel MappaTillFormularVM(Formular formular)
+        internal static FormularViewModel MappaTillFormularVM(Formular formular, ICollection<FaltSvar> svar = null)
         {
             return new FormularViewModel
             {
@@ -161,7 +162,7 @@ namespace SignMeUp2.Helpers
                 Namn = formular.Namn,
                 Publikt = formular.Publikt,
                 //Registreringar = formular.Registreringar.Select(reg => MappaTillRegistreringVM(reg)).ToList(),
-                Steg = formular.Steg.Select(steg => MappaTillStegVM(steg, formular.Steg.Count)).ToList()
+                Steg = formular.Steg.Select(steg => MappaTillStegVM(steg, svar, formular.Steg.Count, formular.Evenemang.Namn)).ToList()
             };
         }
 
@@ -194,15 +195,17 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        private static FormularStegVM MappaTillStegVM(FormularSteg steg, int count)
+        private static FormularStegVM MappaTillStegVM(FormularSteg steg, ICollection<FaltSvar> svar, int count, string evenemang)
         {
             return new FormularStegVM
             {
                 Id = steg.Id,
+                Formularsnamn = steg.Formular.Namn,
                 Namn = steg.Namn,
+                Evenemang = evenemang,
                 StepIndex = steg.Index,
                 StepCount = count,
-                FaltLista = steg.Falt.Select(falt => MappaTillFaltVM(falt)).ToList()
+                FaltLista = steg.Falt.Select(falt => MappaTillFaltVM(falt, svar == null ? null : svar.SingleOrDefault(s => s.FaltId == falt.Id))).ToList()
             };
         }
 
@@ -247,11 +250,19 @@ namespace SignMeUp2.Helpers
         {
             var tabell = new TabellViewModel { Namn = listan.Namn };
             var kolumner = new List<Kolumn>();
+
+            var allaFalt = new Dictionary<int, Falt>();
+            listan.Formular.Steg.ForEach(s => s.Falt.ForEach(f => allaFalt.Add(f.Id, f)));
             
             // Skapa kolumnerna
             foreach(var falt in listan.Falt)
             {
-                kolumner.Add(new Kolumn { Rubrik = falt.Falt.Namn, FaltId = falt.FaltId.Value, Index = falt.Index });
+                kolumner.Add(new Kolumn
+                    {
+                        Rubrik = string.IsNullOrEmpty(falt.Alias) ? falt.Falt.Namn : falt.Alias // Använd alias om det finns, annars fältnamnet
+                        , FaltId = falt.FaltId.Value
+                        , Index = falt.Index
+                    });
             }
             
             tabell.Kolumner = kolumner.OrderBy(k => k.Index).ToList();
@@ -264,9 +275,10 @@ namespace SignMeUp2.Helpers
                 foreach (var kolumn in tabell.Kolumner)
                 {
                     var svar = registrering.Svar.Single(s => s.FaltId == kolumn.FaltId);
+                    var falt = allaFalt[svar.FaltId];
                     var textSvar = svar.Varde;
                     // Om det är val, slå upp namnet på valet
-                    if (svar.Falt.Typ == FaltTyp.val_falt)
+                    if (falt.Typ == FaltTyp.val_falt)
                     {
                         textSvar = svar.Falt.Val.Single(v => v.Id.ToString() == svar.Varde).Namn;
                     }
@@ -332,7 +344,7 @@ namespace SignMeUp2.Helpers
             };
         }
 
-        private static FaltViewModel MappaTillFaltVM(Falt falt)
+        private static FaltViewModel MappaTillFaltVM(Falt falt, FaltSvar svar)
         {
             return new FaltViewModel
             {
@@ -341,7 +353,8 @@ namespace SignMeUp2.Helpers
                 Namn = falt.Namn,
                 Typ = falt.Typ,
                 Val = falt.Val.Select(val => MappaTillValVM(val, falt.Namn)).ToList(),
-                FaltId = falt.Id
+                FaltId = falt.Id,
+                Varde = svar != null ? svar.Varde : null
             };
         }
 
@@ -363,7 +376,7 @@ namespace SignMeUp2.Helpers
             return new ValViewModel
             {
                 Avgift = val.Avgift,
-                Id = val.Id,
+                Id = val.Id.ToString(),
                 Namn = val.Namn,
                 TypNamn = typnamn
             };
@@ -374,7 +387,7 @@ namespace SignMeUp2.Helpers
             return new Val
             {
                 Avgift = val.Avgift,
-                Id = val.Id,
+                Id = int.Parse(val.Id),
                 Namn = val.Namn
                 //TypNamn = val.TypNamn
             };
