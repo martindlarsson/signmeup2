@@ -29,6 +29,7 @@ namespace SignMeUp2.Helpers
                 mail.AddContent(new Content("text/html", message));
                 mail.Subject = string.Format("Bekräftelse anmälan till " + reg.Formular.Evenemang.Namn);
                 var personalization = AddToAddresses(new Personalization(), reg.Svar);
+                personalization.AddBcc(mail.From); // Skicka kopia till arrangör
                 mail.AddPersonalization(personalization);
 
                 Task.Run(() => SendMailv3(mail));

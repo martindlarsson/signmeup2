@@ -78,14 +78,14 @@ namespace SignMeUp2.Controllers
 
             HanteraPaymentError();
 
-            if (id == null && SUPVM != null && SUPVM.EvenemangsId != 0)
-            {
-                id = SUPVM.EvenemangsId;
-            }
+            //if (id == null && SUPVM != null && SUPVM.EvenemangsId != 0)
+            //{
+            //    id = SUPVM.EvenemangsId;
+            //}
 
             Session["VM"] = SUPVM;
 
-            var org = HamtaOrganisation();
+            var org = smuService.HamtaOrganisatioFromFormular(SUPVM.FormularsId);
             ViewBag.OrgBild = org.BildUrl;
 
             return View(SUPVM.CurrentStep);
@@ -152,7 +152,7 @@ namespace SignMeUp2.Controllers
 
             Session["VM"] = SUPVM;
 
-            var org = HamtaOrganisation();
+            var org = smuService.HamtaOrganisatioFromFormular(SUPVM.FormularsId);
             ViewBag.OrgBild = org.BildUrl;
 
             return View(SUPVM.CurrentStep);
@@ -181,7 +181,7 @@ namespace SignMeUp2.Controllers
             var reg = ClassMapper.MappaTillRegistrering(SUPVM);
             ViewBag.Registrering = reg;
 
-            var org = HamtaOrganisation();
+            var org = smuService.HamtaOrganisatioFromFormular(SUPVM.FormularsId);
             ViewBag.OrgBild = org.BildUrl;
 
             return View(SUPVM);
@@ -224,10 +224,12 @@ namespace SignMeUp2.Controllers
 
                     reg.HarBetalt = true;
                     smuService.UpdateraRegistrering(reg);
+                    
+                    var org = smuService.HamtaOrganisatioFromFormular(SUPVM.FormularsId);
 
                     ViewBag.ev = reg.Formular.Evenemang.Namn;
-                    ViewBag.org = reg.Formular.Evenemang.Organisation.Namn;
-                    ViewBag.OrgBild = reg.Formular.Evenemang.Organisation.BildUrl;
+                    ViewBag.org = org.Namn;
+                    ViewBag.OrgBild = org.BildUrl;
                     SkickaRegMail(reg);
 
                     return RedirectToAction("BekraftelseBetalning", new { id = reg.Id });
@@ -357,10 +359,11 @@ namespace SignMeUp2.Controllers
                 return ShowError(log, "Fel vid hämtning av registreringsinformation. Kontrollera i startlistan om er registrering genomförts.", false);
 
             var reg = smuService.GetRegistrering(id.Value, true);
+            var org = smuService.HamtaOrganisatioFromFormular(reg.FormularId.Value);
 
             ViewBag.ev = reg.Formular.Evenemang.Namn;
-            ViewBag.org = reg.Formular.Evenemang.Organisation.Namn;
-            ViewBag.OrgBild = reg.Formular.Evenemang.Organisation.BildUrl;
+            ViewBag.org = org.Namn;
+            ViewBag.OrgBild = org.BildUrl;
             EvenemangHelper.UpdateLanguage(reg.Formular.Evenemang.Språk);
 
             LogDebug(log, "Användare bekräftelse betalning (GET) för " + reg.Formular.Evenemang.Namn);

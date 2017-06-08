@@ -27,5 +27,7 @@ namespace SignMeUp2.ViewModels
         public bool Avgiftsbelagd { get; set; }
 
         public int FaltId { get; set; }
+
+        public int FaltIndex { get; set; }
     }
 }

@@ -162,7 +162,7 @@ namespace SignMeUp2.Helpers
                 Namn = formular.Namn,
                 Publikt = formular.Publikt,
                 //Registreringar = formular.Registreringar.Select(reg => MappaTillRegistreringVM(reg)).ToList(),
-                Steg = formular.Steg.Select(steg => MappaTillStegVM(steg, svar, formular.Steg.Count, formular.Evenemang.Namn)).ToList()
+                Steg = formular.Steg.Select(steg => MappaTillStegVM(steg, svar, formular.Steg.Count, formular.Evenemang.Namn)).OrderBy(steg => steg.StepIndex).ToList()
             };
         }
 
@@ -205,7 +205,7 @@ namespace SignMeUp2.Helpers
                 Evenemang = evenemang,
                 StepIndex = steg.Index,
                 StepCount = count,
-                FaltLista = steg.Falt.Select(falt => MappaTillFaltVM(falt, svar == null ? null : svar.SingleOrDefault(s => s.FaltId == falt.Id))).ToList()
+                FaltLista = steg.Falt.Select(falt => MappaTillFaltVM(falt, svar == null ? null : svar.SingleOrDefault(s => s.FaltId == falt.Id))).OrderBy(falt => falt.FaltIndex).ToList()
             };
         }
 
@@ -354,6 +354,7 @@ namespace SignMeUp2.Helpers
                 Typ = falt.Typ,
                 Val = falt.Val.Select(val => MappaTillValVM(val, falt.Namn)).ToList(),
                 FaltId = falt.Id,
+                FaltIndex = falt.Index,
                 Varde = svar != null ? svar.Varde : null
             };
         }

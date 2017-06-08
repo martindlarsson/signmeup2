@@ -10,12 +10,12 @@
         @foreach (var falt in Model.FaltLista)
          {
             // Om det är ett infofält
-            if (falt.Typ == FaltTyp.info_falt) {
-                <dt></dt>
+            if (falt.Typ != FaltTyp.info_falt) {
+                @*<dt></dt>
                 <dd>@falt.Namn</dd>
             }
             else
-            {
+            {*@
                 <dt>
                     @falt.Namn
                 </dt>
@@ -24,7 +24,10 @@
                     @if (falt.Typ == SignMeUp2.Data.FaltTyp.val_falt)
                     {
                         var val = falt.Val.FirstOrDefault(v => v.Id == falt.Varde);
-                        @val.Namn
+                        if (val != null)
+                        {
+                            @val.Namn
+                        }
                     }
                     else
                     {
