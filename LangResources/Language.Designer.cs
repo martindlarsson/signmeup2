@@ -106,6 +106,15 @@ namespace LangResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bekräftelse på er anmälan kommer att skickas till följande adress(er):.
+        /// </summary>
+        public static string ConfirmationMailInfo {
+            get {
+                return ResourceManager.GetString("ConfirmationMailInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bekräftelse på betalning.
         /// </summary>
         public static string ConfirmationOfPayment {

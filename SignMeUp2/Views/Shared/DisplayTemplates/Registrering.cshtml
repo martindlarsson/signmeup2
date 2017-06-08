@@ -5,12 +5,16 @@
 <div class="grid">
 
     <h3>@Language.Registration</h3>
+    @{ var stegList = Model.Formular.Steg.OrderBy(steg => steg.Index).ToList(); }
+    
 
-    @foreach (var steg in Model.Formular.Steg)
+    @foreach (var steg in stegList)
     {
         <div class="col-lg-12 top-buffer"><h4>@steg.Namn</h4></div>
 
-        foreach (var falt in steg.Falt)
+        var faltList = steg.Falt.OrderBy(falt => falt.Index);
+
+        foreach (var falt in faltList)
         {
             var svar = Model.Svar.Single(s => s.FaltId == falt.Id);
             var text = "";
@@ -18,19 +22,25 @@
             // Om det är ett fal-fält slår vi upp namnet på valet
             if (falt.Typ == SignMeUp2.Data.FaltTyp.val_falt)
             {
-                var id = int.Parse(svar.Varde);
-                var val = falt.Val.FirstOrDefault(f => f.Id == id);
-                text = val.Namn;
+                if (svar != null && !string.IsNullOrEmpty(svar.Varde))
+                {
+                    var id = int.Parse(svar.Varde);
+                    var val = falt.Val.FirstOrDefault(f => f.Id == id);
+                    text = val != null ? val.Namn : "";
+                }
             }
             else
             {
                 text = svar.Varde;
             }
 
-            <div class="col-lg-12">
-                <div class="col-lg-2"><b>@svar.Falt.Namn</b></div>
-                <div class="col-lg-8">@text</div>
-            </div>
+            if (falt.Typ != SignMeUp2.Data.FaltTyp.info_falt)
+            {
+                <div class="col-lg-12">
+                    <div class="col-lg-2"><b>@svar.Falt.Namn</b></div>
+                    <div class="col-lg-8">@text</div>
+                </div>
+            }
         }
     }
 
@@ -39,12 +49,9 @@
         <div class="col-lg-12 top-buffer">
             @Html.DisplayFor(model => model.Invoice)
         </div>
-        <div class="col-lg-12 top-buffer"><h4>Bekräftelse på er anmälan kommer att skickas till följande adress(er):</h4></div>
     }
-    else
-    {
-        <div class="col-lg-12 top-buffer"><h3>Bekräftelse på er anmälan kommer att skickas till följande adress(er):</h3></div>
-    }
+
+    <div class="col-lg-12 top-buffer"><h3>@Language.ConfirmationMailInfo</h3></div>
 
     @foreach(var steg in Model.Formular.Steg)
     {

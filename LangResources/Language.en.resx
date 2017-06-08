@@ -264,4 +264,7 @@
   <data name="EmailNotValid" xml:space="preserve">
     <value>Invalid email address</value>
   </data>
+  <data name="ConfirmationMailInfo" xml:space="preserve">
+    <value>A confirmation will be sent to the following email addresses:</value>
+  </data>
 </root>

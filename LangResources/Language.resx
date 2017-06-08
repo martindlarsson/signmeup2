@@ -264,4 +264,7 @@
   <data name="EmailNotValid" xml:space="preserve">
     <value>Ange en giltig epostadress</value>
   </data>
+  <data name="ConfirmationMailInfo" xml:space="preserve">
+    <value>Bekräftelse på er anmälan kommer att skickas till följande adress(er):</value>
+  </data>
 </root>
