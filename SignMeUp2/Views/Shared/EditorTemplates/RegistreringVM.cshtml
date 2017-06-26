@@ -47,13 +47,15 @@
     {
         <h2>@steg.Namn</h2>
 
-        foreach (var falt in steg.FaltLista)
-        {
-            var svar = Model.Svar.Single(s => s.FaltId == falt.FaltId);
+                    foreach (var falt in steg.FaltLista)
+                    {
+                        var svar = Model.Svar.FirstOrDefault(s => s.FaltId == falt.FaltId);
 
-            // Om det ska vara en drop-down
-            if (falt.Typ == FaltTyp.val_falt)
-            {
+                        svar = svar != null ? svar : new FaltSvarVM { Falt = falt, FaltId = falt.FaltId, RegistreringsId = Model.Id, Avgift = 0, Varde = "" };
+
+                        // Om det ska vara en drop-down
+                        if (falt.Typ == FaltTyp.val_falt)
+                        {
                 <div class="form-group">
                     @Html.LabelFor(model => svar.Varde, falt.Namn, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">

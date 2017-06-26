@@ -274,7 +274,8 @@ namespace SignMeUp2.Helpers
                 var rad = new Rad();
                 foreach (var kolumn in tabell.Kolumner)
                 {
-                    var svar = registrering.Svar.Single(s => s.FaltId == kolumn.FaltId);
+                    var svar = registrering.Svar.FirstOrDefault(s => s.FaltId == kolumn.FaltId);
+                    if (svar == null) continue;
                     var falt = allaFalt[svar.FaltId];
                     var textSvar = svar.Varde;
                     // Om det är val, slå upp namnet på valet

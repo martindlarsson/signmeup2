@@ -70,6 +70,32 @@ namespace SignMeUp2.Services
             return ClassMapper.MappaTillTabell(listan);
         }
 
+        internal ICollection<TabellViewModel> GetListaOrg(int orgId, bool listClosed)
+        {
+            var org = Db.Organisationer.FirstOrDefault(org1 => org1.Id == orgId);
+            if (org == null)
+                return null;
+            
+            var listLista = new List<TabellViewModel>();
+            var now = DateTime.Now;
+
+            foreach (var evenemang in org.Evenemang)
+            {
+                if (evenemang.RegStop < now || listClosed)
+                {
+                    foreach (var formular in evenemang.Formular)
+                    {
+                        foreach (var lista in formular.Listor)
+                        {
+                            listLista.Add(GetLista(lista.Id));
+                        }
+                    }
+                }   
+            }
+
+            return listLista;
+        }
+
         public FormularViewModel GetFormular(int formularsId)
         {
             try

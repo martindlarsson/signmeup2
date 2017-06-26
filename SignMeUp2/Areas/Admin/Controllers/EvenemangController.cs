@@ -57,7 +57,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 var formularSteg1 = new FormularSteg
                 {
                     Index = 0,
-                    Namn = "Invoice address"
+                    Namn = "Course fee address"
                 };
                 formular.Steg.Add(formularSteg1);
 
@@ -71,13 +71,23 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 };
                 formularSteg1.Falt.Add(faltMålsman);
 
+                var faltKlubb = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = false,
+                    Namn = "Ski club",
+                    Typ = FaltTyp.text_falt,
+                    Index = 1
+                };
+                formularSteg1.Falt.Add(faltKlubb);
+
                 var faltPerNummer = new Falt
                 {
                     Avgiftsbelagd = false,
                     Kravs = true,
                     Namn = "Personal id",
                     Typ = FaltTyp.text_falt,
-                    Index = 1
+                    Index = 2
                 };
                 formularSteg1.Falt.Add(faltPerNummer);
 
@@ -87,7 +97,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                     Kravs = true,
                     Namn = "Address",
                     Typ = FaltTyp.text_falt,
-                    Index = 2
+                    Index = 3
                 };
                 formularSteg1.Falt.Add(faltAdress);
 
@@ -97,7 +107,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                     Kravs = false,
                     Namn = "Email",
                     Typ = FaltTyp.epost_falt,
-                    Index = 3
+                    Index = 4
                 };
                 formularSteg1.Falt.Add(faltEpost);
 
@@ -107,7 +117,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                     Kravs = true,
                     Namn = "Cellphone",
                     Typ = FaltTyp.text_falt,
-                    Index = 4
+                    Index = 5
                 };
                 formularSteg1.Falt.Add(faltMobil);
 
@@ -117,7 +127,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                     Kravs = false,
                     Namn = "Please add countrycode if other than Sweden. Ie +47 for Norway.",
                     Typ = FaltTyp.info_falt,
-                    Index = 5
+                    Index = 6
                 };
                 formularSteg1.Falt.Add(faltInfo);
 
@@ -148,40 +158,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
                     Index = 1
                 };
                 formularSteg2.Falt.Add(faltJ1Pers);
-
-                var faltJ1Code = new Falt
-                {
-                    Avgiftsbelagd = false,
-                    Kravs = false,
-                    Namn = "R1 membership code",
-                    Typ = FaltTyp.text_falt,
-                    Index = 2
-                };
-                formularSteg2.Falt.Add(faltJ1Code);
-
-                var faltJ1Info = new Falt
-                {
-                    Avgiftsbelagd = false,
-                    Kravs = false,
-                    Namn = "Membership code is a personal code that identifies the racer in all the races. If this is the first time participating in KMTi SKi RACiNG you can leave this field blank. Otherwise please fill in your code.",
-                    Typ = FaltTyp.info_falt,
-                    Index = 3
-                };
-                formularSteg2.Falt.Add(faltJ1Info);
-
-                var faltJ1Family = new Falt
-                {
-                    Avgiftsbelagd = false,
-                    Kravs = false,
-                    Namn = "R1 is a family member",
-                    Typ = FaltTyp.val_falt,
-                    Index = 4,
-                    Val = new List<Val> {
-                        new Val { Avgift = 0, Namn = "Yes" },
-                        new Val { Avgift = 0, Namn = "No" },
-                    }
-                };
-                formularSteg2.Falt.Add(faltJ1Family);
 
                 var faltJ2Namn = new Falt
                 {
@@ -217,16 +193,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 };
                 formularSteg2.Falt.Add(faltJ2Family);
 
-                var faltJ2Code = new Falt
-                {
-                    Avgiftsbelagd = false,
-                    Kravs = false,
-                    Namn = "R2 membership code",
-                    Typ = FaltTyp.text_falt,
-                    Index = 8
-                };
-                formularSteg2.Falt.Add(faltJ2Code);
-
                 var faltJ3Namn = new Falt
                 {
                     Avgiftsbelagd = false,
@@ -260,16 +226,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
                     }
                 };
                 formularSteg2.Falt.Add(faltJ3Family);
-
-                var faltJ3Code = new Falt
-                {
-                    Avgiftsbelagd = false,
-                    Kravs = false,
-                    Namn = "R3 membership code",
-                    Typ = FaltTyp.text_falt,
-                    Index = 12
-                };
-                formularSteg2.Falt.Add(faltJ3Code);
 
                 var faltJ4Namn = new Falt
                 {
@@ -305,16 +261,6 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 };
                 formularSteg2.Falt.Add(faltJ4Family);
 
-                var faltJ4Code = new Falt
-                {
-                    Avgiftsbelagd = false,
-                    Kravs = false,
-                    Namn = "R4 membership code",
-                    Typ = FaltTyp.text_falt,
-                    Index = 16
-                };
-                formularSteg2.Falt.Add(faltJ4Code);
-
 
 
                 nyttEvenemang.Formular.Add(formular);
@@ -326,33 +272,32 @@ namespace SignMeUp2.Areas.Admin.Controllers
 
                 var startlista = new Lista
                 {
-                    Namn = "Ragistrations for " + evenemang.Namn
+                    Namn = "Ragistrations for " + evenemang.Namn,
+                    Falt = new List<ListaFalt>
+                    {
+                        new ListaFalt { Falt = faltMålsman, Index = 0, Alias = "Invoice name" },
+                        new ListaFalt { Falt = faltEpost, Index = 1, Alias = "Email" },
+                        new ListaFalt { Falt = faltJ1Namn, Index = 2, Alias = "R1" },
+                        new ListaFalt { Falt = faltJ2Namn, Index = 3, Alias = "R2" },
+                        new ListaFalt { Falt = faltJ3Namn, Index = 4, Alias = "R3" },
+                        new ListaFalt { Falt = faltJ4Namn, Index = 5, Alias = "R4" },
+                    }
                 };
-
-                startlista.Falt = new List<ListaFalt>();
-
-                startlista.Falt.Add(new ListaFalt { Falt = faltMålsman, Index = 0, Alias = "Invoice name" });
-                startlista.Falt.Add(new ListaFalt { Falt = faltEpost, Index = 1, Alias = "Email" });
-                startlista.Falt.Add(new ListaFalt { Falt = faltJ1Namn, Index = 2, Alias = "R1" });
-                startlista.Falt.Add(new ListaFalt { Falt = faltJ2Namn, Index = 3, Alias = "R2" });
-                startlista.Falt.Add(new ListaFalt { Falt = faltJ3Namn, Index = 4, Alias = "R3" });
-                startlista.Falt.Add(new ListaFalt { Falt = faltJ4Namn, Index = 5, Alias = "R4" });
-
-                formular.Listor = new List<Lista>();
-                formular.Listor.Add(startlista);
                 
                 var epostlista = new Lista
                 {
-                    Namn = "Epost for " + evenemang.Namn
+                    Namn = "Epost for " + evenemang.Namn,
+                    Falt = new List<ListaFalt>
+                    {
+                        new ListaFalt { Falt = faltEpost, Index = 0, Alias = "Email" }
+                    }
                 };
 
-                startlista.Falt = new List<ListaFalt>();
-                startlista.Falt.Add(new ListaFalt { Falt = faltEpost, Index = 0, Alias = "Email" });
-                
+                formular.Listor = new List<Lista>();
+                formular.Listor.Add(startlista);
                 formular.Listor.Add(epostlista);
 
                 db.SaveChanges();
-
 
                 return RedirectToAction("Oversikt", new { id = nyttEvenemang.Id });
             }

@@ -267,4 +267,25 @@
   <data name="ConfirmationMailInfo" xml:space="preserve">
     <value>Bekräftelse på er anmälan kommer att skickas till följande adress(er):</value>
   </data>
+  <data name="ConfirmationOfRegistration" xml:space="preserve">
+    <value>Bekräftelse på anmälan till</value>
+  </data>
+  <data name="LinkToRegistration" xml:space="preserve">
+    <value>Följ länken för en bekräftelse på din anmälan: </value>
+  </data>
+  <data name="MailLooksStrange" xml:space="preserve">
+    <value>Ser meddelandet konstigt ut?</value>
+  </data>
+  <data name="RegistrationClosed" xml:space="preserve">
+    <value>The registration is closed</value>
+  </data>
+  <data name="RegFor" xml:space="preserve">
+    <value>Registration for </value>
+  </data>
+  <data name="IsClosed" xml:space="preserve">
+    <value> is closed since </value>
+  </data>
+  <data name="NotYetOpened" xml:space="preserve">
+    <value> has not yet opened, opens </value>
+  </data>
 </root>

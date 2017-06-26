@@ -44,13 +44,13 @@ namespace SignMeUp2.Controllers
                 {
                     ViewBag.Closed = false;
                     ViewBag.NotOpen = true;
-                    return View("RegNotOpen", formular);
+                    return View("RegNotOpen", evenemang);
                 }
                 else if (evenemangResult == EvenemangHelper.EvenemangValidationResult.Closed)
                 {
                     ViewBag.Closed = true;
                     ViewBag.NotOpen = false;
-                    return View("RegNotOpen", formular);
+                    return View("RegNotOpen", evenemang);
                 }
                 else if (evenemangResult == EvenemangHelper.EvenemangValidationResult.DoesNotExist)
                 {
@@ -365,6 +365,8 @@ namespace SignMeUp2.Controllers
             ViewBag.org = org.Namn;
             ViewBag.OrgBild = org.BildUrl;
             EvenemangHelper.UpdateLanguage(reg.Formular.Evenemang.Språk);
+
+            ViewBag.ViewMode = "web";
 
             LogDebug(log, "Användare bekräftelse betalning (GET) för " + reg.Formular.Evenemang.Namn);
 

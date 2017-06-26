@@ -1,13 +1,6 @@
 ﻿@model SignMeUp2.ViewModels.TabellViewModel
 
-@{
-    ViewBag.Title = Model.Namn;
-    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
-}
-
-@Html.DisplayFor(model => model)
-
-@*<h2>@Model.Namn</h2>
+<h2>@Model.Namn</h2>
 
 <table class="table">
     <tr>
@@ -18,7 +11,8 @@
             </th>
         }
     </tr>
-    @foreach (var rad in Model.Rader) {
+    @foreach (var rad in Model.Rader)
+    {
         <tr>
             @foreach (var varde in rad.Varden)
             {
@@ -28,4 +22,4 @@
             }
         </tr>
     }
-</table>*@
+</table>

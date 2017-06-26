@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
-using System.Net;
-using System.Net.Mail;
+//using System.Net;
+//using System.Net.Mail;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using SignMeUp2.Data;
@@ -9,6 +9,7 @@ using SignMeUp2.ViewModels;
 using log4net;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LangResources;
 
 namespace SignMeUp2.Helpers
 {
@@ -21,13 +22,13 @@ namespace SignMeUp2.Helpers
                 message = message.Replace("href=\"/", string.Format("href=\"{0}", hostAddress));
                 message = message.Replace("src=\"/", string.Format("src=\"{0}", hostAddress));
                 message = message.Replace("Admin/SignMeUp/Faktura", "SignMeUp/Faktura");
-                message = message.Replace("<html>", string.Format("<html>Ser meddelandet konstigt ut? Öppna följande adress i en webbläsare: {0}<br/><br/>", regLink));
+                message = message.Replace("<html>", string.Format("<html>" + Language.MailLooksStrange + " " + Language.LinkToRegistration + "{0}<br/><br/>", regLink));
 
                 Mail mail = new Mail();
                 mail.From = new Email(reg.Formular.Evenemang.Organisation.Epost, reg.Formular.Evenemang.Organisation.Namn);
-                mail.AddContent(new Content("text/plain", "Följ länken för en bekräftelse på din anmälan: " + regLink));
+                mail.AddContent(new Content("text/plain", Language.LinkToRegistration + regLink));
                 mail.AddContent(new Content("text/html", message));
-                mail.Subject = string.Format("Bekräftelse anmälan till " + reg.Formular.Evenemang.Namn);
+                mail.Subject = string.Format(Language.ConfirmationOfRegistration + " " + reg.Formular.Evenemang.Namn);
                 var personalization = AddToAddresses(new Personalization(), reg.Svar);
                 personalization.AddBcc(mail.From); // Skicka kopia till arrangör
                 mail.AddPersonalization(personalization);

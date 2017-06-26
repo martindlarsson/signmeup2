@@ -172,7 +172,7 @@
     <value>We only allow companies to pay by invoice</value>
   </data>
   <data name="Organizer" xml:space="preserve">
-    <value>Organized by</value>
+    <value>Training organized by</value>
   </data>
   <data name="Pay" xml:space="preserve">
     <value>Pay</value>
@@ -202,7 +202,7 @@
     <value>Sum</value>
   </data>
   <data name="ThankYou" xml:space="preserve">
-    <value>Thank you for registrating for </value>
+    <value>Thank you for registrating to the </value>
   </data>
   <data name="ToPay" xml:space="preserve">
     <value>To pay</value>
@@ -266,5 +266,26 @@
   </data>
   <data name="ConfirmationMailInfo" xml:space="preserve">
     <value>A confirmation will be sent to the following email addresses:</value>
+  </data>
+  <data name="ConfirmationOfRegistration" xml:space="preserve">
+    <value>Confirmation of registration for</value>
+  </data>
+  <data name="LinkToRegistration" xml:space="preserve">
+    <value>Click the link for confirmation of your registration: </value>
+  </data>
+  <data name="MailLooksStrange" xml:space="preserve">
+    <value>Does this mail look strange?</value>
+  </data>
+  <data name="RegistrationClosed" xml:space="preserve">
+    <value>Anmälan är stängd</value>
+  </data>
+  <data name="RegFor" xml:space="preserve">
+    <value>Anmälan till </value>
+  </data>
+  <data name="IsClosed" xml:space="preserve">
+    <value> är stängds sedan </value>
+  </data>
+  <data name="NotYetOpened" xml:space="preserve">
+    <value> har ännu inte öppnat, öppnar </value>
   </data>
 </root>

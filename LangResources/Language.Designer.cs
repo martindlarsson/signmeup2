@@ -124,6 +124,15 @@ namespace LangResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bekräftelse på anmälan till.
+        /// </summary>
+        public static string ConfirmationOfRegistration {
+            get {
+                return ResourceManager.GetString("ConfirmationOfRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bekräfta registrering.
         /// </summary>
         public static string ConfirmRegistration {
@@ -277,6 +286,15 @@ namespace LangResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  is closed since .
+        /// </summary>
+        public static string IsClosed {
+            get {
+                return ResourceManager.GetString("IsClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Art.
         /// </summary>
         public static string Item {
@@ -295,6 +313,24 @@ namespace LangResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Följ länken för en bekräftelse på din anmälan: .
+        /// </summary>
+        public static string LinkToRegistration {
+            get {
+                return ResourceManager.GetString("LinkToRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ser meddelandet konstigt ut?.
+        /// </summary>
+        public static string MailLooksStrange {
+            get {
+                return ResourceManager.GetString("MailLooksStrange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nästa.
         /// </summary>
         public static string Next {
@@ -309,6 +345,15 @@ namespace LangResources {
         public static string NextPayson {
             get {
                 return ResourceManager.GetString("NextPayson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  has not yet opened, opens .
+        /// </summary>
+        public static string NotYetOpened {
+            get {
+                return ResourceManager.GetString("NotYetOpened", resourceCulture);
             }
         }
         
@@ -403,11 +448,29 @@ namespace LangResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Registration for .
+        /// </summary>
+        public static string RegFor {
+            get {
+                return ResourceManager.GetString("RegFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Anmälan.
         /// </summary>
         public static string Registration {
             get {
                 return ResourceManager.GetString("Registration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The registration is closed.
+        /// </summary>
+        public static string RegistrationClosed {
+            get {
+                return ResourceManager.GetString("RegistrationClosed", resourceCulture);
             }
         }
         

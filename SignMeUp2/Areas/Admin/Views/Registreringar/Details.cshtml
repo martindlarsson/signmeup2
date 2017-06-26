@@ -62,13 +62,15 @@
 
             foreach (var falt in steg.FaltLista)
             {
-                var svar = Model.Svar.Single(s => s.FaltId == falt.FaltId);
-                var avgift = @svar.Avgift != 0 ? svar.Avgift.ToString() : "";
+                var svar = Model.Svar.FirstOrDefault(s => s.FaltId == falt.FaltId);
 
                 <div class="row">
+                    @if (svar != null) {
+                    var avgift = svar.Avgift != 0 ? svar.Avgift.ToString() : "";
                     <div class="col-lg-2">@falt.Namn</div>
                     <div class="col-lg-4">@svar.Varde</div>
                     <div class="col-lg-2">@avgift</div>
+                    }
                 </div>
             }
         }

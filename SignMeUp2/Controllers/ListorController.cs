@@ -30,6 +30,19 @@ namespace SignMeUp2.Controllers
             return View(lista);
         }
 
+        public ActionResult Organizer(int? id)
+        {
+            if (id == null)
+                return ShowError(log, "Ingen organisatör angiven.", false);
+
+            ICollection<TabellViewModel> listor = smuService.GetListaOrg(id.Value, true);
+
+            var org = smuService.Db.Organisationer.FirstOrDefault(orgz => orgz.Id == id.Value);
+            ViewBag.org = org.Namn;
+
+            return View(listor);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

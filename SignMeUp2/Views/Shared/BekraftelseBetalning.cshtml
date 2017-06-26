@@ -11,6 +11,9 @@
 @if (ViewBag.OrgBild != null)
 {
     <img src="@ViewBag.OrgBild" class="img-fluid" style="max-height: 200px" />
+} else
+{
+    <p>BildUrl: @ViewBag.OrgBild</p>
 }
 
 <h2>@Language.ThankYou @ViewBag.ev</h2>
@@ -18,3 +21,23 @@
 <h4>@Language.Organizer @ViewBag.org</h4>
 
 @Html.DisplayFor(m => Model)
+
+@if (ViewBag.ViewMode == "web")
+{
+    <div class="grid">
+        <div class="col-lg-12 top-buffer"><h3>@Language.ConfirmationMailInfo</h3></div>
+
+        @foreach (var steg in Model.Formular.Steg)
+        {
+            foreach (var falt in steg.Falt)
+            {
+                if (falt.Typ == SignMeUp2.Data.FaltTyp.epost_falt)
+                {
+                    var svar = Model.Svar.Single(s => s.FaltId == falt.Id);
+                    <div class="col-lg-12">@svar.Varde</div>
+                }
+            }
+
+        }
+    </div>
+}

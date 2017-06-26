@@ -1,0 +1,16 @@
+﻿@using SignMeUp2.ViewModels;
+
+@model ICollection<SignMeUp2.ViewModels.TabellViewModel>
+
+@{
+    ViewBag.Title = "Organizer";
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+
+<h2>@ViewBag.org</h2>
+
+@foreach(TabellViewModel tabell in Model)
+{
+    @Html.DisplayFor(model => tabell)
+}
+

@@ -617,6 +617,8 @@
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Fakturaadress.cshtml" />
     <Content Include="Views\Shared\BekraftelseBetalning.cshtml" />
+    <Content Include="Views\Listor\Organizer.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\TabellViewModel.cshtml" />
     <None Include="Web.SECRETS.config">
       <SubType>Designer</SubType>
     </None>
