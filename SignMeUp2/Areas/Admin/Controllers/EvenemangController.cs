@@ -138,6 +138,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
                     Namn = "Racers"
                 };
                 formular.Steg.Add(formularSteg2);
+                
+                formularSteg2.Falt.Add(new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "Racer 1 (R1)",
+                    Typ = FaltTyp.info_falt,
+                    Index = 0
+                });
 
                 var faltJ1Namn = new Falt
                 {
@@ -145,7 +154,7 @@ namespace SignMeUp2.Areas.Admin.Controllers
                     Kravs = true,
                     Namn = "Racer 1 (R1) name",
                     Typ = FaltTyp.text_falt,
-                    Index = 0
+                    Index = 1
                 };
                 formularSteg2.Falt.Add(faltJ1Namn);
 
@@ -155,9 +164,18 @@ namespace SignMeUp2.Areas.Admin.Controllers
                     Kravs = true,
                     Namn = "R1 personal id",
                     Typ = FaltTyp.text_falt,
-                    Index = 1
+                    Index = 2
                 };
                 formularSteg2.Falt.Add(faltJ1Pers);
+                
+                formularSteg2.Falt.Add(new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "Racer 2 (R2)",
+                    Typ = FaltTyp.info_falt,
+                    Index = 4
+                });
 
                 var faltJ2Namn = new Falt
                 {
@@ -193,6 +211,15 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 };
                 formularSteg2.Falt.Add(faltJ2Family);
 
+                formularSteg2.Falt.Add(new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "Racer 3 (R3)",
+                    Typ = FaltTyp.info_falt,
+                    Index = 8
+                });
+
                 var faltJ3Namn = new Falt
                 {
                     Avgiftsbelagd = false,
@@ -212,8 +239,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
                     Index = 10
                 };
                 formularSteg2.Falt.Add(faltJ3Pers);
-
-                var faltJ3Family = new Falt
+                
+                formularSteg2.Falt.Add(new Falt
                 {
                     Avgiftsbelagd = false,
                     Kravs = false,
@@ -224,8 +251,16 @@ namespace SignMeUp2.Areas.Admin.Controllers
                         new Val { Avgift = 0, Namn = "Yes" },
                         new Val { Avgift = 0, Namn = "No" },
                     }
-                };
-                formularSteg2.Falt.Add(faltJ3Family);
+                });
+
+                formularSteg2.Falt.Add(new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "Racer 4 (R4)",
+                    Typ = FaltTyp.info_falt,
+                    Index = 12
+                });
 
                 var faltJ4Namn = new Falt
                 {
@@ -261,6 +296,37 @@ namespace SignMeUp2.Areas.Admin.Controllers
                 };
                 formularSteg2.Falt.Add(faltJ4Family);
 
+                formularSteg2.Falt.Add(new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "Additional information",
+                    Typ = FaltTyp.info_falt,
+                    Index = 16
+                });
+
+                // Vilka dagar de ska delta
+                var days = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "Enter which days you want to attend",
+                    Typ = FaltTyp.text_falt,
+                    Index = 17
+                };
+                formularSteg2.Falt.Add(days);
+
+                // Hur många deltagar behöver boende
+                var beds = new Falt
+                {
+                    Avgiftsbelagd = false,
+                    Kravs = true,
+                    Namn = "Please specify how many beds are to be booked",
+                    Typ = FaltTyp.text_falt,
+                    Index = 18
+                };
+                formularSteg2.Falt.Add(beds);
+
 
 
                 nyttEvenemang.Formular.Add(formular);
@@ -281,6 +347,8 @@ namespace SignMeUp2.Areas.Admin.Controllers
                         new ListaFalt { Falt = faltJ2Namn, Index = 3, Alias = "R2" },
                         new ListaFalt { Falt = faltJ3Namn, Index = 4, Alias = "R3" },
                         new ListaFalt { Falt = faltJ4Namn, Index = 5, Alias = "R4" },
+                        new ListaFalt { Falt = days, Index = 6, Alias = "Dagar" },
+                        new ListaFalt { Falt = beds, Index = 7, Alias = "Bäddar" }
                     }
                 };
                 
